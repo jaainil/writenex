@@ -1,11 +1,13 @@
 /**
  * @fileoverview Keyboard shortcuts help modal component
  *
- * Displays a modal with all available keyboard shortcuts.
+ * Displays a modal with all available keyboard shortcuts including
+ * application shortcuts and built-in editor formatting shortcuts.
  *
  * @module @writenex/astro/client/components/KeyboardShortcuts
  */
 
+import { X } from "lucide-react";
 import {
   formatShortcut,
   type ShortcutDefinition,
@@ -13,10 +15,35 @@ import {
 import "./KeyboardShortcuts.css";
 
 /**
+ * Built-in editor shortcuts from MDXEditor/Lexical.
+ * These are always available when editing content.
+ */
+const EDITOR_SHORTCUTS: {
+  category: string;
+  shortcuts: { label: string; keys: string }[];
+}[] = [
+  {
+    category: "Formatting",
+    shortcuts: [
+      { label: "Bold", keys: "Ctrl+B" },
+      { label: "Italic", keys: "Ctrl+I" },
+      { label: "Underline", keys: "Ctrl+U" },
+    ],
+  },
+  {
+    category: "Actions",
+    shortcuts: [
+      { label: "Undo", keys: "Ctrl+Z" },
+      { label: "Redo", keys: "Ctrl+Shift+Z" },
+    ],
+  },
+];
+
+/**
  * Props for ShortcutsHelpModal component
  */
 interface ShortcutsHelpModalProps {
-  /** List of shortcuts to display */
+  /** List of application shortcuts to display */
   shortcuts: ShortcutDefinition[];
   /** Callback to close the modal */
   onClose: () => void;
@@ -44,7 +71,7 @@ export function ShortcutsHelpModal({
   return (
     <div className="wn-shortcuts-overlay" onClick={handleOverlayClick}>
       <div
-        className="wn-shortcuts-modal"
+        className="wn-shortcuts-modal wn-shortcuts-modal--large"
         role="dialog"
         aria-modal="true"
         aria-labelledby="shortcuts-title"
@@ -60,22 +87,40 @@ export function ShortcutsHelpModal({
             title="Close (Esc)"
             aria-label="Close shortcuts help"
           >
-            <CloseIcon />
+            <X size={16} />
           </button>
         </div>
 
         {/* Shortcuts List */}
         <div className="wn-shortcuts-list">
-          {shortcuts
-            .filter((s) => s.enabled !== false)
-            .map((shortcut) => (
-              <div key={shortcut.key} className="wn-shortcuts-item">
+          {/* Application Shortcuts */}
+          <div className="wn-shortcuts-section">
+            <h3 className="wn-shortcuts-category">Application</h3>
+            {shortcuts.map((shortcut) => (
+              <div
+                key={shortcut.key}
+                className={`wn-shortcuts-item ${shortcut.enabled === false ? "wn-shortcuts-item--disabled" : ""}`}
+              >
                 <span className="wn-shortcuts-label">{shortcut.label}</span>
                 <kbd className="wn-shortcuts-key">
                   {formatShortcut(shortcut)}
                 </kbd>
               </div>
             ))}
+          </div>
+
+          {/* Editor Shortcuts */}
+          {EDITOR_SHORTCUTS.map((group) => (
+            <div key={group.category} className="wn-shortcuts-section">
+              <h3 className="wn-shortcuts-category">{group.category}</h3>
+              {group.shortcuts.map((shortcut) => (
+                <div key={shortcut.label} className="wn-shortcuts-item">
+                  <span className="wn-shortcuts-label">{shortcut.label}</span>
+                  <kbd className="wn-shortcuts-key">{shortcut.keys}</kbd>
+                </div>
+              ))}
+            </div>
+          ))}
         </div>
 
         {/* Footer */}
@@ -84,24 +129,5 @@ export function ShortcutsHelpModal({
         </div>
       </div>
     </div>
-  );
-}
-
-/**
- * Close icon component
- */
-function CloseIcon(): React.ReactElement {
-  return (
-    <svg
-      width="16"
-      height="16"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-    >
-      <line x1="18" y1="6" x2="6" y2="18" />
-      <line x1="6" y1="6" x2="18" y2="18" />
-    </svg>
   );
 }

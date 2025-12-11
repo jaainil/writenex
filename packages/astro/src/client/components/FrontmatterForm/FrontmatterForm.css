@@ -177,7 +177,7 @@
 
 .wn-frontmatter-textarea {
   resize: vertical;
-  min-height: 60px;
+  min-height: 120px;
 }
 
 .wn-frontmatter-select {
@@ -273,6 +273,24 @@
   flex: 1;
 }
 
+.wn-frontmatter-image-preview {
+  position: relative;
+  width: 100%;
+  border-radius: 6px;
+  overflow: hidden;
+  background: #09090b;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  margin-bottom: 8px;
+}
+
+.wn-frontmatter-image-preview img {
+  width: 100%;
+  height: auto;
+  max-height: 200px;
+  object-fit: contain;
+  display: block;
+}
+
 .wn-frontmatter-upload-btn {
   padding: 8px 12px;
   background: transparent;
@@ -299,4 +317,112 @@
   height: 1px;
   background: rgba(255, 255, 255, 0.1);
   margin: 4px 0;
+}
+
+/* ============================================================================
+   LIGHT MODE OVERRIDES
+   ============================================================================ */
+
+.wn-light .wn-frontmatter-panel {
+  border-left-color: rgba(0, 0, 0, 0.1);
+  background-color: #fff;
+}
+
+.wn-light .wn-frontmatter-header {
+  border-bottom-color: rgba(0, 0, 0, 0.1);
+}
+
+.wn-light .wn-frontmatter-title {
+  color: #18181b;
+}
+
+.wn-light .wn-frontmatter-badge {
+  background-color: rgba(0, 0, 0, 0.05);
+  color: rgba(0, 0, 0, 0.5);
+}
+
+.wn-light .wn-frontmatter-close {
+  color: rgba(0, 0, 0, 0.5);
+}
+
+.wn-light .wn-frontmatter-close:hover {
+  background: rgba(0, 0, 0, 0.05);
+  color: #18181b;
+}
+
+.wn-light .wn-frontmatter-empty-icon {
+  color: rgba(0, 0, 0, 0.3);
+}
+
+.wn-light .wn-frontmatter-empty-text {
+  color: rgba(0, 0, 0, 0.5);
+}
+
+.wn-light .wn-frontmatter-empty-hint {
+  color: rgba(0, 0, 0, 0.3);
+}
+
+.wn-light .wn-frontmatter-label {
+  color: rgba(0, 0, 0, 0.5);
+}
+
+.wn-light .wn-frontmatter-input,
+.wn-light .wn-frontmatter-textarea,
+.wn-light .wn-frontmatter-select {
+  background: #fafafa;
+  border-color: rgba(0, 0, 0, 0.1);
+  color: #18181b;
+}
+
+.wn-light .wn-frontmatter-input::placeholder,
+.wn-light .wn-frontmatter-textarea::placeholder {
+  color: rgba(0, 0, 0, 0.3);
+}
+
+.wn-light .wn-frontmatter-select {
+  background-color: #fafafa;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%2352525b' stroke-width='2'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+  background-size: 16px;
+  background-position: right 8px center;
+  background-repeat: no-repeat;
+}
+
+.wn-light .wn-frontmatter-hint {
+  color: rgba(0, 0, 0, 0.3);
+}
+
+.wn-light .wn-frontmatter-checkbox-label {
+  color: #18181b;
+}
+
+.wn-light .wn-frontmatter-checkbox-hint {
+  color: rgba(0, 0, 0, 0.3);
+}
+
+.wn-light .wn-frontmatter-tag {
+  background: rgba(59, 130, 246, 0.1);
+  color: #2563eb;
+}
+
+.wn-light .wn-frontmatter-tag-remove {
+  color: rgba(0, 0, 0, 0.5);
+}
+
+.wn-light .wn-frontmatter-image-preview {
+  background: #fafafa;
+  border-color: rgba(0, 0, 0, 0.1);
+}
+
+.wn-light .wn-frontmatter-upload-btn {
+  border-color: rgba(0, 0, 0, 0.1);
+  color: rgba(0, 0, 0, 0.6);
+}
+
+.wn-light .wn-frontmatter-upload-btn:hover {
+  background: rgba(0, 0, 0, 0.05);
+  color: #18181b;
+}
+
+.wn-light .wn-frontmatter-divider {
+  background: rgba(0, 0, 0, 0.1);
 }

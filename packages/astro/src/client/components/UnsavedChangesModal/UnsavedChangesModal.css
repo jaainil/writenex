@@ -1,0 +1,233 @@
+/**
+ * @fileoverview UnsavedChangesModal styles
+ *
+ * Modal styling for unsaved changes confirmation dialog.
+ */
+
+/* ============================================================================
+   MODAL OVERLAY
+   ============================================================================ */
+
+.wn-unsaved-modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(0, 0, 0, 0.7);
+  animation: wn-unsaved-modal-fadeIn 150ms ease-out;
+}
+
+@keyframes wn-unsaved-modal-fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* ============================================================================
+   MODAL CONTAINER
+   ============================================================================ */
+
+.wn-unsaved-modal {
+  width: 100%;
+  max-width: 24rem;
+  overflow: hidden;
+  border-radius: 0.5rem;
+  border: 1px solid #3f3f46;
+  background-color: #18181b;
+  animation: wn-unsaved-modal-zoomIn 150ms ease-out;
+}
+
+@keyframes wn-unsaved-modal-zoomIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95) translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+/* ============================================================================
+   MODAL HEADER
+   ============================================================================ */
+
+.wn-unsaved-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 1.25rem;
+  border-bottom: 1px solid #3f3f46;
+}
+
+.wn-unsaved-modal-header-content {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.wn-unsaved-modal-icon {
+  color: #f59e0b;
+}
+
+.wn-unsaved-modal-title {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #fafafa;
+  margin: 0;
+}
+
+.wn-unsaved-modal-close {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.75rem;
+  height: 1.75rem;
+  padding: 0;
+  border: none;
+  border-radius: 0.375rem;
+  background-color: transparent;
+  color: #a1a1aa;
+  cursor: pointer;
+  transition:
+    background-color 150ms,
+    color 150ms;
+}
+
+.wn-unsaved-modal-close:hover:not(:disabled) {
+  background-color: rgba(255, 255, 255, 0.1);
+  color: #fafafa;
+}
+
+.wn-unsaved-modal-close:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* ============================================================================
+   MODAL BODY
+   ============================================================================ */
+
+.wn-unsaved-modal-body {
+  padding: 1.25rem;
+}
+
+.wn-unsaved-modal-text {
+  font-size: 0.875rem;
+  color: #a1a1aa;
+  margin: 0;
+  line-height: 1.5;
+}
+
+/* ============================================================================
+   MODAL FOOTER
+   ============================================================================ */
+
+.wn-unsaved-modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  padding: 1rem 1.25rem;
+  border-top: 1px solid #3f3f46;
+  background-color: rgba(0, 0, 0, 0.2);
+}
+
+/* Buttons */
+.wn-unsaved-modal-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  border-radius: 0.375rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition:
+    background-color 150ms,
+    color 150ms,
+    border-color 150ms;
+}
+
+.wn-unsaved-modal-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Don't Save button - subtle danger styling */
+.wn-unsaved-modal-btn--secondary {
+  background-color: transparent;
+  border: 1px solid #3f3f46;
+  color: #f87171;
+}
+
+.wn-unsaved-modal-btn--secondary:hover:not(:disabled) {
+  background-color: rgba(220, 38, 38, 0.1);
+  color: #fca5a5;
+}
+
+/* Save button - primary action */
+.wn-unsaved-modal-btn--primary {
+  background-color: #3b82f6;
+  border: 1px solid #3b82f6;
+  color: white;
+}
+
+.wn-unsaved-modal-btn--primary:hover:not(:disabled) {
+  background-color: #2563eb;
+  border-color: #2563eb;
+}
+
+/* ============================================================================
+   LIGHT MODE OVERRIDES
+   ============================================================================ */
+
+.wn-light .wn-unsaved-modal-overlay {
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.wn-light .wn-unsaved-modal {
+  border-color: #e4e4e7;
+  background-color: #fff;
+}
+
+.wn-light .wn-unsaved-modal-header {
+  border-bottom-color: #e4e4e7;
+}
+
+.wn-light .wn-unsaved-modal-title {
+  color: #18181b;
+}
+
+.wn-light .wn-unsaved-modal-close {
+  color: #71717a;
+}
+
+.wn-light .wn-unsaved-modal-close:hover:not(:disabled) {
+  background-color: rgba(0, 0, 0, 0.05);
+  color: #18181b;
+}
+
+.wn-light .wn-unsaved-modal-text {
+  color: #52525b;
+}
+
+.wn-light .wn-unsaved-modal-footer {
+  border-top-color: #e4e4e7;
+  background-color: #fafafa;
+}
+
+.wn-light .wn-unsaved-modal-btn--secondary {
+  border-color: #e4e4e7;
+  color: #dc2626;
+}
+
+.wn-light .wn-unsaved-modal-btn--secondary:hover:not(:disabled) {
+  background-color: rgba(220, 38, 38, 0.1);
+  color: #b91c1c;
+}

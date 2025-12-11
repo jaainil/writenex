@@ -1,0 +1,327 @@
+/**
+ * @fileoverview CreateContentModal styles
+ *
+ * Modal styling for create new content dialog.
+ */
+
+/* ============================================================================
+   MODAL OVERLAY
+   ============================================================================ */
+
+.wn-create-modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(0, 0, 0, 0.7);
+  animation: wn-create-modal-fadeIn 150ms ease-out;
+}
+
+@keyframes wn-create-modal-fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* ============================================================================
+   MODAL CONTAINER
+   ============================================================================ */
+
+.wn-create-modal {
+  width: 100%;
+  max-width: 28rem;
+  overflow: hidden;
+  border-radius: 0.5rem;
+  border: 1px solid #3f3f46;
+  background-color: #18181b;
+  animation: wn-create-modal-zoomIn 150ms ease-out;
+}
+
+@keyframes wn-create-modal-zoomIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95) translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+/* ============================================================================
+   MODAL HEADER
+   ============================================================================ */
+
+.wn-create-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 1.25rem;
+  border-bottom: 1px solid #3f3f46;
+}
+
+.wn-create-modal-header-content {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.wn-create-modal-icon {
+  color: #3b82f6;
+}
+
+.wn-create-modal-title {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #fafafa;
+  margin: 0;
+}
+
+.wn-create-modal-close {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.75rem;
+  height: 1.75rem;
+  padding: 0;
+  border: none;
+  border-radius: 0.375rem;
+  background-color: transparent;
+  color: #a1a1aa;
+  cursor: pointer;
+  transition:
+    background-color 150ms,
+    color 150ms;
+}
+
+.wn-create-modal-close:hover:not(:disabled) {
+  background-color: rgba(255, 255, 255, 0.1);
+  color: #fafafa;
+}
+
+.wn-create-modal-close:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* ============================================================================
+   MODAL BODY
+   ============================================================================ */
+
+.wn-create-modal-body {
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+/* Collection indicator */
+.wn-create-modal-collection {
+  font-size: 0.75rem;
+  color: #71717a;
+}
+
+.wn-create-modal-collection-name {
+  color: #a1a1aa;
+  font-weight: 500;
+}
+
+/* Form field */
+.wn-create-modal-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.wn-create-modal-label {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #a1a1aa;
+}
+
+.wn-create-modal-input {
+  width: 100%;
+  padding: 0.625rem 0.875rem;
+  border-radius: 0.375rem;
+  border: 1px solid #3f3f46;
+  background-color: #09090b;
+  font-size: 0.875rem;
+  color: #fafafa;
+  outline: none;
+  transition:
+    border-color 150ms,
+    box-shadow 150ms;
+}
+
+.wn-create-modal-input::placeholder {
+  color: #52525b;
+}
+
+.wn-create-modal-input:focus {
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
+}
+
+.wn-create-modal-input:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Slug preview */
+.wn-create-modal-slug {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0.75rem;
+  border-radius: 0.375rem;
+  background-color: #09090b;
+  border: 1px solid #27272a;
+}
+
+.wn-create-modal-slug-label {
+  font-size: 0.75rem;
+  color: #71717a;
+}
+
+.wn-create-modal-slug-value {
+  font-family: ui-monospace, monospace;
+  font-size: 0.75rem;
+  color: #60a5fa;
+  background: none;
+  padding: 0;
+}
+
+/* ============================================================================
+   MODAL FOOTER
+   ============================================================================ */
+
+.wn-create-modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  padding-top: 0.5rem;
+}
+
+/* Buttons */
+.wn-create-modal-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  border-radius: 0.375rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition:
+    background-color 150ms,
+    color 150ms,
+    border-color 150ms;
+}
+
+.wn-create-modal-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.wn-create-modal-btn--secondary {
+  background-color: transparent;
+  border: 1px solid #3f3f46;
+  color: #a1a1aa;
+}
+
+.wn-create-modal-btn--secondary:hover:not(:disabled) {
+  background-color: #27272a;
+  color: #fafafa;
+}
+
+.wn-create-modal-btn--primary {
+  background-color: #3b82f6;
+  border: 1px solid #3b82f6;
+  color: white;
+}
+
+.wn-create-modal-btn--primary:hover:not(:disabled) {
+  background-color: #2563eb;
+  border-color: #2563eb;
+}
+
+/* ============================================================================
+   LIGHT MODE OVERRIDES
+   ============================================================================ */
+
+.wn-light .wn-create-modal-overlay {
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.wn-light .wn-create-modal {
+  border-color: #e4e4e7;
+  background-color: #fff;
+}
+
+.wn-light .wn-create-modal-header {
+  border-bottom-color: #e4e4e7;
+}
+
+.wn-light .wn-create-modal-title {
+  color: #18181b;
+}
+
+.wn-light .wn-create-modal-close {
+  color: #71717a;
+}
+
+.wn-light .wn-create-modal-close:hover:not(:disabled) {
+  background-color: rgba(0, 0, 0, 0.05);
+  color: #18181b;
+}
+
+.wn-light .wn-create-modal-collection {
+  color: #71717a;
+}
+
+.wn-light .wn-create-modal-collection-name {
+  color: #52525b;
+}
+
+.wn-light .wn-create-modal-label {
+  color: #52525b;
+}
+
+.wn-light .wn-create-modal-input {
+  border-color: #e4e4e7;
+  background-color: #fafafa;
+  color: #18181b;
+}
+
+.wn-light .wn-create-modal-input::placeholder {
+  color: #a1a1aa;
+}
+
+.wn-light .wn-create-modal-slug {
+  background-color: #fafafa;
+  border-color: #e4e4e7;
+}
+
+.wn-light .wn-create-modal-slug-label {
+  color: #71717a;
+}
+
+.wn-light .wn-create-modal-slug-value {
+  color: #2563eb;
+}
+
+.wn-light .wn-create-modal-btn--secondary {
+  border-color: #e4e4e7;
+  color: #71717a;
+}
+
+.wn-light .wn-create-modal-btn--secondary:hover:not(:disabled) {
+  background-color: #f4f4f5;
+  color: #18181b;
+}

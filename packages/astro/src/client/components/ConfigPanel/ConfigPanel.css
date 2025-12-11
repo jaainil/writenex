@@ -305,3 +305,96 @@
   font-size: 0.875rem;
   color: #71717a;
 }
+
+/* ============================================================================
+   LIGHT MODE OVERRIDES
+   ============================================================================ */
+
+.wn-light .wn-config-overlay {
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.wn-light .wn-config-modal {
+  border-color: #e4e4e7;
+  background-color: #fff;
+}
+
+.wn-light .wn-config-header {
+  border-bottom-color: #e4e4e7;
+}
+
+.wn-light .wn-config-title {
+  color: #18181b;
+}
+
+.wn-light .wn-config-close {
+  color: #71717a;
+}
+
+.wn-light .wn-config-close:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+  color: #18181b;
+}
+
+.wn-light .wn-config-section-title {
+  border-bottom-color: #e4e4e7;
+  color: #71717a;
+}
+
+.wn-light .wn-config-item-label {
+  color: #a1a1aa;
+}
+
+.wn-light .wn-config-item-value {
+  color: #18181b;
+}
+
+.wn-light .wn-config-collection {
+  border-color: #e4e4e7;
+  background-color: #fafafa;
+}
+
+.wn-light .wn-config-collection-name {
+  color: #18181b;
+}
+
+.wn-light .wn-config-collection-count {
+  background-color: #e4e4e7;
+  color: #71717a;
+}
+
+.wn-light .wn-config-collection-detail {
+  color: #71717a;
+}
+
+.wn-light .wn-config-collection-detail span {
+  color: #a1a1aa;
+}
+
+.wn-light .wn-config-help {
+  border-color: #e4e4e7;
+  background-color: #fafafa;
+}
+
+.wn-light .wn-config-help-title {
+  color: #71717a;
+}
+
+.wn-light .wn-config-help-text {
+  color: #71717a;
+}
+
+.wn-light .wn-config-help-code {
+  background-color: #e4e4e7;
+  color: #18181b;
+}
+
+.wn-light .wn-config-help-pre {
+  border-color: #e4e4e7;
+  background-color: #fff;
+  color: #71717a;
+}
+
+.wn-light .wn-config-empty {
+  color: #71717a;
+}

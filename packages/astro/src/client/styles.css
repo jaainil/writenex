@@ -7,6 +7,12 @@
  */
 
 /* ============================================================================
+   GOOGLE FONTS - Plus Jakarta Sans
+   ============================================================================ */
+
+@import url("https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap");
+
+/* ============================================================================
    CSS VARIABLES - Design Tokens
    ============================================================================ */
 
@@ -62,6 +68,7 @@ body,
 
 body {
   font-family:
+    "Plus Jakarta Sans",
     system-ui,
     -apple-system,
     "Segoe UI",
@@ -386,4 +393,61 @@ body {
 .wn-btn-published:hover {
   border-color: var(--wn-emerald-500);
   background-color: rgba(16, 185, 129, 0.1);
+}
+
+/* ============================================================================
+   LIGHT MODE OVERRIDES
+   ============================================================================ */
+
+.wn-light body,
+.wn-light .wn-app {
+  background-color: var(--wn-zinc-50);
+  color: var(--wn-zinc-900);
+}
+
+.wn-light .wn-content-bar {
+  border-bottom-color: rgba(0, 0, 0, 0.1);
+  background-color: var(--wn-zinc-50);
+}
+
+.wn-light .wn-content-bar-title {
+  color: var(--wn-zinc-600);
+}
+
+/* Button overrides for light mode */
+.wn-light .wn-btn-secondary {
+  border-color: var(--wn-zinc-300);
+  color: var(--wn-zinc-700);
+}
+
+.wn-light .wn-btn-secondary:hover {
+  background-color: var(--wn-zinc-100);
+  color: var(--wn-zinc-900);
+}
+
+.wn-light .wn-btn-ghost {
+  color: var(--wn-zinc-600);
+}
+
+.wn-light .wn-btn-ghost:hover {
+  background-color: var(--wn-zinc-100);
+  color: var(--wn-zinc-900);
+}
+
+.wn-light .wn-btn-icon {
+  color: var(--wn-zinc-600);
+}
+
+.wn-light .wn-btn-icon:hover {
+  background-color: var(--wn-zinc-100);
+  color: var(--wn-zinc-900);
+}
+
+/* Draft/Published button light mode */
+.wn-light .wn-btn-draft {
+  border-color: rgba(245, 158, 11, 0.4);
+}
+
+.wn-light .wn-btn-published {
+  border-color: rgba(16, 185, 129, 0.4);
 }

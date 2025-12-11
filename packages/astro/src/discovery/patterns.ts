@@ -9,8 +9,16 @@
  * - `{date}-{slug}.md` - Date-prefixed naming (2024-01-15-my-post.md)
  * - `{year}/{slug}.md` - Year folder structure
  * - `{year}/{month}/{slug}.md` - Year/month folder structure
+ * - `{year}/{month}/{day}/{slug}.md` - Full date folder structure
  * - `{slug}/index.md` - Folder-based with index file
  * - `{category}/{slug}.md` - Category folder structure
+ * - `{category}/{slug}/index.md` - Category with folder-based content
+ * - `{lang}/{slug}.md` - Language-prefixed content (i18n)
+ * - `{lang}/{slug}/index.md` - Language with folder-based content
+ *
+ * ## Custom Patterns:
+ * Developers can configure custom patterns in their collection config.
+ * Custom tokens are resolved from frontmatter data or use default values.
  *
  * ## Detection Process:
  * 1. Scan collection directory for all content files
@@ -64,10 +72,26 @@ export interface PatternDetectionResult {
 /**
  * All supported pattern definitions
  *
- * Order matters - more specific patterns should come first
+ * Order matters - more specific patterns should come first.
+ * Higher priority patterns are preferred when multiple patterns match.
  */
 const PATTERN_DEFINITIONS: PatternDefinition[] = [
-  // {year}/{month}/{slug}.md - Most specific nested date structure
+  // {year}/{month}/{day}/{slug}.md - Full date folder structure
+  {
+    name: "year-month-day-slug",
+    template: "{year}/{month}/{day}/{slug}.md",
+    regex: /^(\d{4})\/(\d{2})\/(\d{2})\/([^/]+)\.(md|mdx)$/,
+    extract: (match, ext) => ({
+      year: match[1] ?? "",
+      month: match[2] ?? "",
+      day: match[3] ?? "",
+      slug: match[4] ?? "",
+      extension: ext,
+    }),
+    priority: 95,
+  },
+
+  // {year}/{month}/{slug}.md - Year/month nested date structure
   {
     name: "year-month-slug",
     template: "{year}/{month}/{slug}.md",
@@ -91,6 +115,32 @@ const PATTERN_DEFINITIONS: PatternDefinition[] = [
       slug: match[2] ?? "",
       extension: ext,
     }),
+    priority: 85,
+  },
+
+  // {lang}/{slug}/index.md - Language with folder-based content (i18n)
+  {
+    name: "lang-folder-index",
+    template: "{lang}/{slug}/index.md",
+    regex: /^([a-z]{2}(?:-[A-Z]{2})?)\/([^/]+)\/index\.(md|mdx)$/,
+    extract: (match, ext) => ({
+      lang: match[1] ?? "",
+      slug: match[2] ?? "",
+      extension: ext,
+    }),
+    priority: 82,
+  },
+
+  // {category}/{slug}/index.md - Category with folder-based content
+  {
+    name: "category-folder-index",
+    template: "{category}/{slug}/index.md",
+    regex: /^([^/]+)\/([^/]+)\/index\.(md|mdx)$/,
+    extract: (match, ext) => ({
+      category: match[1] ?? "",
+      slug: match[2] ?? "",
+      extension: ext,
+    }),
     priority: 80,
   },
 
@@ -106,7 +156,7 @@ const PATTERN_DEFINITIONS: PatternDefinition[] = [
     priority: 75,
   },
 
-  // {date}-{slug}.md - Date-prefixed
+  // {date}-{slug}.md - Date-prefixed (ISO format)
   {
     name: "date-slug",
     template: "{date}-{slug}.md",
@@ -119,7 +169,21 @@ const PATTERN_DEFINITIONS: PatternDefinition[] = [
     priority: 70,
   },
 
-  // {category}/{slug}.md - Category folder (catch-all for non-date folders)
+  // {lang}/{slug}.md - Language-prefixed content (i18n)
+  // Matches: en/my-post.md, pt-BR/my-post.md
+  {
+    name: "lang-slug",
+    template: "{lang}/{slug}.md",
+    regex: /^([a-z]{2}(?:-[A-Z]{2})?)\/([^/]+)\.(md|mdx)$/,
+    extract: (match, ext) => ({
+      lang: match[1] ?? "",
+      slug: match[2] ?? "",
+      extension: ext,
+    }),
+    priority: 60,
+  },
+
+  // {category}/{slug}.md - Category folder (catch-all for non-date/non-lang folders)
   {
     name: "category-slug",
     template: "{category}/{slug}.md",
@@ -401,4 +465,238 @@ export function getPatternExtension(pattern: string): string {
     return ".mdx";
   }
   return ".md";
+}
+
+/**
+ * Known token types and their default value generators
+ */
+type TokenResolver = (
+  frontmatter: Record<string, unknown>,
+  slug: string
+) => string;
+
+const TOKEN_RESOLVERS: Record<string, TokenResolver> = {
+  // Core tokens
+  slug: (_fm, slug) => slug,
+
+  // Date tokens - from pubDate or current date
+  date: (fm) => {
+    const pubDate = resolveDateFromFrontmatter(fm);
+    return pubDate.toISOString().split("T")[0] ?? "";
+  },
+  year: (fm) => {
+    const pubDate = resolveDateFromFrontmatter(fm);
+    return pubDate.getFullYear().toString();
+  },
+  month: (fm) => {
+    const pubDate = resolveDateFromFrontmatter(fm);
+    return (pubDate.getMonth() + 1).toString().padStart(2, "0");
+  },
+  day: (fm) => {
+    const pubDate = resolveDateFromFrontmatter(fm);
+    return pubDate.getDate().toString().padStart(2, "0");
+  },
+
+  // i18n tokens
+  lang: (fm) => {
+    if (typeof fm.lang === "string") return fm.lang;
+    if (typeof fm.language === "string") return fm.language;
+    if (typeof fm.locale === "string") return fm.locale;
+    return "en"; // Default to English
+  },
+
+  // Organization tokens
+  category: (fm) => {
+    if (typeof fm.category === "string") return fm.category;
+    if (Array.isArray(fm.categories) && typeof fm.categories[0] === "string") {
+      return fm.categories[0];
+    }
+    return "uncategorized";
+  },
+  author: (fm) => {
+    if (typeof fm.author === "string") return slugifyValue(fm.author);
+    if (
+      typeof fm.author === "object" &&
+      fm.author !== null &&
+      "name" in fm.author
+    ) {
+      return slugifyValue(String(fm.author.name));
+    }
+    return "anonymous";
+  },
+  type: (fm) => {
+    if (typeof fm.type === "string") return fm.type;
+    if (typeof fm.contentType === "string") return fm.contentType;
+    return "post";
+  },
+  status: (fm) => {
+    if (typeof fm.status === "string") return fm.status;
+    if (fm.draft === true) return "draft";
+    return "published";
+  },
+  series: (fm) => {
+    if (typeof fm.series === "string") return slugifyValue(fm.series);
+    return "";
+  },
+  collection: (fm) => {
+    if (typeof fm.collection === "string") return fm.collection;
+    return "";
+  },
+};
+
+/**
+ * Resolve a date from frontmatter
+ *
+ * Checks common date field names: pubDate, date, publishDate, createdAt
+ *
+ * @param frontmatter - Frontmatter data
+ * @returns Resolved Date object
+ */
+function resolveDateFromFrontmatter(
+  frontmatter: Record<string, unknown>
+): Date {
+  const dateFields = ["pubDate", "date", "publishDate", "createdAt", "created"];
+
+  for (const field of dateFields) {
+    const value = frontmatter[field];
+    if (value instanceof Date) return value;
+    if (typeof value === "string") {
+      const parsed = new Date(value);
+      if (!isNaN(parsed.getTime())) return parsed;
+    }
+  }
+
+  return new Date();
+}
+
+/**
+ * Convert a string to a URL-safe slug
+ *
+ * @param value - String to slugify
+ * @returns URL-safe slug
+ */
+function slugifyValue(value: string): string {
+  return value
+    .toLowerCase()
+    .trim()
+    .replace(/[^\w\s-]/g, "")
+    .replace(/[\s_-]+/g, "-")
+    .replace(/^-+|-+$/g, "");
+}
+
+/**
+ * Options for resolving pattern tokens
+ */
+export interface ResolveTokensOptions {
+  /** The content slug */
+  slug: string;
+  /** Frontmatter data for resolving dynamic tokens */
+  frontmatter?: Record<string, unknown>;
+  /** Custom token values (override automatic resolution) */
+  customTokens?: Record<string, string>;
+}
+
+/**
+ * Resolve all tokens in a pattern to their values
+ *
+ * Token resolution priority:
+ * 1. Custom tokens (explicitly provided)
+ * 2. Known token resolvers (date, year, month, etc.)
+ * 3. Frontmatter values (for custom tokens)
+ * 4. Empty string (fallback)
+ *
+ * @param pattern - Pattern template with tokens
+ * @param options - Resolution options
+ * @returns Record of token names to resolved values
+ *
+ * @example
+ * ```typescript
+ * const tokens = resolvePatternTokens("{year}/{month}/{slug}.md", {
+ *   slug: "my-post",
+ *   frontmatter: { pubDate: new Date("2024-06-15") }
+ * });
+ * // Returns: { year: "2024", month: "06", slug: "my-post" }
+ * ```
+ */
+export function resolvePatternTokens(
+  pattern: string,
+  options: ResolveTokensOptions
+): Record<string, string> {
+  const { slug, frontmatter = {}, customTokens = {} } = options;
+  const tokenNames = parsePatternTokens(pattern);
+  const resolved: Record<string, string> = {};
+
+  for (const tokenName of tokenNames) {
+    // Priority 1: Custom tokens
+    if (tokenName in customTokens) {
+      resolved[tokenName] = customTokens[tokenName] ?? "";
+      continue;
+    }
+
+    // Priority 2: Known token resolvers
+    const resolver = TOKEN_RESOLVERS[tokenName];
+    if (resolver) {
+      resolved[tokenName] = resolver(frontmatter, slug);
+      continue;
+    }
+
+    // Priority 3: Direct frontmatter value
+    const fmValue = frontmatter[tokenName];
+    if (typeof fmValue === "string") {
+      resolved[tokenName] = slugifyValue(fmValue);
+      continue;
+    }
+    if (typeof fmValue === "number") {
+      resolved[tokenName] = fmValue.toString();
+      continue;
+    }
+
+    // Priority 4: Fallback to empty string
+    resolved[tokenName] = "";
+  }
+
+  return resolved;
+}
+
+/**
+ * Check if a pattern is valid for content creation
+ *
+ * A pattern is valid if:
+ * - It contains the {slug} token (required)
+ * - It ends with .md or .mdx
+ * - All tokens can be resolved
+ *
+ * @param pattern - Pattern template to validate
+ * @returns Validation result with error message if invalid
+ */
+export function isValidPattern(pattern: string): {
+  valid: boolean;
+  error?: string;
+} {
+  // Must contain slug token
+  if (!pattern.includes("{slug}")) {
+    return { valid: false, error: "Pattern must contain {slug} token" };
+  }
+
+  // Must end with .md or .mdx
+  if (!pattern.endsWith(".md") && !pattern.endsWith(".mdx")) {
+    return { valid: false, error: "Pattern must end with .md or .mdx" };
+  }
+
+  // Check for unclosed tokens
+  const unclosed = pattern.match(/\{[^}]*$/);
+  if (unclosed) {
+    return { valid: false, error: "Pattern contains unclosed token" };
+  }
+
+  return { valid: true };
+}
+
+/**
+ * Get list of all supported token names
+ *
+ * @returns Array of supported token names
+ */
+export function getSupportedTokens(): string[] {
+  return Object.keys(TOKEN_RESOLVERS);
 }

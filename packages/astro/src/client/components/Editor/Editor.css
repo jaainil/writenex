@@ -7,6 +7,19 @@
  */
 
 /* ============================================================================
+   SEARCH HIGHLIGHT - CSS Highlight API for MDXEditor searchPlugin
+   ============================================================================ */
+
+::highlight(MdxSearch) {
+  background-color: rgba(253, 224, 71, 0.25); /* yellow-300 with opacity */
+}
+
+::highlight(MdxFocusSearch) {
+  background-color: #fde047; /* yellow-300 */
+  color: #000000;
+}
+
+/* ============================================================================
    EDITOR CONTAINER
    ============================================================================ */
 
@@ -63,8 +76,8 @@
 
   /* Font */
   --font-body:
-    system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial,
-    sans-serif;
+    "Plus Jakarta Sans", system-ui, -apple-system, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial, sans-serif;
   --font-mono:
     ui-monospace, "Cascadia Code", Menlo, Consolas, "Courier New", monospace;
 }
@@ -361,6 +374,20 @@
    CONTENT ELEMENTS
    ============================================================================ */
 
+/* Images - constrain to editor width */
+.mdxeditor img {
+  max-width: 100% !important;
+  height: auto !important;
+  display: block !important;
+  margin: 1rem 0 !important;
+  border-radius: 0.375rem !important;
+}
+
+/* Image wrapper from MDXEditor */
+.mdxeditor [class*="_imageWrapper_"] {
+  max-width: 100% !important;
+}
+
 /* Links */
 .mdxeditor a {
   color: var(--accentColor) !important;
@@ -621,4 +648,140 @@
   max-width: 24rem;
   font-size: 0.875rem;
   color: #71717a; /* zinc-500 */
+}
+
+/* ============================================================================
+   LIGHT MODE OVERRIDES
+   ============================================================================ */
+
+.wn-light .wn-editor {
+  background-color: #fff;
+}
+
+.wn-light .wn-editor-content {
+  background-color: #fff;
+}
+
+.wn-light .wn-editor-loading {
+  color: #71717a;
+}
+
+.wn-light .wn-editor-loading-spinner {
+  border-color: #e4e4e7;
+  border-top-color: #3b82f6;
+}
+
+.wn-light .wn-editor-empty-icon {
+  color: #a1a1aa;
+}
+
+.wn-light .wn-editor-empty-title {
+  color: #18181b;
+}
+
+.wn-light .wn-editor-empty-text {
+  color: #71717a;
+}
+
+/* MDXEditor Light Mode */
+.wn-light .mdxeditor {
+  --baseBg: #ffffff;
+  --baseBgSubtle: #fafafa;
+  --baseBgHover: rgba(0, 0, 0, 0.05);
+  --baseBgActive: rgba(0, 0, 0, 0.1);
+  --basePageBg: #f4f4f5;
+  --baseBorder: #e4e4e7;
+  --baseBorderSubtle: #d4d4d8;
+  --baseText: #71717a;
+  --baseTextContrast: #27272a;
+  --baseTextMuted: #a1a1aa;
+  --baseTextSubtle: #d4d4d8;
+  --accentColor: #2563eb;
+  --accentColorHover: rgba(37, 99, 235, 0.1);
+  --selectionBg: rgba(99, 102, 241, 0.2);
+}
+
+.wn-light .mdxeditor .prose {
+  color: #374151 !important;
+}
+
+.wn-light .mdxeditor .prose h1,
+.wn-light .mdxeditor .prose h2,
+.wn-light .mdxeditor .prose h3,
+.wn-light .mdxeditor .prose h4,
+.wn-light .mdxeditor .prose h5,
+.wn-light .mdxeditor .prose h6 {
+  color: #18181b !important;
+}
+
+.wn-light .mdxeditor .prose p,
+.wn-light .mdxeditor .prose li,
+.wn-light .mdxeditor .prose em {
+  color: #374151 !important;
+}
+
+.wn-light .mdxeditor .prose strong {
+  color: #18181b !important;
+}
+
+.wn-light .mdxeditor .prose ul > li::marker {
+  color: #a1a1aa !important;
+}
+
+.wn-light .mdxeditor .prose ol > li::marker {
+  color: #71717a !important;
+}
+
+.wn-light .mdxeditor blockquote {
+  background-color: #f4f4f5 !important;
+  color: #52525b !important;
+}
+
+.wn-light .mdxeditor code:not(pre code) {
+  background-color: #f4f4f5 !important;
+  border-color: #e4e4e7 !important;
+  color: #18181b !important;
+}
+
+/* Light mode dropdowns */
+.wn-light [class*="_selectContainer_"],
+.wn-light [class*="_toolbarNodeKindSelectContainer_"],
+.wn-light [class*="_toolbarButtonDropdownContainer_"] {
+  background-color: #fff !important;
+  border-color: #e4e4e7 !important;
+  color: #27272a !important;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1) !important;
+}
+
+.wn-light [class*="_selectItem_"] {
+  color: #27272a !important;
+}
+
+.wn-light [class*="_selectItem_"]:hover,
+.wn-light [class*="_selectItem_"][data-highlighted],
+.wn-light [class*="_selectItem_"][data-state="checked"] {
+  background-color: #f4f4f5 !important;
+}
+
+.wn-light [class*="_diffSourceToggle_"],
+.wn-light [class*="_toolbarModeSwitch_"] {
+  background-color: #fafafa !important;
+  border-color: #e4e4e7 !important;
+}
+
+.wn-light [class*="_diffSourceToggle_"] button,
+.wn-light [class*="_toolbarModeSwitch_"] button {
+  color: #71717a !important;
+}
+
+.wn-light [class*="_diffSourceToggle_"] button:hover,
+.wn-light [class*="_toolbarModeSwitch_"] button:hover {
+  background-color: #e4e4e7 !important;
+  color: #27272a !important;
+}
+
+.wn-light [class*="_diffSourceToggle_"] button[data-state="on"],
+.wn-light [class*="_toolbarModeSwitch_"] button[data-state="on"] {
+  background-color: #e4e4e7 !important;
+  color: #27272a !important;
 }

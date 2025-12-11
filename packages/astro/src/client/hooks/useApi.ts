@@ -83,7 +83,12 @@ export interface WritenexClientConfig {
 export function createApiClient(config: ApiConfig) {
   const { apiBase } = config;
 
+  // Extract basePath from apiBase (remove /api suffix)
+  const basePath = apiBase.replace(/\/api$/, "");
+
   return {
+    /** Base path for the Writenex editor (without /api) */
+    basePath,
     /**
      * Fetch configuration
      */

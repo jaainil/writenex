@@ -6,10 +6,10 @@ A collection of tools for modern markdown editing and content management.
 
 ## Products
 
-| **Product** | **Description** |
-| --- | --- |
-| Writenex | WYSIWYG Markdown editor - PWA, offline-first, local storage |
-| @writenex/astro | CMS integration for Astro content collections |
+| **Product**     | **Description**                                             |
+| --------------- | ----------------------------------------------------------- |
+| Writenex        | WYSIWYG Markdown editor - PWA, offline-first, local storage |
+| @writenex/astro | CMS integration for Astro content collections               |
 
 ## Project Structure
 

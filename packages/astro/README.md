@@ -203,16 +203,55 @@ images: {
 
 ## File Patterns
 
-Writenex supports various file naming patterns:
+Writenex supports various file naming patterns with automatic token resolution:
 
-| Pattern            | Example Output          | Use Case         |
-| ------------------ | ----------------------- | ---------------- |
-| `{slug}.md`        | `my-post.md`            | Simple (default) |
-| `{date}-{slug}.md` | `2024-01-15-my-post.md` | Date-prefixed    |
-| `{year}/{slug}.md` | `2024/my-post.md`       | Year folders     |
-| `{slug}/index.md`  | `my-post/index.md`      | Folder-based     |
+| Pattern                          | Example Output               | Use Case               |
+| -------------------------------- | ---------------------------- | ---------------------- |
+| `{slug}.md`                      | `my-post.md`                 | Simple (default)       |
+| `{slug}/index.md`                | `my-post/index.md`           | Folder-based           |
+| `{date}-{slug}.md`               | `2024-01-15-my-post.md`      | Date-prefixed          |
+| `{year}/{slug}.md`               | `2024/my-post.md`            | Year folders           |
+| `{year}/{month}/{slug}.md`       | `2024/06/my-post.md`         | Year/month folders     |
+| `{year}/{month}/{day}/{slug}.md` | `2024/06/15/my-post.md`      | Full date folders      |
+| `{lang}/{slug}.md`               | `en/my-post.md`              | i18n/multi-language    |
+| `{lang}/{slug}/index.md`         | `id/my-post/index.md`        | i18n with folder-based |
+| `{category}/{slug}.md`           | `tutorials/my-post.md`       | Category folders       |
+| `{category}/{slug}/index.md`     | `tutorials/my-post/index.md` | Category folder-based  |
 
 Patterns are auto-detected from existing content or can be configured explicitly.
+
+### Supported Tokens
+
+| Token        | Source                                      | Default Value   |
+| ------------ | ------------------------------------------- | --------------- |
+| `{slug}`     | Generated from title                        | Required        |
+| `{date}`     | `pubDate` from frontmatter                  | Current date    |
+| `{year}`     | Year from `pubDate`                         | Current year    |
+| `{month}`    | Month from `pubDate` (zero-padded)          | Current month   |
+| `{day}`      | Day from `pubDate` (zero-padded)            | Current day     |
+| `{lang}`     | `lang`/`language`/`locale` from frontmatter | `en`            |
+| `{category}` | `category`/`categories[0]` from frontmatter | `uncategorized` |
+| `{author}`   | `author` from frontmatter                   | `anonymous`     |
+| `{type}`     | `type`/`contentType` from frontmatter       | `post`          |
+| `{status}`   | `status`/`draft` from frontmatter           | `published`     |
+| `{series}`   | `series` from frontmatter                   | Empty string    |
+
+### Custom Tokens
+
+Any token in your pattern that is not in the supported list will be resolved from frontmatter. For example, if you use `{project}/{slug}.md`, the `{project}` value will be taken from `frontmatter.project`.
+
+```typescript
+// writenex.config.ts
+collections: [
+  {
+    name: "docs",
+    path: "src/content/docs",
+    filePattern: "{project}/{slug}.md", // Custom token
+  },
+];
+```
+
+When creating content with frontmatter `{ project: "my-app", title: "Getting Started" }`, the file will be created at `src/content/docs/my-app/getting-started.md`.
 
 ## Keyboard Shortcuts
 
@@ -336,7 +375,6 @@ writenex({
 
 - MDX full support (components, imports)
 - CLI wrapper (`npx @writenex/astro`)
-- i18n/multi-language content support
 - Git integration (auto-commit on save)
 - Media library management
 

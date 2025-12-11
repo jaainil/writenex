@@ -45,6 +45,7 @@ next-env.d.ts
 # Personal AI Agents
 .github/copilot-instructions.md
 AGENTS.md
+.kiro
 
 # IDE
 .vscode

@@ -9,7 +9,7 @@
  */
 
 import { useCallback, useState } from "react";
-import { X, Info } from "lucide-react";
+import { X, Info, AlertCircle } from "lucide-react";
 import type { CollectionSchema, SchemaField } from "../../../types";
 import "./FrontmatterForm.css";
 
@@ -31,6 +31,10 @@ interface FrontmatterFormProps {
   disabled?: boolean;
   /** Callback for image upload */
   onImageUpload?: (file: File, fieldName: string) => Promise<string | null>;
+  /** Current collection name for image preview URLs */
+  collection?: string;
+  /** Current content ID for image preview URLs */
+  contentId?: string;
 }
 
 /**
@@ -46,6 +50,8 @@ export function FrontmatterForm({
   onChange,
   disabled = false,
   onImageUpload,
+  collection,
+  contentId,
 }: FrontmatterFormProps): React.ReactElement {
   const handleFieldChange = useCallback(
     (field: string, value: unknown) => {
@@ -105,6 +111,8 @@ export function FrontmatterForm({
               onChange={handleFieldChange}
               disabled={disabled}
               onImageUpload={onImageUpload}
+              collection={collection}
+              contentId={contentId}
             />
           ) : (
             <BasicFields
@@ -126,18 +134,7 @@ function EmptyState(): React.ReactElement {
   return (
     <div className="wn-frontmatter-empty">
       <div className="wn-frontmatter-empty-icon">
-        <svg
-          width="32"
-          height="32"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="1.5"
-        >
-          <circle cx="12" cy="12" r="10" />
-          <line x1="12" y1="16" x2="12" y2="12" />
-          <line x1="12" y1="8" x2="12.01" y2="8" />
-        </svg>
+        <AlertCircle size={32} strokeWidth={1.5} />
       </div>
       <p className="wn-frontmatter-empty-text">No content selected</p>
       <p className="wn-frontmatter-empty-hint">
@@ -145,6 +142,46 @@ function EmptyState(): React.ReactElement {
       </p>
     </div>
   );
+}
+
+/**
+ * Priority order for common frontmatter fields.
+ * Lower number = higher priority (appears first).
+ */
+const FIELD_PRIORITY: Record<string, number> = {
+  title: 1,
+  name: 2,
+  description: 10,
+  excerpt: 11,
+  summary: 12,
+  date: 20,
+  pubDate: 21,
+  publishDate: 22,
+  updatedDate: 23,
+  modifiedDate: 24,
+  author: 30,
+  authors: 31,
+  category: 40,
+  categories: 41,
+  tags: 42,
+  image: 50,
+  hero: 51,
+  heroImage: 52,
+  heroAlt: 53,
+  cover: 54,
+  coverImage: 55,
+  thumbnail: 56,
+  draft: 90,
+  featured: 91,
+  published: 92,
+};
+
+/**
+ * Get sort priority for a field name.
+ * Fields not in priority list get a default value of 100.
+ */
+function getFieldPriority(fieldName: string): number {
+  return FIELD_PRIORITY[fieldName] ?? 100;
 }
 
 /**
@@ -156,17 +193,30 @@ function SchemaFields({
   onChange,
   disabled,
   onImageUpload,
+  collection,
+  contentId,
 }: {
   frontmatter: Record<string, unknown>;
   schema: CollectionSchema;
   onChange: (field: string, value: unknown) => void;
   disabled: boolean;
   onImageUpload?: (file: File, fieldName: string) => Promise<string | null>;
+  collection?: string;
+  contentId?: string;
 }): React.ReactElement {
   const sortedFields = Object.entries(schema).sort(
     ([aKey, aField], [bKey, bField]) => {
+      const aPriority = getFieldPriority(aKey);
+      const bPriority = getFieldPriority(bKey);
+
+      // Sort by priority first
+      if (aPriority !== bPriority) return aPriority - bPriority;
+
+      // Then by required status
       if (aField.required && !bField.required) return -1;
       if (!aField.required && bField.required) return 1;
+
+      // Finally alphabetically
       return aKey.localeCompare(bKey);
     }
   );
@@ -182,6 +232,8 @@ function SchemaFields({
           onChange={(value) => onChange(fieldName, value)}
           disabled={disabled}
           onImageUpload={onImageUpload}
+          collection={collection}
+          contentId={contentId}
         />
       ))}
     </div>
@@ -347,6 +399,8 @@ function DynamicField({
   onChange,
   disabled,
   onImageUpload,
+  collection,
+  contentId,
 }: {
   name: string;
   field: SchemaField;
@@ -354,6 +408,8 @@ function DynamicField({
   onChange: (value: unknown) => void;
   disabled: boolean;
   onImageUpload?: (file: File, fieldName: string) => Promise<string | null>;
+  collection?: string;
+  contentId?: string;
 }): React.ReactElement {
   const fieldId = `fm-${name}`;
   const label = formatFieldLabel(name);
@@ -420,6 +476,8 @@ function DynamicField({
           onUpload={
             onImageUpload ? (file) => onImageUpload(file, name) : undefined
           }
+          collection={collection}
+          contentId={contentId}
         />
       );
 
@@ -691,16 +749,7 @@ function ArrayField({
                 disabled={disabled}
                 className="wn-frontmatter-tag-remove"
               >
-                <svg
-                  width="10"
-                  height="10"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                >
-                  <path d="M18 6L6 18M6 6l12 12" />
-                </svg>
+                <X size={10} />
               </button>
             </span>
           ))}
@@ -729,18 +778,24 @@ function ImageField({
   disabled,
   required,
   onUpload,
+  collection,
+  contentId,
 }: BaseFieldProps & {
   value: string | undefined;
   onChange: (value: string | undefined) => void;
   onUpload?: (file: File) => Promise<string | null>;
+  collection?: string;
+  contentId?: string;
 }): React.ReactElement {
   const [uploading, setUploading] = useState(false);
+  const [previewError, setPreviewError] = useState(false);
 
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file || !onUpload) return;
 
     setUploading(true);
+    setPreviewError(false);
     try {
       const path = await onUpload(file);
       if (path) {
@@ -751,18 +806,48 @@ function ImageField({
     }
   };
 
+  const handleValueChange = (newValue: string) => {
+    setPreviewError(false);
+    onChange(newValue || undefined);
+  };
+
+  // Build preview URL from relative path
+  // URL format: /_writenex/api/images/:collection/:contentId/:imagePath
+  const getPreviewUrl = (): string | null => {
+    if (!value || !collection || !contentId) return null;
+
+    // Remove leading ./ from path if present
+    const imagePath = value.replace(/^\.\//, "");
+    return `/_writenex/api/images/${collection}/${contentId}/${imagePath}`;
+  };
+
+  const previewUrl = getPreviewUrl();
+  const showPreview = previewUrl && !previewError;
+
   return (
     <div className="wn-frontmatter-field">
       <label htmlFor={id} className="wn-frontmatter-label">
         {label}
         {required && <span className="wn-frontmatter-required">*</span>}
       </label>
+
+      {/* Image Preview */}
+      {showPreview && (
+        <div className="wn-frontmatter-image-preview">
+          <img
+            src={previewUrl}
+            alt={`Preview for ${label}`}
+            onError={() => setPreviewError(true)}
+          />
+        </div>
+      )}
+
       <div className="wn-frontmatter-image-field">
         <input
           id={id}
           type="text"
           value={value ?? ""}
-          onChange={(e) => onChange(e.target.value || undefined)}
+          onChange={(e) => handleValueChange(e.target.value)}
           disabled={disabled}
           placeholder="./images/hero.jpg"
           className="wn-frontmatter-input"

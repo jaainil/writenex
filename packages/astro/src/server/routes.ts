@@ -11,13 +11,16 @@
  * - POST /api/content/:collection - Create new content
  * - PUT /api/content/:collection/:id - Update content
  * - DELETE /api/content/:collection/:id - Delete content
+ * - GET /api/images/:collection/:contentId - Discover images for content
+ * - GET /api/images/:collection/:contentId/* - Serve image file
  * - POST /api/images - Upload image
  *
  * @module @writenex/astro/server/routes
  */
 
 import type { IncomingMessage, ServerResponse } from "node:http";
-import { join } from "node:path";
+import { createReadStream, existsSync, statSync } from "node:fs";
+import { join, extname } from "node:path";
 import type { MiddlewareContext } from "./middleware";
 import {
   sendJson,
@@ -41,6 +44,7 @@ import {
   uploadImage,
   parseMultipartFormData,
   isValidImageFile,
+  discoverContentImages,
 } from "../filesystem/images";
 
 /**
@@ -120,8 +124,27 @@ export function createApiRouter(
       }
     }
 
-    // Route: /images
+    // Route: /images/:collection/:contentId - Image discovery
+    // Route: /images/:collection/:contentId/* - Serve image file
     if (segments[0] === "images") {
+      params.collection = segments[1];
+      params.id = segments[2];
+
+      // Check if this is a file request (has more segments after contentId)
+      if (
+        method === "GET" &&
+        params.collection &&
+        params.id &&
+        segments.length > 3
+      ) {
+        // Serve image file: /images/:collection/:contentId/path/to/image.jpg
+        const imagePath = segments.slice(3).join("/");
+        return handleServeImage(req, res, params, imagePath, context);
+      }
+
+      if (method === "GET" && params.collection && params.id) {
+        return handleImageDiscovery(req, res, params, context);
+      }
       if (method === "POST") {
         return handleImageUpload(req, res, params, context);
       }
@@ -287,10 +310,13 @@ const handleGetContent: RouteHandler = async (_req, res, params, context) => {
 
 /**
  * POST /api/content/:collection - Create new content
+ *
+ * Automatically detects the file pattern from existing content in the collection
+ * and creates new content following the same pattern.
  */
 const handleCreateContent: RouteHandler = async (req, res, params, context) => {
   const { collection } = params;
-  const { projectRoot } = context;
+  const { projectRoot, config } = context;
 
   if (!collection) {
     return sendError(res, "Collection name required", 400);
@@ -318,11 +344,39 @@ const handleCreateContent: RouteHandler = async (req, res, params, context) => {
     }
 
     const collectionPath = join(projectRoot, "src/content", collection);
+    const cache = getCache();
+
+    // Get the file pattern for this collection
+    let filePattern: string | undefined;
+
+    // First, check if there's a configured pattern for this collection
+    const configuredCollection = config.collections.find(
+      (c) => c.name === collection
+    );
+    if (configuredCollection?.filePattern) {
+      filePattern = configuredCollection.filePattern;
+    } else {
+      // Otherwise, get the detected pattern from discovered collections
+      let collections = cache.getCollections();
+      if (!collections) {
+        const discovered = await discoverCollections(projectRoot);
+        collections = mergeCollections(discovered, config.collections);
+        cache.setCollections(collections);
+      }
+
+      const discoveredCollection = collections.find(
+        (c) => c.name === collection
+      );
+      if (discoveredCollection?.filePattern) {
+        filePattern = discoveredCollection.filePattern;
+      }
+    }
 
     const result = await createContent(collectionPath, {
       frontmatter,
       body: contentBody ?? "",
       slug,
+      filePattern,
     });
 
     if (!result.success) {
@@ -330,7 +384,6 @@ const handleCreateContent: RouteHandler = async (req, res, params, context) => {
     }
 
     // Invalidate cache for this collection (new content added)
-    const cache = getCache();
     cache.handleFileChange("add", collection);
 
     sendJson(res, {
@@ -513,5 +566,184 @@ const handleImageUpload: RouteHandler = async (req, res, _params, context) => {
   } catch (error) {
     const message = error instanceof Error ? error.message : "Unknown error";
     sendError(res, `Failed to upload image: ${message}`, 500);
+  }
+};
+
+/**
+ * GET /api/images/:collection/:contentId - Discover images for content
+ *
+ * Returns list of discovered images for a content item.
+ * Results are cached for performance.
+ *
+ * Response:
+ * {
+ *   success: boolean;
+ *   images: DiscoveredImage[];
+ *   contentPath: string;
+ * }
+ */
+const handleImageDiscovery: RouteHandler = async (
+  _req,
+  res,
+  params,
+  context
+) => {
+  const { collection, id: contentId } = params;
+  const { projectRoot } = context;
+
+  if (!collection || !contentId) {
+    return sendError(res, "Collection and content ID required", 400);
+  }
+
+  const cache = getCache();
+
+  try {
+    const collectionPath = join(projectRoot, "src/content", collection);
+
+    // Check if collection exists by discovering collections
+    let collections = cache.getCollections();
+    if (!collections) {
+      // Cache miss - discover collections
+      collections = await discoverCollections(projectRoot);
+      cache.setCollections(collections);
+    }
+
+    if (!collections.some((c) => c.name === collection)) {
+      return sendError(res, `Collection '${collection}' not found`, 404);
+    }
+
+    // Check if content exists
+    const contentFilePath = getContentFilePath(collectionPath, contentId);
+    if (!contentFilePath) {
+      return sendError(
+        res,
+        `Content '${contentId}' not found in '${collection}'`,
+        404
+      );
+    }
+
+    // Try to get from cache first
+    let images = cache.getImages(collection, contentId);
+
+    if (!images) {
+      // Cache miss - discover images
+      const result = await discoverContentImages(collectionPath, contentId);
+
+      if (!result.success) {
+        return sendError(res, result.error ?? "Failed to discover images", 500);
+      }
+
+      images = result.images;
+
+      // Store in cache
+      cache.setImages(collection, contentId, images);
+    }
+
+    sendJson(res, {
+      success: true,
+      images,
+      contentPath: contentFilePath,
+    });
+  } catch (error) {
+    const message = error instanceof Error ? error.message : "Unknown error";
+    sendError(res, `Failed to discover images: ${message}`, 500);
+  }
+};
+
+/**
+ * MIME types for image files
+ */
+const IMAGE_MIME_TYPES: Record<string, string> = {
+  ".jpg": "image/jpeg",
+  ".jpeg": "image/jpeg",
+  ".png": "image/png",
+  ".gif": "image/gif",
+  ".webp": "image/webp",
+  ".avif": "image/avif",
+  ".svg": "image/svg+xml",
+};
+
+/**
+ * GET /api/images/:collection/:contentId/* - Serve image file
+ *
+ * Serves an image file from the content folder.
+ * This allows the editor to display images with relative paths.
+ */
+const handleServeImage = async (
+  _req: IncomingMessage,
+  res: ServerResponse,
+  params: RouteParams,
+  imagePath: string,
+  context: MiddlewareContext
+): Promise<void> => {
+  const { collection, id: contentId } = params;
+  const { projectRoot } = context;
+
+  if (!collection || !contentId) {
+    return sendError(res, "Collection and content ID required", 400);
+  }
+
+  try {
+    const collectionPath = join(projectRoot, "src/content", collection);
+
+    // Check if content exists
+    const contentFilePath = getContentFilePath(collectionPath, contentId);
+    if (!contentFilePath) {
+      return sendError(
+        res,
+        `Content '${contentId}' not found in '${collection}'`,
+        404
+      );
+    }
+
+    // Build the full image path
+    // For folder-based content (index.md), images are in the same folder
+    // For flat files (slug.md), images are in a sibling folder with the same name
+    let fullImagePath: string;
+
+    if (
+      contentFilePath.endsWith("/index.md") ||
+      contentFilePath.endsWith("/index.mdx")
+    ) {
+      // Folder-based: content is at slug/index.md, images are at slug/imagePath
+      const contentFolder = contentFilePath.replace(/\/index\.mdx?$/, "");
+      fullImagePath = join(contentFolder, imagePath);
+    } else {
+      // Flat file: content is at slug.md, images are at slug/imagePath
+      fullImagePath = join(collectionPath, contentId, imagePath);
+    }
+
+    // Security check: ensure the path is within the content folder
+    const normalizedPath = join(fullImagePath);
+    if (!normalizedPath.startsWith(collectionPath)) {
+      return sendError(res, "Invalid image path", 400);
+    }
+
+    // Check if file exists
+    if (!existsSync(fullImagePath)) {
+      return sendError(res, "Image not found", 404);
+    }
+
+    // Get file stats
+    const stats = statSync(fullImagePath);
+    if (!stats.isFile()) {
+      return sendError(res, "Not a file", 400);
+    }
+
+    // Determine MIME type
+    const ext = extname(fullImagePath).toLowerCase();
+    const mimeType = IMAGE_MIME_TYPES[ext] ?? "application/octet-stream";
+
+    // Set headers
+    res.setHeader("Content-Type", mimeType);
+    res.setHeader("Content-Length", stats.size);
+    res.setHeader("Cache-Control", "public, max-age=3600");
+
+    // Stream the file
+    const stream = createReadStream(fullImagePath);
+    stream.pipe(res);
+  } catch (error) {
+    const message = error instanceof Error ? error.message : "Unknown error";
+    sendError(res, `Failed to serve image: ${message}`, 500);
   }
 };

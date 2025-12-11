@@ -7,13 +7,18 @@
  * ## Features:
  * - TTL-based cache expiration
  * - Per-collection content caching
+ * - Image discovery caching
  * - Manual cache invalidation
  * - Integration with file watcher for automatic invalidation
  *
  * @module @writenex/astro/server/cache
  */
 
-import type { DiscoveredCollection, ContentSummary } from "../types";
+import type {
+  DiscoveredCollection,
+  ContentSummary,
+  DiscoveredImage,
+} from "../types";
 
 /**
  * Cache entry with timestamp and data
@@ -40,6 +45,7 @@ const DEV_TTL_MS = 30 * 1000;
  * This cache stores:
  * - Collection discovery results (list of collections with metadata)
  * - Content summaries per collection (list of content items)
+ * - Discovered images per content item
  *
  * Cache invalidation happens:
  * - Automatically when TTL expires
@@ -52,6 +58,9 @@ export class ServerCache {
 
   /** Cache for content summaries, keyed by collection name */
   private contentCache: Map<string, CacheEntry<ContentSummary[]>> = new Map();
+
+  /** Cache for discovered images, keyed by "collection:contentId" */
+  private imagesCache: Map<string, CacheEntry<DiscoveredImage[]>> = new Map();
 
   /** Time-to-live for cache entries in milliseconds */
   private ttl: number;
@@ -162,6 +171,86 @@ export class ServerCache {
     this.contentCache.clear();
   }
 
+  // ==================== Images Cache ====================
+
+  /**
+   * Generate cache key for image cache
+   *
+   * @param collection - Collection name
+   * @param contentId - Content ID
+   * @returns Cache key string
+   */
+  private getImagesCacheKey(collection: string, contentId: string): string {
+    return `${collection}:${contentId}`;
+  }
+
+  /**
+   * Get cached images for a content item if valid
+   *
+   * @param collection - Collection name
+   * @param contentId - Content ID
+   * @returns Cached images or null if expired/not cached
+   */
+  getImages(collection: string, contentId: string): DiscoveredImage[] | null {
+    const key = this.getImagesCacheKey(collection, contentId);
+    const entry = this.imagesCache.get(key);
+    if (this.isValid(entry)) {
+      return entry!.data;
+    }
+    return null;
+  }
+
+  /**
+   * Set images cache for a content item
+   *
+   * @param collection - Collection name
+   * @param contentId - Content ID
+   * @param images - Discovered images to cache
+   */
+  setImages(
+    collection: string,
+    contentId: string,
+    images: DiscoveredImage[]
+  ): void {
+    const key = this.getImagesCacheKey(collection, contentId);
+    this.imagesCache.set(key, {
+      data: images,
+      timestamp: Date.now(),
+    });
+  }
+
+  /**
+   * Invalidate image cache for a specific content item
+   *
+   * @param collection - Collection name
+   * @param contentId - Content ID
+   */
+  invalidateImages(collection: string, contentId: string): void {
+    const key = this.getImagesCacheKey(collection, contentId);
+    this.imagesCache.delete(key);
+  }
+
+  /**
+   * Invalidate all image caches for a collection
+   *
+   * @param collection - Collection name
+   */
+  invalidateCollectionImages(collection: string): void {
+    const prefix = `${collection}:`;
+    for (const key of this.imagesCache.keys()) {
+      if (key.startsWith(prefix)) {
+        this.imagesCache.delete(key);
+      }
+    }
+  }
+
+  /**
+   * Invalidate all image caches
+   */
+  invalidateAllImages(): void {
+    this.imagesCache.clear();
+  }
+
   // ==================== Bulk Invalidation ====================
 
   /**
@@ -172,6 +261,7 @@ export class ServerCache {
   invalidateAll(): void {
     this.collectionsCache = null;
     this.contentCache.clear();
+    this.imagesCache.clear();
   }
 
   /**
@@ -181,13 +271,22 @@ export class ServerCache {
    *
    * @param type - Type of file change (add, change, unlink)
    * @param collection - Collection that was affected
+   * @param contentId - Optional content ID for targeted image cache invalidation
    */
   handleFileChange(
     type: "add" | "change" | "unlink",
-    collection: string
+    collection: string,
+    contentId?: string
   ): void {
     // Always invalidate the affected collection's content cache
     this.invalidateContent(collection);
+
+    // Invalidate image cache for the specific content item or entire collection
+    if (contentId) {
+      this.invalidateImages(collection, contentId);
+    } else {
+      this.invalidateCollectionImages(collection);
+    }
 
     // For add/unlink, also invalidate collections cache (count changed)
     if (type === "add" || type === "unlink") {
@@ -205,6 +304,7 @@ export class ServerCache {
   getStats(): {
     collectionsValid: boolean;
     contentCollections: string[];
+    cachedImages: string[];
     ttl: number;
     hasWatcher: boolean;
   } {
@@ -212,6 +312,9 @@ export class ServerCache {
       collectionsValid: this.isValid(this.collectionsCache),
       contentCollections: Array.from(this.contentCache.keys()).filter((key) =>
         this.isValid(this.contentCache.get(key))
+      ),
+      cachedImages: Array.from(this.imagesCache.keys()).filter((key) =>
+        this.isValid(this.imagesCache.get(key))
       ),
       ttl: this.ttl,
       hasWatcher: this.hasWatcher,

@@ -25,6 +25,16 @@ interface LazyEditorProps {
   placeholder?: string;
   /** Handler for image uploads. Returns the image URL/path on success. */
   onImageUpload?: (file: File) => Promise<string | null>;
+  /** Base path for API requests */
+  basePath?: string;
+  /** Current collection name (for image URL resolution) */
+  collection?: string;
+  /** Current content ID (for image URL resolution) */
+  contentId?: string;
+  /** Search query for highlighting */
+  searchQuery?: string;
+  /** Current search match index (1-based) */
+  searchActiveIndex?: number;
 }
 
 /**

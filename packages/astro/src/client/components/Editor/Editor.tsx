@@ -9,6 +9,7 @@
  */
 
 import { useCallback, useEffect, useRef, useState } from "react";
+import { FileText } from "lucide-react";
 import {
   MDXEditor,
   headingsPlugin,
@@ -25,6 +26,11 @@ import {
   toolbarPlugin,
   diffSourcePlugin,
   frontmatterPlugin,
+  searchPlugin,
+  editorSearchTerm$,
+  editorSearchCursor$,
+  usePublisher,
+  addComposerChild$,
   BoldItalicUnderlineToggles,
   BlockTypeSelect,
   CreateLink,
@@ -55,6 +61,86 @@ interface EditorProps {
   placeholder?: string;
   /** Handler for image uploads. Returns the image URL/path on success. */
   onImageUpload?: (file: File) => Promise<string | null>;
+  /** Base path for API requests */
+  basePath?: string;
+  /** Current collection name (for image URL resolution) */
+  collection?: string;
+  /** Current content ID (for image URL resolution) */
+  contentId?: string;
+  /** Search query for highlighting */
+  searchQuery?: string;
+  /** Current search match index (1-based) */
+  searchActiveIndex?: number;
+}
+
+/**
+ * Module-level refs for sharing search state with SearchBridge inside MDXEditor.
+ * This is necessary because SearchBridge is mounted via addComposerChild$ which
+ * places it inside MDXEditor's internal tree, outside of React Context providers.
+ */
+const searchStateRef = {
+  query: "",
+  activeIndex: 0,
+  listeners: new Set<() => void>(),
+};
+
+function setSearchState(query: string, activeIndex: number) {
+  searchStateRef.query = query;
+  searchStateRef.activeIndex = activeIndex;
+  // Notify all listeners
+  searchStateRef.listeners.forEach((listener) => listener());
+}
+
+function useSearchState() {
+  const [, forceUpdate] = useState({});
+
+  useEffect(() => {
+    const listener = () => forceUpdate({});
+    searchStateRef.listeners.add(listener);
+    return () => {
+      searchStateRef.listeners.delete(listener);
+    };
+  }, []);
+
+  return {
+    searchQuery: searchStateRef.query,
+    searchActiveIndex: searchStateRef.activeIndex,
+  };
+}
+
+/**
+ * SearchBridge component that syncs search state with MDXEditor's searchPlugin.
+ * Uses module-level state because it's mounted inside MDXEditor via addComposerChild$,
+ * which is outside of React Context providers.
+ */
+function SearchBridge(): null {
+  const { searchQuery, searchActiveIndex } = useSearchState();
+  const updateSearch = usePublisher(editorSearchTerm$);
+  const updateCursor = usePublisher(editorSearchCursor$);
+
+  useEffect(() => {
+    updateSearch(searchQuery);
+  }, [searchQuery, updateSearch]);
+
+  useEffect(() => {
+    if (searchActiveIndex > 0) {
+      updateCursor(searchActiveIndex);
+    }
+  }, [searchActiveIndex, updateCursor]);
+
+  return null;
+}
+
+/**
+ * MDXEditor plugin that adds the SearchBridge component to the editor
+ */
+function createSearchBridgePlugin() {
+  return {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    init: (realm: any) => {
+      realm.pub(addComposerChild$, SearchBridge);
+    },
+  };
 }
 
 /**
@@ -135,6 +221,11 @@ export function Editor({
   readOnly = false,
   placeholder = "Start writing...",
   onImageUpload,
+  basePath = "/_writenex",
+  collection,
+  contentId,
+  searchQuery = "",
+  searchActiveIndex = 0,
 }: EditorProps): React.ReactElement {
   const editorRef = useRef<MDXEditorMethods>(null);
   const [isReady, setIsReady] = useState(false);
@@ -157,6 +248,11 @@ export function Editor({
     },
     [onChange]
   );
+
+  // Update module-level search state when props change
+  useEffect(() => {
+    setSearchState(searchQuery, searchActiveIndex);
+  }, [searchQuery, searchActiveIndex]);
 
   return (
     <div className="wn-editor">
@@ -203,6 +299,38 @@ export function Editor({
                     reader.readAsDataURL(file);
                   });
                 },
+                imagePreviewHandler: (src: string) => {
+                  // If it's already an absolute URL or data URL, return as-is
+                  if (
+                    src.startsWith("http://") ||
+                    src.startsWith("https://") ||
+                    src.startsWith("data:")
+                  ) {
+                    return Promise.resolve(src);
+                  }
+
+                  // Convert relative path to API URL for preview
+                  if (collection && contentId && src.startsWith("./")) {
+                    // Remove ./ prefix
+                    const imagePath = src.slice(2);
+
+                    // Check if imagePath already starts with contentId (flat file structure)
+                    // e.g., "./post-example/image.webp" -> "post-example/image.webp"
+                    // In this case, don't add contentId again to avoid double slug
+                    if (imagePath.startsWith(`${contentId}/`)) {
+                      const apiUrl = `${basePath}/api/images/${collection}/${imagePath}`;
+                      return Promise.resolve(apiUrl);
+                    }
+
+                    // For folder-based structure, imagePath is just the filename
+                    // e.g., "./image.webp" -> "image.webp"
+                    const apiUrl = `${basePath}/api/images/${collection}/${contentId}/${imagePath}`;
+                    return Promise.resolve(apiUrl);
+                  }
+
+                  // Fallback: return original src
+                  return Promise.resolve(src);
+                },
               }),
 
               // Tables
@@ -244,6 +372,10 @@ export function Editor({
               toolbarPlugin({
                 toolbarContents: () => <EditorToolbarContents />,
               }),
+
+              // Search plugin for highlighting matches (must be after toolbar)
+              searchPlugin(),
+              createSearchBridgePlugin(),
             ]}
           />
         </div>
@@ -271,17 +403,7 @@ export function EditorEmpty(): React.ReactElement {
   return (
     <div className="wn-editor-empty">
       <div className="wn-editor-empty-icon">
-        <svg
-          width="48"
-          height="48"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="1.5"
-        >
-          <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z" />
-          <polyline points="14 2 14 8 20 8" />
-        </svg>
+        <FileText size={48} strokeWidth={1.5} />
       </div>
       <h2 className="wn-editor-empty-title">Select content to edit</h2>
       <p className="wn-editor-empty-text">

@@ -42,6 +42,10 @@
   animation: wn-shortcuts-zoomIn 150ms ease-out;
 }
 
+.wn-shortcuts-modal--large {
+  max-width: 32rem;
+}
+
 @keyframes wn-shortcuts-zoomIn {
   from {
     opacity: 0;
@@ -99,9 +103,26 @@
    ============================================================================ */
 
 .wn-shortcuts-list {
-  max-height: 50vh;
+  max-height: 60vh;
   overflow-y: auto;
   padding: 0.5rem;
+}
+
+.wn-shortcuts-section {
+  margin-bottom: 1rem;
+}
+
+.wn-shortcuts-section:last-child {
+  margin-bottom: 0;
+}
+
+.wn-shortcuts-category {
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #71717a;
+  margin: 0 0 0.5rem 0.75rem;
 }
 
 .wn-shortcuts-item {
@@ -115,6 +136,14 @@
 
 .wn-shortcuts-item:hover {
   background-color: #27272a;
+}
+
+.wn-shortcuts-item--disabled {
+  opacity: 0.4;
+}
+
+.wn-shortcuts-item--disabled:hover {
+  background-color: transparent;
 }
 
 .wn-shortcuts-label {
@@ -149,4 +178,62 @@
   border-radius: 0.25rem;
   background-color: #27272a;
   color: #a1a1aa;
+}
+
+/* ============================================================================
+   LIGHT MODE OVERRIDES
+   ============================================================================ */
+
+.wn-light .wn-shortcuts-overlay {
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.wn-light .wn-shortcuts-modal {
+  border-color: #e4e4e7;
+  background-color: #fff;
+}
+
+.wn-light .wn-shortcuts-header {
+  border-bottom-color: #e4e4e7;
+}
+
+.wn-light .wn-shortcuts-title {
+  color: #18181b;
+}
+
+.wn-light .wn-shortcuts-close {
+  color: #71717a;
+}
+
+.wn-light .wn-shortcuts-close:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+  color: #18181b;
+}
+
+.wn-light .wn-shortcuts-category {
+  color: #a1a1aa;
+}
+
+.wn-light .wn-shortcuts-item:hover {
+  background-color: #f4f4f5;
+}
+
+.wn-light .wn-shortcuts-label {
+  color: #52525b;
+}
+
+.wn-light .wn-shortcuts-key {
+  border-color: #e4e4e7;
+  background-color: #fafafa;
+  color: #18181b;
+}
+
+.wn-light .wn-shortcuts-footer {
+  border-top-color: #e4e4e7;
+  color: #a1a1aa;
+}
+
+.wn-light .wn-shortcuts-footer kbd {
+  background-color: #f4f4f5;
+  color: #52525b;
 }

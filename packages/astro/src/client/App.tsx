@@ -15,6 +15,8 @@ import {
   EditorLoading,
 } from "./components/LazyEditor";
 import { ConfigPanel } from "./components/ConfigPanel/ConfigPanel";
+import { CreateContentModal } from "./components/CreateContentModal";
+import { UnsavedChangesModal } from "./components/UnsavedChangesModal";
 import { Header } from "./components/Header";
 import { FrontmatterForm } from "./components/FrontmatterForm";
 import { Save, FileEdit, CheckCircle, Image, FolderOpen } from "lucide-react";
@@ -33,6 +35,8 @@ import {
 } from "./hooks/useAutosave";
 import { useKeyboardShortcuts } from "./hooks/useKeyboardShortcuts";
 import { ShortcutsHelpModal } from "./components/KeyboardShortcuts";
+import { SearchReplacePanel } from "./components/SearchReplace";
+import { useSearch } from "./hooks/useSearch";
 
 interface AppProps {
   basePath: string;
@@ -152,11 +156,37 @@ export function App({ apiBase }: AppProps): React.ReactElement {
   const [saving, setSaving] = useState(false);
   const [autosaveEnabled, setAutosaveEnabled] = useState(true);
   const [showConfigPanel, setShowConfigPanel] = useState(false);
+  const [showCreateModal, setShowCreateModal] = useState(false);
+  const [isCreatingContent, setIsCreatingContent] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [isFrontmatterOpen, setIsFrontmatterOpen] = useState(true);
 
+  // Unsaved changes modal state
+  const [showUnsavedModal, setShowUnsavedModal] = useState(false);
+  const [pendingContentId, setPendingContentId] = useState<string | null>(null);
+  const [isSavingBeforeSwitch, setIsSavingBeforeSwitch] = useState(false);
+
   const contentRef = useRef<ContentItem | null>(null);
   contentRef.current = currentContent;
+
+  // Search functionality
+  const getContent = useCallback(
+    () => currentContent?.body ?? "",
+    [currentContent?.body]
+  );
+  const {
+    isSearchOpen,
+    toggleSearch,
+    closeSearch,
+    searchQuery,
+    searchActiveIndex,
+    totalMatches,
+    handleFind,
+    handleNextMatch,
+    handlePreviousMatch,
+    handleReplace,
+    handleReplaceAll,
+  } = useSearch(getContent);
 
   const currentCollection = collections.find(
     (c) => c.name === selectedCollection
@@ -199,15 +229,28 @@ export function App({ apiBase }: AppProps): React.ReactElement {
   const handleSelectContent = useCallback(
     (id: string) => {
       if (hasUnsavedChanges) {
-        const confirm = window.confirm(
-          "You have unsaved changes. Discard and continue?"
-        );
-        if (!confirm) return;
+        setPendingContentId(id);
+        setShowUnsavedModal(true);
+        return;
       }
       setSelectedContentId(id);
     },
     [hasUnsavedChanges]
   );
+
+  const handleUnsavedModalClose = useCallback(() => {
+    setShowUnsavedModal(false);
+    setPendingContentId(null);
+  }, []);
+
+  const handleUnsavedDiscard = useCallback(() => {
+    setShowUnsavedModal(false);
+    setHasUnsavedChanges(false);
+    if (pendingContentId) {
+      setSelectedContentId(pendingContentId);
+      setPendingContentId(null);
+    }
+  }, [pendingContentId]);
 
   const [contentChanged, setContentChanged] = useState(false);
 
@@ -313,34 +356,57 @@ export function App({ apiBase }: AppProps): React.ReactElement {
     await saveNowAutosave();
   }, [hasUnsavedChanges, saveNowAutosave]);
 
-  const handleCreateContent = useCallback(async () => {
-    if (!selectedCollection) return;
-
-    const title = window.prompt("Enter title for new content:");
-    if (!title) return;
-
+  const handleUnsavedSaveAndContinue = useCallback(async () => {
+    setIsSavingBeforeSwitch(true);
     try {
-      const result = await api.createContent(selectedCollection, {
-        frontmatter: {
-          title,
-          pubDate: new Date().toISOString().split("T")[0],
-          draft: true,
-        },
-        body: `# ${title}\n\nStart writing here...`,
-      });
-
-      if (result.success && result.id) {
-        await refreshContent();
-        setSelectedContentId(result.id);
-      } else {
-        alert(`Failed to create: ${result.error}`);
+      await saveNowAutosave();
+      setShowUnsavedModal(false);
+      if (pendingContentId) {
+        setSelectedContentId(pendingContentId);
+        setPendingContentId(null);
       }
-    } catch (err) {
-      alert(
-        `Failed to create: ${err instanceof Error ? err.message : "Unknown error"}`
-      );
+    } finally {
+      setIsSavingBeforeSwitch(false);
     }
-  }, [api, selectedCollection, refreshContent]);
+  }, [pendingContentId, saveNowAutosave]);
+
+  const handleOpenCreateModal = useCallback(() => {
+    if (!selectedCollection) return;
+    setShowCreateModal(true);
+  }, [selectedCollection]);
+
+  const handleCreateContent = useCallback(
+    async (title: string) => {
+      if (!selectedCollection) return;
+
+      setIsCreatingContent(true);
+      try {
+        const result = await api.createContent(selectedCollection, {
+          frontmatter: {
+            title,
+            pubDate: new Date().toISOString().split("T")[0],
+            draft: true,
+          },
+          body: "",
+        });
+
+        if (result.success && result.id) {
+          setShowCreateModal(false);
+          await refreshContent();
+          setSelectedContentId(result.id);
+        } else {
+          alert(`Failed to create: ${result.error}`);
+        }
+      } catch (err) {
+        alert(
+          `Failed to create: ${err instanceof Error ? err.message : "Unknown error"}`
+        );
+      } finally {
+        setIsCreatingContent(false);
+      }
+    },
+    [api, selectedCollection, refreshContent]
+  );
 
   const handlePreview = useCallback(() => {
     if (!currentCollection?.previewUrl || !selectedContentId || !currentContent)
@@ -384,8 +450,8 @@ export function App({ apiBase }: AppProps): React.ReactElement {
         key: "new",
         label: "New content",
         keys: "n",
-        ctrl: true,
-        handler: handleCreateContent,
+        alt: true,
+        handler: handleOpenCreateModal,
         enabled: !!selectedCollection,
       },
       {
@@ -406,6 +472,14 @@ export function App({ apiBase }: AppProps): React.ReactElement {
         enabled: !!selectedCollection,
       },
       {
+        key: "search",
+        label: "Search & Replace",
+        keys: "f",
+        ctrl: true,
+        handler: toggleSearch,
+        enabled: !!currentContent,
+      },
+      {
         key: "escape",
         label: "Close modal",
         keys: "Escape",
@@ -414,11 +488,55 @@ export function App({ apiBase }: AppProps): React.ReactElement {
     ],
   });
 
+  // Search replace handlers that update content
+  const onSearchReplace = useCallback(
+    (replacement: string) => {
+      if (!currentContent) return;
+      handleReplace(replacement, currentContent.body, (newBody) => {
+        setHasUnsavedChanges(true);
+        setContentChanged(true);
+        setCurrentContent((prev) => (prev ? { ...prev, body: newBody } : null));
+      });
+    },
+    [currentContent, handleReplace]
+  );
+
+  const onSearchReplaceAll = useCallback(
+    (replacement: string): number => {
+      if (!currentContent) return 0;
+      let count = 0;
+      handleReplaceAll(replacement, currentContent.body, (newBody) => {
+        setHasUnsavedChanges(true);
+        setContentChanged(true);
+        setCurrentContent((prev) => (prev ? { ...prev, body: newBody } : null));
+        count = totalMatches;
+      });
+      return count;
+    },
+    [currentContent, handleReplaceAll, totalMatches]
+  );
+
   return (
     <div className="wn-app">
       {showHelp && (
         <ShortcutsHelpModal shortcuts={shortcuts} onClose={closeHelp} />
       )}
+
+      <CreateContentModal
+        isOpen={showCreateModal}
+        onClose={() => setShowCreateModal(false)}
+        onCreate={handleCreateContent}
+        collectionName={selectedCollection ?? ""}
+        isCreating={isCreatingContent}
+      />
+
+      <UnsavedChangesModal
+        isOpen={showUnsavedModal}
+        onClose={handleUnsavedModalClose}
+        onDiscard={handleUnsavedDiscard}
+        onSave={handleUnsavedSaveAndContinue}
+        isSaving={isSavingBeforeSwitch}
+      />
 
       <ConfigPanel
         config={config}
@@ -433,6 +551,8 @@ export function App({ apiBase }: AppProps): React.ReactElement {
         onToggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)}
         isFrontmatterOpen={isFrontmatterOpen}
         onToggleFrontmatter={() => setIsFrontmatterOpen(!isFrontmatterOpen)}
+        isSearchOpen={isSearchOpen}
+        onToggleSearch={toggleSearch}
         onKeyboardShortcuts={toggleHelp}
         onSettings={() => setShowConfigPanel(true)}
       />
@@ -540,13 +660,27 @@ export function App({ apiBase }: AppProps): React.ReactElement {
           contentLoading={contentLoading}
           selectedContent={selectedContentId}
           onSelectContent={handleSelectContent}
-          onCreateContent={handleCreateContent}
+          onCreateContent={handleOpenCreateModal}
           onRefreshCollections={refreshCollections}
           onRefreshContent={refreshContent}
         />
 
         {/* Center: Editor */}
-        <main className="wn-main-content">
+        <main className="wn-main-content" style={{ position: "relative" }}>
+          {/* Search Panel - rendered outside editor wrapper for proper positioning */}
+          {currentContent && (
+            <SearchReplacePanel
+              isOpen={isSearchOpen}
+              onClose={closeSearch}
+              onSearch={handleFind}
+              onNextMatch={handleNextMatch}
+              onPreviousMatch={handlePreviousMatch}
+              onReplace={onSearchReplace}
+              onReplaceAll={onSearchReplaceAll}
+              currentMatch={searchActiveIndex}
+              totalMatches={totalMatches}
+            />
+          )}
           {contentLoadingState ? (
             <EditorLoading />
           ) : currentContent ? (
@@ -555,6 +689,11 @@ export function App({ apiBase }: AppProps): React.ReactElement {
                 initialContent={currentContent.body}
                 onChange={handleContentChange}
                 onImageUpload={(file) => handleImageUpload(file, "body")}
+                basePath={api.basePath}
+                collection={selectedCollection ?? undefined}
+                contentId={selectedContentId ?? undefined}
+                searchQuery={searchQuery}
+                searchActiveIndex={searchActiveIndex}
               />
             </div>
           ) : (
@@ -570,6 +709,8 @@ export function App({ apiBase }: AppProps): React.ReactElement {
           schema={currentSchema}
           onChange={handleFrontmatterChange}
           onImageUpload={handleImageUpload}
+          collection={selectedCollection ?? undefined}
+          contentId={selectedContentId ?? undefined}
         />
       </div>
     </div>

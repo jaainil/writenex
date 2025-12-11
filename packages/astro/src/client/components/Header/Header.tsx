@@ -7,7 +7,18 @@
  * @module @writenex/astro/client/components/Header
  */
 
-import { Keyboard, Settings, PanelLeft, PanelRight } from "lucide-react";
+import { useState, useRef, useEffect } from "react";
+import {
+  Keyboard,
+  Settings,
+  Folder,
+  Info,
+  Search,
+  Sun,
+  Moon,
+  Monitor,
+} from "lucide-react";
+import { useTheme, type Theme } from "../../context/ThemeContext";
 import "./Header.css";
 
 /**
@@ -16,8 +27,8 @@ import "./Header.css";
 function LogoIcon(): React.ReactElement {
   return (
     <svg
-      width="40"
-      height="40"
+      width="56"
+      height="56"
       viewBox="0 0 24 24"
       fill="#335DFF"
       xmlns="http://www.w3.org/2000/svg"
@@ -40,6 +51,10 @@ interface HeaderProps {
   isFrontmatterOpen?: boolean;
   /** Callback to toggle frontmatter panel */
   onToggleFrontmatter?: () => void;
+  /** Whether the search panel is open */
+  isSearchOpen?: boolean;
+  /** Callback to toggle search panel */
+  onToggleSearch?: () => void;
   /** Callback when keyboard shortcuts button is clicked */
   onKeyboardShortcuts?: () => void;
   /** Callback when settings button is clicked */
@@ -92,10 +107,93 @@ function ToolbarButton({
 }
 
 /**
- * Placeholder icons for toolbar - will be replaced with actual icons later
+ * Theme option configuration
  */
-function PlaceholderIcon({ char }: { char: string }): React.ReactElement {
-  return <span className="wn-placeholder-icon">{char}</span>;
+const THEME_OPTIONS: { value: Theme; label: string; icon: typeof Sun }[] = [
+  { value: "light", label: "Light", icon: Sun },
+  { value: "dark", label: "Dark", icon: Moon },
+  { value: "system", label: "System", icon: Monitor },
+];
+
+/**
+ * Theme switcher dropdown component
+ */
+function ThemeSwitcher(): React.ReactElement {
+  const { theme, resolvedTheme, setTheme } = useTheme();
+  const [isOpen, setIsOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target as Node)
+      ) {
+        setIsOpen(false);
+      }
+    };
+
+    if (isOpen) {
+      document.addEventListener("mousedown", handleClickOutside);
+      return () =>
+        document.removeEventListener("mousedown", handleClickOutside);
+    }
+  }, [isOpen]);
+
+  // Close on escape key
+  useEffect(() => {
+    const handleEscape = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setIsOpen(false);
+    };
+
+    if (isOpen) {
+      document.addEventListener("keydown", handleEscape);
+      return () => document.removeEventListener("keydown", handleEscape);
+    }
+  }, [isOpen]);
+
+  const ThemeIcon = resolvedTheme === "dark" ? Moon : Sun;
+
+  return (
+    <div className="wn-theme-switcher" ref={dropdownRef}>
+      <button
+        type="button"
+        className={`wn-toolbar-btn ${isOpen ? "wn-toolbar-btn--active" : ""}`}
+        onClick={() => setIsOpen(!isOpen)}
+        aria-label="Switch theme"
+        aria-expanded={isOpen}
+        aria-haspopup="listbox"
+      >
+        <ThemeIcon size={14} />
+      </button>
+
+      {isOpen && (
+        <div className="wn-theme-dropdown" role="listbox" aria-label="Theme">
+          {THEME_OPTIONS.map((option) => {
+            const Icon = option.icon;
+            const isSelected = theme === option.value;
+            return (
+              <button
+                key={option.value}
+                type="button"
+                role="option"
+                aria-selected={isSelected}
+                className={`wn-theme-option ${isSelected ? "wn-theme-option--selected" : ""}`}
+                onClick={() => {
+                  setTheme(option.value);
+                  setIsOpen(false);
+                }}
+              >
+                <Icon size={14} />
+                <span>{option.label}</span>
+              </button>
+            );
+          })}
+        </div>
+      )}
+    </div>
+  );
 }
 
 /**
@@ -108,6 +206,8 @@ export function Header({
   onToggleSidebar,
   isFrontmatterOpen = true,
   onToggleFrontmatter,
+  isSearchOpen = false,
+  onToggleSearch,
   onKeyboardShortcuts,
   onSettings,
 }: HeaderProps): React.ReactElement {
@@ -118,74 +218,46 @@ export function Header({
         <div className="wn-header-brand">
           <LogoIcon />
           <div className="wn-header-title">
-            <span className="wn-header-logo-text">Writenex</span>
-            <span className="wn-header-badge">Astro</span>
+            <div className="wn-header-title-row">
+              <span className="wn-header-logo-text">Writenex</span>
+              <span className="wn-header-badge">Astro</span>
+            </div>
+            <span className="wn-header-tagline">
+              Edit your Astro content visually.
+            </span>
           </div>
         </div>
       </div>
 
       {/* Right side: Toolbar */}
       <div className="wn-toolbar">
-        {/* Group 1: Panel toggles */}
+        {/* Group 1: Panels & Actions */}
         <ToolbarButton
-          icon={<PanelLeft size={14} />}
-          label="Toggle Sidebar"
+          icon={<Folder size={14} />}
+          label="Toggle Explorer"
           onClick={onToggleSidebar}
           active={isSidebarOpen}
         />
         <ToolbarButton
-          icon={<PanelRight size={14} />}
-          label="Toggle Frontmatter Panel"
+          icon={<Info size={14} />}
+          label="Toggle Frontmatter"
           onClick={onToggleFrontmatter}
           active={isFrontmatterOpen}
         />
-
-        <ToolbarSeparator />
-
-        {/* Group 2: File operations (placeholder) */}
         <ToolbarButton
-          icon={<PlaceholderIcon char="N" />}
-          label="New Content (placeholder)"
-        />
-        <ToolbarButton
-          icon={<PlaceholderIcon char="S" />}
-          label="Save (placeholder)"
+          icon={<Search size={14} />}
+          label="Search & Replace (Ctrl+F)"
+          onClick={onToggleSearch}
+          active={isSearchOpen}
         />
 
         <ToolbarSeparator />
 
-        {/* Group 3: View options (placeholder) */}
-        <ToolbarButton
-          icon={<PlaceholderIcon char="E" />}
-          label="Edit Mode (placeholder)"
-        />
-        <ToolbarButton
-          icon={<PlaceholderIcon char="P" />}
-          label="Preview Mode (placeholder)"
-        />
-        <ToolbarButton
-          icon={<PlaceholderIcon char="2" />}
-          label="Split View (placeholder)"
-        />
-
-        <ToolbarSeparator />
-
-        {/* Group 4: Search and navigation (placeholder) */}
-        <ToolbarButton
-          icon={<PlaceholderIcon char="F" />}
-          label="Find (placeholder)"
-        />
-        <ToolbarButton
-          icon={<PlaceholderIcon char="R" />}
-          label="Replace (placeholder)"
-        />
-
-        <ToolbarSeparator />
-
-        {/* Group 5: Help and settings */}
+        {/* Group 2: Preferences */}
+        <ThemeSwitcher />
         <ToolbarButton
           icon={<Keyboard size={14} />}
-          label="Keyboard Shortcuts"
+          label="Keyboard Shortcuts (Ctrl+/)"
           onClick={onKeyboardShortcuts}
         />
         <ToolbarButton

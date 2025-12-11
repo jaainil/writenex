@@ -2,10 +2,10 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 8px 16px;
+  padding: 12px 16px;
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
   background-color: #18181b;
-  min-height: 56px;
+  min-height: 72px;
 }
 
 .wn-header-left {
@@ -22,17 +22,25 @@
 
 .wn-header-title {
   display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.wn-header-title-row {
+  display: flex;
   align-items: center;
   gap: 8px;
 }
 
+.wn-header-tagline {
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.5);
+}
+
 .wn-header-logo-text {
   font-size: 18px;
-  font-weight: 600;
-  background: linear-gradient(to right, #3b82f6, #8b5cf6);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  font-weight: 700;
+  color: #f4f4f5;
 }
 
 .wn-header-badge {
@@ -101,4 +109,115 @@
   font-size: 14px;
   font-weight: 600;
   font-family: monospace;
+}
+
+/* ============================================================================
+   THEME SWITCHER
+   ============================================================================ */
+
+.wn-theme-switcher {
+  position: relative;
+}
+
+.wn-theme-dropdown {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  min-width: 120px;
+  padding: 4px;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background-color: #27272a;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  z-index: 100;
+}
+
+.wn-theme-option {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 8px 12px;
+  border: none;
+  border-radius: 6px;
+  background: transparent;
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.wn-theme-option:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+}
+
+.wn-theme-option--selected {
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+}
+
+/* ============================================================================
+   LIGHT MODE OVERRIDES
+   ============================================================================ */
+
+.wn-light .wn-header {
+  border-bottom-color: rgba(0, 0, 0, 0.1);
+  background-color: #fff;
+}
+
+.wn-light .wn-header-tagline {
+  color: rgba(0, 0, 0, 0.5);
+}
+
+.wn-light .wn-header-logo-text {
+  color: #18181b;
+}
+
+.wn-light .wn-header-badge {
+  background-color: rgba(0, 0, 0, 0.05);
+  color: rgba(0, 0, 0, 0.5);
+}
+
+.wn-light .wn-toolbar {
+  border-color: rgba(0, 0, 0, 0.1);
+  background-color: rgba(0, 0, 0, 0.02);
+}
+
+.wn-light .wn-toolbar-separator {
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
+.wn-light .wn-toolbar-btn {
+  color: rgba(0, 0, 0, 0.6);
+}
+
+.wn-light .wn-toolbar-btn:hover {
+  background: rgba(0, 0, 0, 0.1);
+  color: #18181b;
+}
+
+.wn-light .wn-toolbar-btn--active {
+  background: rgba(0, 0, 0, 0.1);
+  color: #18181b;
+}
+
+.wn-light .wn-theme-dropdown {
+  border-color: rgba(0, 0, 0, 0.1);
+  background-color: #fff;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.wn-light .wn-theme-option {
+  color: rgba(0, 0, 0, 0.7);
+}
+
+.wn-light .wn-theme-option:hover {
+  background: rgba(0, 0, 0, 0.05);
+  color: #18181b;
+}
+
+.wn-light .wn-theme-option--selected {
+  background: rgba(0, 0, 0, 0.05);
+  color: #18181b;
 }

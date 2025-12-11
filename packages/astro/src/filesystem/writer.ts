@@ -9,15 +9,21 @@
  * - Update existing content files
  * - Delete content files
  * - Generate unique slugs to avoid collisions
+ * - Support for different file patterns (flat, folder-based, date-prefixed)
  *
  * @module @writenex/astro/filesystem/writer
  */
 
 import { writeFile, unlink, mkdir } from "node:fs/promises";
 import { existsSync } from "node:fs";
-import { join } from "node:path";
+import { join, dirname } from "node:path";
 import slugify from "slugify";
 import { readContentFile } from "./reader";
+import {
+  generatePathFromPattern,
+  resolvePatternTokens,
+  isValidPattern,
+} from "../discovery/patterns";
 
 /**
  * Options for creating content
@@ -29,6 +35,10 @@ export interface CreateContentOptions {
   body: string;
   /** Custom slug (optional, generated from title if not provided) */
   slug?: string;
+  /** File pattern for the collection (e.g., "{slug}/index.md", "{date}-{slug}.md") */
+  filePattern?: string;
+  /** Custom token values to override automatic resolution */
+  customTokens?: Record<string, string>;
 }
 
 /**
@@ -70,22 +80,47 @@ export function generateSlug(text: string): string {
 }
 
 /**
+ * Check if a content file already exists for a given slug and pattern
+ *
+ * @param slug - The slug to check
+ * @param collectionPath - Path to the collection directory
+ * @param filePattern - File pattern (e.g., "{slug}.md", "{slug}/index.md")
+ * @returns True if content already exists
+ */
+function contentExists(
+  slug: string,
+  collectionPath: string,
+  filePattern: string
+): boolean {
+  const relativePath = generatePathFromPattern(filePattern, { slug });
+  const fullPath = join(collectionPath, relativePath);
+
+  // For folder-based patterns, check if the folder exists
+  if (filePattern.includes("/index.")) {
+    const folderPath = join(collectionPath, slug);
+    return existsSync(folderPath);
+  }
+
+  return existsSync(fullPath);
+}
+
+/**
  * Generate a unique slug that doesn't conflict with existing files
  *
  * @param baseSlug - The base slug to start with
  * @param collectionPath - Path to the collection directory
- * @param extension - File extension (default: .md)
+ * @param filePattern - File pattern (default: "{slug}.md")
  * @returns A unique slug
  */
 export async function generateUniqueSlug(
   baseSlug: string,
   collectionPath: string,
-  extension: string = ".md"
+  filePattern: string = "{slug}.md"
 ): Promise<string> {
   let slug = baseSlug;
   let counter = 2;
 
-  while (existsSync(join(collectionPath, `${slug}${extension}`))) {
+  while (contentExists(slug, collectionPath, filePattern)) {
     slug = `${baseSlug}-${counter}`;
     counter++;
   }
@@ -157,19 +192,56 @@ function createFileContent(
 /**
  * Create a new content file in a collection
  *
+ * Supports various file patterns with automatic token resolution:
+ * - `{slug}.md` - Simple flat structure (default)
+ * - `{slug}/index.md` - Folder-based content
+ * - `{date}-{slug}.md` - Date-prefixed naming
+ * - `{year}/{slug}.md` - Year folder structure
+ * - `{year}/{month}/{slug}.md` - Year/month folder structure
+ * - `{year}/{month}/{day}/{slug}.md` - Full date folder structure
+ * - `{lang}/{slug}.md` - Language-prefixed (i18n)
+ * - `{category}/{slug}.md` - Category folder structure
+ * - `{author}/{slug}.md` - Author folder structure
+ * - Any custom pattern with tokens from frontmatter
+ *
+ * Token resolution priority:
+ * 1. Custom tokens (explicitly provided via customTokens)
+ * 2. Known token resolvers (date, year, month, lang, category, etc.)
+ * 3. Frontmatter values (for custom tokens)
+ * 4. Default values
+ *
  * @param collectionPath - Absolute path to the collection directory
  * @param options - Content creation options
  * @returns WriteResult with success status and file info
  *
  * @example
  * ```typescript
+ * // Flat structure
  * const result = await createContent('/project/src/content/blog', {
- *   frontmatter: {
- *     title: 'My New Post',
- *     pubDate: new Date(),
- *     draft: true,
- *   },
- *   body: '# Hello World\n\nThis is my first post.',
+ *   frontmatter: { title: 'My New Post', pubDate: new Date() },
+ *   body: '# Hello World',
+ * });
+ *
+ * // Folder-based structure
+ * const result = await createContent('/project/src/content/blog', {
+ *   frontmatter: { title: 'My New Post', pubDate: new Date() },
+ *   body: '# Hello World',
+ *   filePattern: '{slug}/index.md',
+ * });
+ *
+ * // i18n structure with custom token
+ * const result = await createContent('/project/src/content/blog', {
+ *   frontmatter: { title: 'My New Post', lang: 'id' },
+ *   body: '# Hello World',
+ *   filePattern: '{lang}/{slug}.md',
+ * });
+ *
+ * // Custom pattern with explicit token
+ * const result = await createContent('/project/src/content/blog', {
+ *   frontmatter: { title: 'My New Post' },
+ *   body: '# Hello World',
+ *   filePattern: '{category}/{slug}.md',
+ *   customTokens: { category: 'tutorials' },
  * });
  * ```
  */
@@ -177,20 +249,50 @@ export async function createContent(
   collectionPath: string,
   options: CreateContentOptions
 ): Promise<WriteResult> {
-  const { frontmatter, body, slug: customSlug } = options;
+  const {
+    frontmatter,
+    body,
+    slug: customSlug,
+    filePattern = "{slug}.md",
+    customTokens = {},
+  } = options;
 
   try {
+    // Validate pattern
+    const validation = isValidPattern(filePattern);
+    if (!validation.valid) {
+      return {
+        success: false,
+        error: `Invalid file pattern: ${validation.error}`,
+      };
+    }
+
     // Generate slug from title or use custom slug
     const title = frontmatter.title as string | undefined;
     const baseSlug = customSlug ?? (title ? generateSlug(title) : "untitled");
 
-    // Ensure unique slug
-    const slug = await generateUniqueSlug(baseSlug, collectionPath);
-    const filePath = join(collectionPath, `${slug}.md`);
+    // Ensure unique slug using the file pattern
+    const slug = await generateUniqueSlug(
+      baseSlug,
+      collectionPath,
+      filePattern
+    );
 
-    // Ensure collection directory exists
-    if (!existsSync(collectionPath)) {
-      await mkdir(collectionPath, { recursive: true });
+    // Resolve all tokens using the flexible token resolver
+    const tokens = resolvePatternTokens(filePattern, {
+      slug,
+      frontmatter,
+      customTokens,
+    });
+
+    // Generate the relative file path from the pattern
+    const relativePath = generatePathFromPattern(filePattern, tokens);
+    const filePath = join(collectionPath, relativePath);
+
+    // Ensure parent directory exists (important for folder-based patterns)
+    const parentDir = dirname(filePath);
+    if (!existsSync(parentDir)) {
+      await mkdir(parentDir, { recursive: true });
     }
 
     // Create file content

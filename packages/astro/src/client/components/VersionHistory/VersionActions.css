@@ -11,10 +11,10 @@
 .wn-version-actions {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.375rem;
-  padding: 0.75rem;
-  border-top: 1px solid #3f3f46;
-  background-color: #09090b;
+  gap: var(--wn-space-2);
+  padding: var(--wn-space-4);
+  border-top: 1px solid var(--wn-zinc-700);
+  background-color: var(--wn-zinc-950);
   flex-shrink: 0;
 }
 
@@ -22,30 +22,30 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 0.375rem;
+  gap: var(--wn-space-2);
   flex: 1 1 calc(50% - 0.1875rem);
   min-width: 0;
-  padding: 0.5rem 0.375rem;
-  border: 1px solid #3f3f46;
-  border-radius: 0.25rem;
+  padding: var(--wn-space-3) var(--wn-space-2);
+  border: 1px solid var(--wn-zinc-700);
+  border-radius: var(--wn-radius-sm);
   background-color: transparent;
-  font-size: 0.6875rem;
+  font-size: var(--wn-font-xs);
   font-weight: 500;
-  color: #a1a1aa;
+  color: var(--wn-zinc-400);
   cursor: pointer;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
   transition:
-    background-color 150ms,
-    border-color 150ms,
-    color 150ms;
+    background-color var(--wn-transition-fast),
+    border-color var(--wn-transition-fast),
+    color var(--wn-transition-fast);
 }
 
 .wn-version-action:hover:not(:disabled) {
-  background-color: rgba(255, 255, 255, 0.05);
-  border-color: #52525b;
-  color: #fafafa;
+  background-color: var(--wn-overlay-5);
+  border-color: var(--wn-zinc-600);
+  color: var(--wn-zinc-50);
 }
 
 .wn-version-action:disabled {
@@ -54,26 +54,26 @@
 }
 
 .wn-version-action--primary {
-  border-color: #3b82f6;
-  background-color: rgba(59, 130, 246, 0.1);
-  color: #60a5fa;
+  border-color: var(--wn-brand-500);
+  background-color: var(--wn-brand-alpha-10);
+  color: var(--wn-brand-400);
 }
 
 .wn-version-action--primary:hover:not(:disabled) {
-  background-color: rgba(59, 130, 246, 0.2);
-  border-color: #60a5fa;
+  background-color: var(--wn-brand-alpha-20);
+  border-color: var(--wn-brand-400);
   color: #93c5fd;
 }
 
 .wn-version-action--danger {
-  border-color: #ef4444;
-  background-color: rgba(239, 68, 68, 0.1);
-  color: #f87171;
+  border-color: var(--wn-error-500);
+  background-color: var(--wn-error-alpha-10);
+  color: var(--wn-error-400);
 }
 
 .wn-version-action--danger:hover:not(:disabled) {
-  background-color: rgba(239, 68, 68, 0.2);
-  border-color: #f87171;
+  background-color: var(--wn-error-alpha-20);
+  border-color: var(--wn-error-400);
   color: #fca5a5;
 }
 
@@ -84,12 +84,12 @@
 .wn-confirm-overlay {
   position: fixed;
   inset: 0;
-  z-index: 60;
+  z-index: var(--wn-z-confirm);
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: rgba(0, 0, 0, 0.75);
-  animation: fadeIn 150ms ease-out;
+  background-color: var(--wn-backdrop);
+  animation: fadeIn var(--wn-transition-fast) ease-out;
 }
 
 @keyframes fadeIn {
@@ -103,13 +103,13 @@
 
 .wn-confirm-modal {
   width: 100%;
-  max-width: 24rem;
-  padding: 1.25rem;
-  border-radius: 0.5rem;
-  border: 1px solid #3f3f46;
-  background-color: #18181b;
-  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-  animation: zoomIn 150ms ease-out;
+  max-width: var(--wn-modal-sm);
+  padding: var(--wn-space-6);
+  border-radius: var(--wn-radius-lg);
+  border: 1px solid var(--wn-zinc-700);
+  background-color: var(--wn-zinc-900);
+  box-shadow: var(--wn-shadow-lg);
+  animation: zoomIn var(--wn-transition-fast) ease-out;
 }
 
 @keyframes zoomIn {
@@ -126,43 +126,43 @@
 .wn-confirm-header {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
-  margin-bottom: 0.75rem;
+  gap: var(--wn-space-3);
+  margin-bottom: var(--wn-space-4);
 }
 
 .wn-confirm-icon {
-  color: #fbbf24;
+  color: var(--wn-warning-400);
   flex-shrink: 0;
 }
 
 .wn-confirm-title {
   flex: 1;
   margin: 0;
-  font-size: 1rem;
+  font-size: var(--wn-font-md);
   font-weight: 600;
-  color: #fafafa;
+  color: var(--wn-zinc-50);
 }
 
 .wn-confirm-close {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 1.75rem;
-  height: 1.75rem;
+  width: var(--wn-icon-btn-md);
+  height: var(--wn-icon-btn-md);
   padding: 0;
   border: none;
-  border-radius: 0.25rem;
+  border-radius: var(--wn-radius-sm);
   background-color: transparent;
-  color: #71717a;
+  color: var(--wn-zinc-500);
   cursor: pointer;
   transition:
-    background-color 150ms,
-    color 150ms;
+    background-color var(--wn-transition-fast),
+    color var(--wn-transition-fast);
 }
 
 .wn-confirm-close:hover:not(:disabled) {
-  background-color: rgba(255, 255, 255, 0.1);
-  color: #fafafa;
+  background-color: var(--wn-overlay-10);
+  color: var(--wn-zinc-50);
 }
 
 .wn-confirm-close:disabled {
@@ -171,30 +171,30 @@
 }
 
 .wn-confirm-message {
-  margin: 0 0 1.25rem;
-  font-size: 0.875rem;
+  margin: 0 0 var(--wn-space-6);
+  font-size: var(--wn-font-base);
   line-height: 1.5;
-  color: #a1a1aa;
+  color: var(--wn-zinc-400);
 }
 
 .wn-confirm-actions {
   display: flex;
-  gap: 0.5rem;
+  gap: var(--wn-space-3);
   justify-content: flex-end;
 }
 
 .wn-confirm-btn {
   display: flex;
   align-items: center;
-  gap: 0.375rem;
-  padding: 0.5rem 1rem;
-  border-radius: 0.375rem;
-  font-size: 0.875rem;
+  gap: var(--wn-space-2);
+  padding: var(--wn-space-3) var(--wn-space-5);
+  border-radius: var(--wn-radius-md);
+  font-size: var(--wn-font-base);
   font-weight: 500;
   cursor: pointer;
   transition:
-    background-color 150ms,
-    border-color 150ms;
+    background-color var(--wn-transition-fast),
+    border-color var(--wn-transition-fast);
 }
 
 .wn-confirm-btn:disabled {
@@ -203,37 +203,37 @@
 }
 
 .wn-confirm-btn--cancel {
-  border: 1px solid #3f3f46;
+  border: 1px solid var(--wn-zinc-700);
   background-color: transparent;
-  color: #a1a1aa;
+  color: var(--wn-zinc-400);
 }
 
 .wn-confirm-btn--cancel:hover:not(:disabled) {
-  background-color: rgba(255, 255, 255, 0.05);
-  border-color: #52525b;
-  color: #fafafa;
+  background-color: var(--wn-overlay-5);
+  border-color: var(--wn-zinc-600);
+  color: var(--wn-zinc-50);
 }
 
 .wn-confirm-btn--primary {
-  border: 1px solid #3b82f6;
-  background-color: #3b82f6;
+  border: 1px solid var(--wn-brand-500);
+  background-color: var(--wn-brand-500);
   color: #fff;
 }
 
 .wn-confirm-btn--primary:hover:not(:disabled) {
-  background-color: #2563eb;
-  border-color: #2563eb;
+  background-color: var(--wn-brand-600);
+  border-color: var(--wn-brand-600);
 }
 
 .wn-confirm-btn--danger {
-  border: 1px solid #ef4444;
-  background-color: #ef4444;
+  border: 1px solid var(--wn-error-500);
+  background-color: var(--wn-error-500);
   color: #fff;
 }
 
 .wn-confirm-btn--danger:hover:not(:disabled) {
-  background-color: #dc2626;
-  border-color: #dc2626;
+  background-color: var(--wn-error-600);
+  border-color: var(--wn-error-600);
 }
 
 /* ============================================================================
@@ -241,78 +241,78 @@
    ============================================================================ */
 
 .wn-light .wn-version-actions {
-  border-top-color: #e4e4e7;
-  background-color: #fafafa;
+  border-top-color: var(--wn-zinc-200);
+  background-color: var(--wn-zinc-50);
 }
 
 .wn-light .wn-version-action {
-  border-color: #e4e4e7;
-  color: #71717a;
+  border-color: var(--wn-zinc-200);
+  color: var(--wn-zinc-500);
 }
 
 .wn-light .wn-version-action:hover:not(:disabled) {
-  background-color: rgba(0, 0, 0, 0.03);
-  border-color: #d4d4d8;
-  color: #18181b;
+  background-color: var(--wn-overlay-light-3);
+  border-color: var(--wn-zinc-300);
+  color: var(--wn-zinc-900);
 }
 
 .wn-light .wn-version-action--primary {
-  border-color: #3b82f6;
-  background-color: rgba(59, 130, 246, 0.08);
-  color: #2563eb;
+  border-color: var(--wn-brand-500);
+  background-color: var(--wn-brand-alpha-10);
+  color: var(--wn-brand-600);
 }
 
 .wn-light .wn-version-action--primary:hover:not(:disabled) {
-  background-color: rgba(59, 130, 246, 0.15);
-  border-color: #2563eb;
+  background-color: var(--wn-brand-alpha-15);
+  border-color: var(--wn-brand-600);
   color: #1d4ed8;
 }
 
 .wn-light .wn-version-action--danger {
-  border-color: #ef4444;
-  background-color: rgba(239, 68, 68, 0.08);
-  color: #dc2626;
+  border-color: var(--wn-error-500);
+  background-color: var(--wn-error-alpha-10);
+  color: var(--wn-error-600);
 }
 
 .wn-light .wn-version-action--danger:hover:not(:disabled) {
-  background-color: rgba(239, 68, 68, 0.15);
-  border-color: #dc2626;
+  background-color: var(--wn-error-alpha-15);
+  border-color: var(--wn-error-600);
   color: #b91c1c;
 }
 
 .wn-light .wn-confirm-overlay {
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: var(--wn-backdrop-light);
 }
 
 .wn-light .wn-confirm-modal {
-  border-color: #e4e4e7;
+  border-color: var(--wn-zinc-200);
   background-color: #fff;
 }
 
 .wn-light .wn-confirm-title {
-  color: #18181b;
+  color: var(--wn-zinc-900);
 }
 
 .wn-light .wn-confirm-close {
-  color: #a1a1aa;
+  color: var(--wn-zinc-400);
 }
 
 .wn-light .wn-confirm-close:hover:not(:disabled) {
-  background-color: rgba(0, 0, 0, 0.05);
-  color: #18181b;
+  background-color: var(--wn-overlay-light-5);
+  color: var(--wn-zinc-900);
 }
 
 .wn-light .wn-confirm-message {
-  color: #71717a;
+  color: var(--wn-zinc-500);
 }
 
 .wn-light .wn-confirm-btn--cancel {
-  border-color: #e4e4e7;
-  color: #71717a;
+  border-color: var(--wn-zinc-200);
+  color: var(--wn-zinc-500);
 }
 
 .wn-light .wn-confirm-btn--cancel:hover:not(:disabled) {
-  background-color: rgba(0, 0, 0, 0.03);
-  border-color: #d4d4d8;
-  color: #18181b;
+  background-color: var(--wn-overlay-light-3);
+  border-color: var(--wn-zinc-300);
+  color: var(--wn-zinc-900);
 }

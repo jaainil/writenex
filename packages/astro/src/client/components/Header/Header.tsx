@@ -18,6 +18,7 @@ import {
   Moon,
   Monitor,
   History,
+  Plus,
 } from "lucide-react";
 import { useTheme, type Theme } from "../../context/ThemeContext";
 import "./Header.css";
@@ -66,6 +67,8 @@ interface HeaderProps {
   onKeyboardShortcuts?: () => void;
   /** Callback when settings button is clicked */
   onSettings?: () => void;
+  /** Callback when new content button is clicked */
+  onNewContent?: () => void;
 }
 
 /**
@@ -104,7 +107,6 @@ function ToolbarButton({
       type="button"
       onClick={onClick}
       disabled={disabled}
-      title={label}
       aria-label={label}
       className={className}
     >
@@ -172,7 +174,7 @@ function ThemeSwitcher(): React.ReactElement {
         aria-expanded={isOpen}
         aria-haspopup="listbox"
       >
-        <ThemeIcon size={14} />
+        <ThemeIcon size={16} />
       </button>
 
       {isOpen && (
@@ -192,7 +194,7 @@ function ThemeSwitcher(): React.ReactElement {
                   setIsOpen(false);
                 }}
               >
-                <Icon size={14} />
+                <Icon size={16} />
                 <span>{option.label}</span>
               </button>
             );
@@ -220,6 +222,7 @@ export function Header({
   versionHistoryEnabled = false,
   onKeyboardShortcuts,
   onSettings,
+  onNewContent,
 }: HeaderProps): React.ReactElement {
   return (
     <header className="wn-header">
@@ -241,27 +244,36 @@ export function Header({
 
       {/* Right side: Toolbar */}
       <div className="wn-toolbar">
+        {/* New Content Button */}
+        <ToolbarButton
+          icon={<Plus size={16} />}
+          label="New Content (Alt+N)"
+          onClick={onNewContent}
+        />
+
+        <ToolbarSeparator />
+
         {/* Group 1: Panels & Actions */}
         <ToolbarButton
-          icon={<Folder size={14} />}
+          icon={<Folder size={16} />}
           label="Toggle Explorer"
           onClick={onToggleSidebar}
           active={isSidebarOpen}
         />
         <ToolbarButton
-          icon={<Info size={14} />}
+          icon={<Info size={16} />}
           label="Toggle Frontmatter"
           onClick={onToggleFrontmatter}
           active={isFrontmatterOpen}
         />
         <ToolbarButton
-          icon={<Search size={14} />}
+          icon={<Search size={16} />}
           label="Search & Replace (Ctrl+F)"
           onClick={onToggleSearch}
           active={isSearchOpen}
         />
         <ToolbarButton
-          icon={<History size={14} />}
+          icon={<History size={16} />}
           label="Version History"
           onClick={onToggleVersionHistory}
           active={isVersionHistoryOpen}
@@ -273,12 +285,12 @@ export function Header({
         {/* Group 2: Preferences */}
         <ThemeSwitcher />
         <ToolbarButton
-          icon={<Keyboard size={14} />}
+          icon={<Keyboard size={16} />}
           label="Keyboard Shortcuts (Ctrl+/)"
           onClick={onKeyboardShortcuts}
         />
         <ToolbarButton
-          icon={<Settings size={14} />}
+          icon={<Settings size={16} />}
           label="Settings"
           onClick={onSettings}
         />

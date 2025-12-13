@@ -61,13 +61,17 @@ export default defineConfig([
       options.jsx = "automatic";
     },
     onSuccess: async () => {
-      const srcCss = join("src", "client", "styles.css");
-      const distCss = join("dist", "client", "styles.css");
-      mkdirSync(join("dist", "client"), { recursive: true });
+      const distDir = join("dist", "client");
+      mkdirSync(distDir, { recursive: true });
 
-      // Copy plain CSS (no processing needed)
-      copyFileSync(srcCss, distCss);
-      console.log("CSS copied to dist/client/styles.css");
+      // Copy plain CSS files (no processing needed)
+      const cssFiles = ["styles.css", "variables.css"];
+      for (const file of cssFiles) {
+        const src = join("src", "client", file);
+        const dest = join(distDir, file);
+        copyFileSync(src, dest);
+        console.log(`CSS copied to dist/client/${file}`);
+      }
     },
   },
 ]);

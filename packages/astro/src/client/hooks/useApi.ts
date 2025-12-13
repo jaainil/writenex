@@ -75,6 +75,8 @@ export interface EditorConfig {
 export interface WritenexClientConfig {
   images?: ImageConfig;
   editor?: EditorConfig;
+  /** Astro's trailingSlash setting for preview URLs */
+  trailingSlash?: "always" | "never" | "ignore";
 }
 
 /**

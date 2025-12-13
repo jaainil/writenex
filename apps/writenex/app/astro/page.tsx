@@ -170,7 +170,8 @@ function HeroSection(): React.ReactElement {
 
         {/* Subheadline */}
         <p className="mx-auto mb-8 max-w-2xl text-lg leading-relaxed text-zinc-600 sm:text-xl dark:text-zinc-400">
-          Write markdown visually, manage frontmatter with smart auto-generated forms, and edit content straight from your dev server.
+          Write markdown visually, manage frontmatter with smart auto-generated
+          forms, and edit content straight from your dev server.
         </p>
 
         {/* CTAs */}
@@ -207,7 +208,7 @@ function QuickStartSection(): React.ReactElement {
         </div>
 
         {/* Terminal style code block */}
-        <div className=" overflow-hidden rounded-xl border border-zinc-200 bg-zinc-900 dark:border-zinc-700">
+        <div className="overflow-hidden rounded-xl border border-zinc-200 bg-zinc-900 dark:border-zinc-700">
           <div className="flex items-center gap-2 border-b border-zinc-700 px-4 py-3">
             <div className="h-3 w-3 rounded-full bg-red-500" />
             <div className="h-3 w-3 rounded-full bg-yellow-500" />

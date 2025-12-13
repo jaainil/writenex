@@ -67,6 +67,7 @@ const CollectionItem = memo(function CollectionItem({
         onClick={handleClick}
         tabIndex={isFocused ? 0 : -1}
         aria-current={isSelected ? "true" : undefined}
+        title={collection.name}
       >
         <Folder size={16} />
         <span className="wn-collection-item-name">{collection.name}</span>
@@ -115,6 +116,7 @@ const ContentListItem = memo(function ContentListItem({
         onClick={handleClick}
         tabIndex={isFocused ? 0 : -1}
         aria-current={isSelected ? "true" : undefined}
+        title={item.title}
       >
         <div className="wn-content-item-header">
           <span className="wn-content-item-title">{item.title}</span>
@@ -411,8 +413,14 @@ export function Sidebar({
           </div>
 
           {collectionsLoading ? (
-            <div className="wn-sidebar-loading" aria-busy="true">
-              Loading...
+            <div aria-busy="true" aria-label="Loading collections">
+              {[1, 2, 3].map((i) => (
+                <div key={i} className="wn-skeleton-collection">
+                  <div className="wn-skeleton wn-skeleton-icon" />
+                  <div className="wn-skeleton wn-skeleton-text wn-skeleton-text--short" />
+                  <div className="wn-skeleton wn-skeleton-badge" />
+                </div>
+              ))}
             </div>
           ) : collections.length === 0 ? (
             <div className="wn-sidebar-empty">
@@ -449,13 +457,7 @@ export function Sidebar({
         {/* Content Section */}
         {selectedCollection && (
           <div className="wn-sidebar-content">
-            <div
-              className="wn-sidebar-section-header"
-              style={{
-                padding: "8px 12px",
-                borderBottom: "1px solid rgba(255, 255, 255, 0.1)",
-              }}
-            >
+            <div className="wn-sidebar-section-header wn-sidebar-content-header">
               <span className="wn-sidebar-section-title">
                 {selectedCollection}
               </span>
@@ -546,8 +548,17 @@ export function Sidebar({
 
             {/* Content List */}
             {contentLoading ? (
-              <div className="wn-sidebar-loading" aria-busy="true">
-                Loading...
+              <div
+                className="wn-content-list"
+                aria-busy="true"
+                aria-label="Loading content"
+              >
+                {[1, 2, 3, 4, 5].map((i) => (
+                  <div key={i} className="wn-skeleton-content">
+                    <div className="wn-skeleton wn-skeleton-title" />
+                    <div className="wn-skeleton wn-skeleton-date" />
+                  </div>
+                ))}
               </div>
             ) : contentItems.length === 0 ? (
               <div className="wn-sidebar-empty">

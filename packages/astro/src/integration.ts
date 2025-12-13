@@ -83,8 +83,14 @@ export default function writenex(options?: WritenexOptions): AstroIntegration {
   // Store project root
   let projectRoot = "";
 
+  // Store Astro's trailingSlash setting
+  let astroTrailingSlash: "always" | "never" | "ignore" = "ignore";
+
   // File watcher instance
   let watcher: ContentWatcher | null = null;
+
+  // Track if editor URL has been logged (to avoid duplicate logs)
+  let hasLoggedEditorUrl = false;
 
   return {
     name: PACKAGE_NAME,
@@ -98,12 +104,7 @@ export default function writenex(options?: WritenexOptions): AstroIntegration {
        * 2. Load Writenex configuration
        * 3. Register any necessary Vite plugins
        */
-      "astro:config:setup": async ({
-        command,
-        logger,
-        updateConfig,
-        config,
-      }) => {
+      "astro:config:setup": async ({ command, logger, config }) => {
         // Production guard: disable in production unless explicitly allowed
         if (command === "build" && !allowProduction) {
           logger.warn(
@@ -116,38 +117,18 @@ export default function writenex(options?: WritenexOptions): AstroIntegration {
         // Store project root
         projectRoot = config.root.pathname;
 
+        // Capture Astro's trailingSlash setting for preview URLs
+        astroTrailingSlash = config.trailingSlash ?? "ignore";
+
         // Load Writenex configuration
-        const {
-          config: loadedConfig,
-          hasConfigFile,
-          warnings,
-        } = await loadConfig(projectRoot);
+        const { config: loadedConfig, warnings } =
+          await loadConfig(projectRoot);
         resolvedConfig = loadedConfig;
 
         // Log any configuration warnings
         for (const warning of warnings) {
           logger.warn(warning);
         }
-
-        // Log startup info
-        if (command === "dev") {
-          logger.info(`Editor available at ${basePath}`);
-          if (hasConfigFile) {
-            logger.info("Using writenex.config file");
-          } else {
-            logger.info("No config file found, using auto-discovery");
-          }
-        }
-
-        // Add Vite configuration for the integration
-        updateConfig({
-          vite: {
-            // Optimize dependencies that need to be pre-bundled
-            optimizeDeps: {
-              include: ["@mdxeditor/editor", "gray-matter"],
-            },
-          },
-        });
       },
 
       /**
@@ -159,19 +140,18 @@ export default function writenex(options?: WritenexOptions): AstroIntegration {
        * 2. Serve the editor UI
        * 3. Start file watcher for cache invalidation
        */
-      "astro:server:setup": ({ server, logger }) => {
+      "astro:server:setup": ({ server }) => {
         // Skip if disabled (production guard triggered)
         if (!isActive || !resolvedConfig) {
           return;
         }
-
-        logger.info("Setting up development server middleware...");
 
         // Create and register the middleware
         const middleware = createMiddleware({
           basePath,
           projectRoot,
           config: resolvedConfig,
+          trailingSlash: astroTrailingSlash,
         });
 
         server.middlewares.use(middleware);
@@ -182,17 +162,39 @@ export default function writenex(options?: WritenexOptions): AstroIntegration {
         // Start file watcher for cache invalidation
         watcher = new ContentWatcher(projectRoot, "src/content", {
           onChange: (event) => {
-            logger.info(
-              `File ${event.type}: ${event.path} (collection: ${event.collection})`
-            );
             cache.handleFileChange(event.type, event.collection);
           },
         });
 
         watcher.start();
-        logger.info("File watcher started for cache invalidation");
+      },
 
-        logger.info(`Middleware registered for ${basePath}`);
+      /**
+       * Server start hook
+       *
+       * This hook runs after the dev server has started and is listening.
+       * We use it to log the full editor URL with the actual server address.
+       */
+      "astro:server:start": ({ address, logger }) => {
+        if (!isActive || hasLoggedEditorUrl) {
+          return;
+        }
+
+        // Build the full URL from the server address
+        // Normalize loopback addresses to "localhost" for better readability
+        const protocol = "http";
+        const rawHost = address.address;
+        const isLoopback =
+          rawHost === "" ||
+          rawHost === "::" ||
+          rawHost === "127.0.0.1" ||
+          rawHost === "::1";
+        const host = isLoopback ? "localhost" : rawHost;
+        const port = address.port;
+        const editorUrl = `${protocol}://${host}:${port}${basePath}`;
+
+        logger.info(`Writenex editor running at: ${editorUrl}`);
+        hasLoggedEditorUrl = true;
       },
 
       /**

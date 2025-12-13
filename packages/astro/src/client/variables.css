@@ -1,0 +1,304 @@
+/**
+ * @fileoverview CSS Custom Properties (Variables) for @writenex/astro
+ *
+ * Consolidated color system for the Astro Integration.
+ * All colors should reference these variables for consistency.
+ *
+ * Color Philosophy:
+ * - Minimal palette: fewer colors = more consistency
+ * - Brand colors for primary actions and accents
+ * - Zinc neutrals for UI chrome
+ * - Semantic colors only for status indicators
+ * - Alpha variants for overlays and subtle backgrounds
+ */
+
+:root {
+  /* ==========================================================================
+     Writenex Brand Colors (Blue Palette)
+     Primary brand identity - use for CTAs, links, focus states, selections
+     
+     Base RGB values for alpha generation:
+     - brand-500: #335dff = rgb(51, 93, 255)
+   ========================================================================== */
+
+  --wn-brand-rgb: 51 93 255;
+  --wn-brand-400: #5c7cff; /* Secondary/hover - lighter brand */
+  --wn-brand-500: #335dff; /* Primary brand - logo color */
+  --wn-brand-600: #2a4ecc; /* Pressed/active states */
+
+  /* Brand with alpha - derived from --wn-brand-rgb */
+  --wn-brand-alpha-10: rgb(var(--wn-brand-rgb) / 0.1);
+  --wn-brand-alpha-15: rgb(var(--wn-brand-rgb) / 0.15);
+  --wn-brand-alpha-20: rgb(var(--wn-brand-rgb) / 0.2);
+  --wn-brand-alpha-30: rgb(var(--wn-brand-rgb) / 0.3);
+
+  /* ==========================================================================
+     Neutral Colors (Zinc Palette)
+     UI chrome, backgrounds, borders, text
+   ========================================================================== */
+
+  --wn-zinc-50: #fafafa;
+  --wn-zinc-100: #f4f4f5;
+  --wn-zinc-150: #ececef;
+  --wn-zinc-200: #e4e4e7;
+  --wn-zinc-300: #d4d4d8;
+  --wn-zinc-400: #a1a1aa;
+  --wn-zinc-500: #71717a;
+  --wn-zinc-600: #52525b;
+  --wn-zinc-700: #3f3f46;
+  --wn-zinc-800: #27272a;
+  --wn-zinc-850: #1f1f23;
+  --wn-zinc-900: #18181b;
+  --wn-zinc-950: #09090b;
+
+  /* ==========================================================================
+     Semantic Colors (Status Indicators)
+     Status indicators - success, warning, error, info
+     
+     Each color has:
+     - RGB base for alpha generation
+     - 400 shade (lighter, for dark mode text/icons)
+     - 500 shade (base)
+     - Alpha variants derived from RGB base
+   ========================================================================== */
+
+  /* Success (Emerald) - saved, published, added
+   Base: #10b981 = rgb(16, 185, 129) */
+  --wn-success-rgb: 16 185 129;
+  --wn-success-400: #34d399;
+  --wn-success-500: #10b981;
+  --wn-success-alpha-10: rgb(var(--wn-success-rgb) / 0.1);
+  --wn-success-alpha-15: rgb(var(--wn-success-rgb) / 0.15);
+  --wn-success-alpha-20: rgb(var(--wn-success-rgb) / 0.2);
+  --wn-success-alpha-30: rgb(var(--wn-success-rgb) / 0.3);
+  --wn-success-alpha-40: rgb(var(--wn-success-rgb) / 0.4);
+
+  /* Warning (Amber) - draft, pending, caution
+   Base: #f59e0b = rgb(245, 158, 11) */
+  --wn-warning-rgb: 245 158 11;
+  --wn-warning-400: #fbbf24;
+  --wn-warning-500: #f59e0b;
+  --wn-warning-alpha-10: rgb(var(--wn-warning-rgb) / 0.1);
+  --wn-warning-alpha-30: rgb(var(--wn-warning-rgb) / 0.3);
+  --wn-warning-alpha-40: rgb(var(--wn-warning-rgb) / 0.4);
+
+  /* Error (Red) - errors, destructive actions, removed
+   Base: #ef4444 = rgb(239, 68, 68) */
+  --wn-error-rgb: 239 68 68;
+  --wn-error-400: #f87171;
+  --wn-error-500: #ef4444;
+  --wn-error-600: #dc2626;
+  --wn-error-alpha-10: rgb(var(--wn-error-rgb) / 0.1);
+  --wn-error-alpha-15: rgb(var(--wn-error-rgb) / 0.15);
+  --wn-error-alpha-20: rgb(var(--wn-error-rgb) / 0.2);
+
+  /* Info (Violet) - labels, badges, metadata
+   Base: #8b5cf6 = rgb(139, 92, 246) */
+  --wn-info-rgb: 139 92 246;
+  --wn-info-400: #a78bfa;
+  --wn-info-500: #8b5cf6;
+  --wn-info-alpha-15: rgb(var(--wn-info-rgb) / 0.15);
+  --wn-info-alpha-20: rgb(var(--wn-info-rgb) / 0.2);
+
+  /* ==========================================================================
+     Overlay & Backdrop Colors
+     For modal backdrops, hover states, subtle backgrounds
+   ========================================================================== */
+
+  /* Dark mode overlays (white-based) */
+  --wn-overlay-3: rgba(255, 255, 255, 0.03);
+  --wn-overlay-5: rgba(255, 255, 255, 0.05);
+  --wn-overlay-10: rgba(255, 255, 255, 0.1);
+  --wn-overlay-15: rgba(255, 255, 255, 0.15);
+
+  /* Light mode overlays (black-based) */
+  --wn-overlay-light-3: rgba(0, 0, 0, 0.03);
+  --wn-overlay-light-5: rgba(0, 0, 0, 0.05);
+  --wn-overlay-light-8: rgba(0, 0, 0, 0.08);
+  --wn-overlay-light-10: rgba(0, 0, 0, 0.1);
+  --wn-overlay-light-20: rgba(0, 0, 0, 0.2);
+  --wn-overlay-light-30: rgba(0, 0, 0, 0.3);
+
+  /* Modal/dialog backdrops */
+  --wn-backdrop: rgba(0, 0, 0, 0.7);
+  --wn-backdrop-light: rgba(0, 0, 0, 0.5);
+  --wn-backdrop-heavy: rgba(0, 0, 0, 0.8);
+
+  /* ==========================================================================
+     Special Purpose Colors
+     Specific use cases that don't fit other categories
+   ========================================================================== */
+
+  /* Search/highlight */
+  --wn-highlight: #fde047;
+  --wn-highlight-alpha-25: rgba(253, 224, 71, 0.25);
+
+  /* Selection */
+  --wn-selection: rgba(99, 102, 241, 0.3);
+  --wn-selection-light: rgba(99, 102, 241, 0.2);
+
+  /* ==========================================================================
+     Semantic Aliases
+     Contextual names for common use cases (optional, for clarity)
+   ========================================================================== */
+
+  /* Backgrounds */
+  --wn-bg-app: var(--wn-zinc-950);
+  --wn-bg-surface: var(--wn-zinc-900);
+  --wn-bg-elevated: var(--wn-zinc-800);
+  --wn-bg-input: var(--wn-zinc-950);
+
+  /* Borders */
+  --wn-border: var(--wn-zinc-700);
+  --wn-border-subtle: var(--wn-zinc-800);
+  --wn-border-strong: var(--wn-zinc-600);
+
+  /* Text */
+  --wn-text-primary: var(--wn-zinc-50);
+  --wn-text-secondary: var(--wn-zinc-400);
+  --wn-text-muted: var(--wn-zinc-500);
+  --wn-text-subtle: var(--wn-zinc-600);
+
+  /* Interactive states */
+  --wn-focus-ring: var(--wn-brand-500);
+  --wn-hover-bg: var(--wn-overlay-10);
+  --wn-active-bg: var(--wn-overlay-15);
+
+  /* ==========================================================================
+     Font Size Scale
+     UI Text Sizes - Fixed sizes for interface elements
+   ========================================================================== */
+
+  --wn-font-xs: 0.75rem; /* 12px - badges, hints, kbd */
+  --wn-font-sm: 0.8125rem; /* 13px - secondary text */
+  --wn-font-base: 0.875rem; /* 14px - default UI text */
+  --wn-font-md: 1rem; /* 16px - panel titles */
+  --wn-font-lg: 1.125rem; /* 18px - section titles */
+
+  /* Editor Content Sizes - Fluid for readability */
+  --wn-font-prose: clamp(0.9375rem, 0.9rem + 0.2vw, 1rem);
+  --wn-font-h1: clamp(1.75rem, 1.5rem + 1vw, 2.25rem);
+  --wn-font-h2: clamp(1.25rem, 1.1rem + 0.5vw, 1.5rem);
+  --wn-font-h3: clamp(1.125rem, 1rem + 0.3vw, 1.25rem);
+  --wn-font-h4: clamp(1rem, 0.95rem + 0.2vw, 1.125rem);
+  --wn-font-h5: var(--wn-font-prose);
+  --wn-font-h6: var(--wn-font-base);
+
+  /* ==========================================================================
+     Spacing Scale
+     Consistent spacing for padding, margin, and gap
+   ========================================================================== */
+
+  --wn-space-1: 0.25rem; /* 4px */
+  --wn-space-2: 0.375rem; /* 6px */
+  --wn-space-3: 0.5rem; /* 8px */
+  --wn-space-4: 0.75rem; /* 12px */
+  --wn-space-5: 1rem; /* 16px */
+  --wn-space-6: 1.25rem; /* 20px */
+  --wn-space-7: 1.5rem; /* 24px */
+  --wn-space-8: 2rem; /* 32px */
+  --wn-space-9: 3rem; /* 48px */
+
+  /* ==========================================================================
+     Border Radius Scale
+     Consistent rounding for UI elements
+   ========================================================================== */
+
+  --wn-radius-sm: 0.25rem; /* 4px - badges, small elements */
+  --wn-radius-md: 0.375rem; /* 6px - buttons, inputs */
+  --wn-radius-lg: 0.5rem; /* 8px - modals, panels, cards */
+  --wn-radius-full: 9999px; /* pills, circles */
+
+  /* ==========================================================================
+     Icon Button Sizes
+     Standard sizes for icon-only buttons
+   ========================================================================== */
+
+  --wn-icon-btn-sm: 1.5rem; /* 24px */
+  --wn-icon-btn-md: 1.75rem; /* 28px - close buttons */
+  --wn-icon-btn-lg: 2rem; /* 32px - toolbar buttons */
+
+  /* ==========================================================================
+     Transition Durations
+     Consistent animation timing
+   ========================================================================== */
+
+  --wn-transition-fast: 150ms;
+  --wn-transition-normal: 200ms;
+  --wn-transition-slow: 300ms;
+
+  /* ==========================================================================
+     Modal Sizes
+     Standard max-width for modal dialogs
+   ========================================================================== */
+
+  --wn-modal-sm: 24rem; /* 384px - confirmations, shortcuts */
+  --wn-modal-md: 28rem; /* 448px - forms, create content */
+  --wn-modal-lg: 36rem; /* 576px - config panels */
+  --wn-modal-xl: 72rem; /* 1152px - diff viewer */
+
+  /* ==========================================================================
+     Panel Widths
+     Standard widths for side panels
+   ========================================================================== */
+
+  --wn-panel-sm: 280px; /* sidebar */
+  --wn-panel-md: 320px; /* side panels (frontmatter, version history) */
+
+  /* ==========================================================================
+     Z-Index Scale
+     Layering system for overlays and modals
+   ========================================================================== */
+
+  --wn-z-panel: 40; /* side panels (version history) */
+  --wn-z-modal: 50; /* standard modals */
+  --wn-z-modal-nested: 55; /* nested modals (diff viewer) */
+  --wn-z-confirm: 60; /* confirmation dialogs */
+  --wn-z-dropdown: 100; /* dropdowns, popovers */
+  --wn-z-dialog: 1000; /* floating dialogs (link, image) */
+  --wn-z-tooltip: 1001; /* tooltips */
+  --wn-z-skip: 9999; /* skip link (always on top) */
+
+  /* ==========================================================================
+     Box Shadows
+     Elevation system for depth
+   ========================================================================== */
+
+  --wn-shadow-sm: 0 1px 2px var(--wn-overlay-light-10);
+  --wn-shadow-md: 0 4px 12px rgba(0, 0, 0, 0.3);
+  --wn-shadow-lg: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+  --wn-shadow-panel: -4px 0 16px rgba(0, 0, 0, 0.3);
+}
+
+/* ==========================================================================
+      LIGHT MODE OVERRIDES
+   ========================================================================== */
+
+.wn-light {
+  /* Backgrounds */
+  --wn-bg-app: var(--wn-zinc-50);
+  --wn-bg-surface: #ffffff;
+  --wn-bg-elevated: var(--wn-zinc-100);
+  --wn-bg-input: var(--wn-zinc-100);
+
+  /* Borders */
+  --wn-border: var(--wn-zinc-200);
+  --wn-border-subtle: var(--wn-zinc-100);
+  --wn-border-strong: var(--wn-zinc-300);
+
+  /* Text */
+  --wn-text-primary: var(--wn-zinc-900);
+  --wn-text-secondary: var(--wn-zinc-600);
+  --wn-text-muted: var(--wn-zinc-500);
+  --wn-text-subtle: var(--wn-zinc-400);
+
+  /* Interactive states */
+  --wn-hover-bg: var(--wn-overlay-light-5);
+  --wn-active-bg: var(--wn-overlay-light-10);
+
+  /* Box Shadows - Light mode */
+  --wn-shadow-sm: 0 1px 2px var(--wn-overlay-light-5);
+  --wn-shadow-md: 0 4px 12px rgba(0, 0, 0, 0.1);
+  --wn-shadow-lg: 0 25px 50px -12px rgba(0, 0, 0, 0.15);
+  --wn-shadow-panel: -4px 0 16px rgba(0, 0, 0, 0.1);
+}

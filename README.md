@@ -4,17 +4,17 @@ A collection of tools for modern markdown editing and content management.
 
 ## Products
 
-| **Product**     | **Description**                                             |
-| --------------- | ----------------------------------------------------------- |
-| [Writenex](/erlandv/writenex/tree/main/apps/writenex)        | WYSIWYG Markdown editor - PWA, offline-first, local storage |
-| [@writenex/astro](/erlandv/writenex/tree/main/packages/astro) | Visual editor for Astro content collections                 |
+| **Product**                          | **Description**                                                      |
+| ------------------------------------ | -------------------------------------------------------------------- |
+| [Writenex Editor](./apps/writenex/)  | WYSIWYG Markdown editor that works offline and keeps your data local |
+| [@writenex/astro](./packages/astro/) | WYSIWYG Markdown editor for Astro Content Collections                |
 
 ## Project Structure
 
 ```
 writenex/
 ├── apps/
-│   └── writenex/              # Main Next.js application
+│   └── writenex/              # Writenex Editor
 │       └── lib/               # Core modules (db, editor, hooks, store, ui, utils)
 │
 ├── packages/

@@ -16,10 +16,11 @@ import {
 } from "./components/LazyEditor";
 import { ConfigPanel } from "./components/ConfigPanel/ConfigPanel";
 import { CreateContentModal } from "./components/CreateContentModal";
+import { SelectCollectionModal } from "./components/SelectCollectionModal";
 import { UnsavedChangesModal } from "./components/UnsavedChangesModal";
 import { Header } from "./components/Header";
 import { FrontmatterForm } from "./components/FrontmatterForm";
-import { Save, FileEdit, CheckCircle, Image, FolderOpen } from "lucide-react";
+import { Save, FileEdit, CheckCircle, ExternalLink } from "lucide-react";
 import type { CollectionSchema } from "../types";
 import {
   useApi,
@@ -50,7 +51,8 @@ interface AppProps {
 function generatePreviewUrl(
   pattern: string,
   contentId: string,
-  frontmatter: Record<string, unknown>
+  frontmatter: Record<string, unknown>,
+  trailingSlash: "always" | "never" | "ignore" = "ignore"
 ): string {
   let url = pattern;
   url = url.replace("{slug}", contentId);
@@ -61,6 +63,14 @@ function generatePreviewUrl(
       url = url.replace(token, String(frontmatter[key]));
     }
   }
+
+  // Apply trailingSlash setting
+  if (trailingSlash === "always" && !url.endsWith("/")) {
+    url = url + "/";
+  } else if (trailingSlash === "never" && url.endsWith("/") && url !== "/") {
+    url = url.slice(0, -1);
+  }
+
   return url;
 }
 
@@ -133,23 +143,22 @@ function AutosaveIndicator({
   }, [status, enabled, announce]);
 
   return (
-    <div className="wn-autosave-indicator">
+    <button
+      className="wn-autosave-indicator"
+      onClick={onToggle}
+      title={enabled ? "Disable autosave" : "Enable autosave"}
+    >
+      <Save
+        size={14}
+        style={{
+          color: enabled ? "var(--wn-emerald-500)" : "var(--wn-zinc-500)",
+          opacity: enabled ? 1 : 0.5,
+        }}
+      />
       {text && (
         <span className={`wn-autosave-text ${statusClass}`}>{text}</span>
       )}
-      <button
-        className="wn-btn-icon"
-        onClick={onToggle}
-        title={enabled ? "Disable autosave" : "Enable autosave"}
-        style={{
-          width: "1.5rem",
-          height: "1.5rem",
-          color: enabled ? "var(--wn-emerald-500)" : "var(--wn-zinc-500)",
-        }}
-      >
-        <Save size={14} style={{ opacity: enabled ? 1 : 0.5 }} />
-      </button>
-    </div>
+    </button>
   );
 }
 
@@ -159,7 +168,6 @@ const MAIN_CONTENT_ID = "wn-main-editor";
 export function App({ apiBase }: AppProps): React.ReactElement {
   const api = useApi(apiBase);
   const { config, refresh: refreshConfig } = useConfig(apiBase);
-  const imageStrategy = config?.images?.strategy ?? "colocated";
 
   // Accessibility: Live region for screen reader announcements
   const { announce, currentMessage, currentPoliteness } = useAnnounce();
@@ -201,6 +209,10 @@ export function App({ apiBase }: AppProps): React.ReactElement {
   const [showUnsavedModal, setShowUnsavedModal] = useState(false);
   const [pendingContentId, setPendingContentId] = useState<string | null>(null);
   const [isSavingBeforeSwitch, setIsSavingBeforeSwitch] = useState(false);
+
+  // Select collection modal state (for Alt+N without selected collection)
+  const [showSelectCollectionModal, setShowSelectCollectionModal] =
+    useState(false);
 
   const contentRef = useRef<ContentItem | null>(null);
   contentRef.current = currentContent;
@@ -414,18 +426,51 @@ export function App({ apiBase }: AppProps): React.ReactElement {
     setShowCreateModal(true);
   }, [selectedCollection]);
 
+  // Handler for Alt+N shortcut - shows collection selector if no collection selected
+  const handleNewContentShortcut = useCallback(() => {
+    if (selectedCollection) {
+      setShowCreateModal(true);
+    } else {
+      setShowSelectCollectionModal(true);
+    }
+  }, [selectedCollection]);
+
+  // Handler when collection is selected from SelectCollectionModal
+  const handleSelectCollectionForCreate = useCallback(
+    (collectionName: string) => {
+      setShowSelectCollectionModal(false);
+      setSelectedCollection(collectionName);
+      // Small delay to ensure state is updated before opening create modal
+      setTimeout(() => setShowCreateModal(true), 50);
+    },
+    []
+  );
+
   const handleCreateContent = useCallback(
     async (title: string) => {
       if (!selectedCollection) return;
 
       setIsCreatingContent(true);
       try {
+        // Get the date field name from collection schema (pubDate, publishDate, or date)
+        const dateFieldName = currentCollection?.schema
+          ? Object.keys(currentCollection.schema).find((key) =>
+              ["pubDate", "publishDate", "date"].includes(key)
+            )
+          : undefined;
+
+        const frontmatter: Record<string, unknown> = {
+          title,
+          draft: true,
+        };
+
+        // Add date field if schema has one
+        if (dateFieldName) {
+          frontmatter[dateFieldName] = new Date().toISOString().split("T")[0];
+        }
+
         const result = await api.createContent(selectedCollection, {
-          frontmatter: {
-            title,
-            pubDate: new Date().toISOString().split("T")[0],
-            draft: true,
-          },
+          frontmatter,
           body: "",
         });
 
@@ -444,7 +489,7 @@ export function App({ apiBase }: AppProps): React.ReactElement {
         setIsCreatingContent(false);
       }
     },
-    [api, selectedCollection, refreshContent]
+    [api, selectedCollection, currentCollection?.schema, refreshContent]
   );
 
   const handlePreview = useCallback(() => {
@@ -454,10 +499,16 @@ export function App({ apiBase }: AppProps): React.ReactElement {
     const url = generatePreviewUrl(
       currentCollection.previewUrl,
       selectedContentId,
-      currentContent.frontmatter
+      currentContent.frontmatter,
+      config?.trailingSlash
     );
     window.open(url, "_blank");
-  }, [currentCollection, selectedContentId, currentContent]);
+  }, [
+    currentCollection,
+    selectedContentId,
+    currentContent,
+    config?.trailingSlash,
+  ]);
 
   const handleToggleDraft = useCallback(() => {
     if (!currentContent) return;
@@ -554,8 +605,8 @@ export function App({ apiBase }: AppProps): React.ReactElement {
         label: "New content",
         keys: "n",
         alt: true,
-        handler: handleOpenCreateModal,
-        enabled: !!selectedCollection,
+        handler: handleNewContentShortcut,
+        enabled: true,
       },
       {
         key: "preview",
@@ -647,6 +698,14 @@ export function App({ apiBase }: AppProps): React.ReactElement {
         isSaving={isSavingBeforeSwitch}
       />
 
+      <SelectCollectionModal
+        isOpen={showSelectCollectionModal}
+        onClose={() => setShowSelectCollectionModal(false)}
+        onSelect={handleSelectCollectionForCreate}
+        collections={collections}
+        isLoading={collectionsLoading}
+      />
+
       <ConfigPanel
         config={config}
         collections={collections}
@@ -667,32 +726,21 @@ export function App({ apiBase }: AppProps): React.ReactElement {
         versionHistoryEnabled={!!currentContent}
         onKeyboardShortcuts={toggleHelp}
         onSettings={() => setShowConfigPanel(true)}
+        onNewContent={handleNewContentShortcut}
       />
 
       {/* Secondary Header - Content Actions Bar */}
       {currentContent && (
         <div className="wn-content-bar">
-          {/* Left: Content info and image strategy */}
+          {/* Left: Content title */}
           <div className="wn-content-bar-left">
-            <span className="wn-content-bar-title">
-              {String(currentContent.frontmatter.title ?? currentContent.id)}
-            </span>
             <span
-              className={`wn-content-bar-strategy wn-content-bar-strategy--${
-                imageStrategy === "colocated"
-                  ? "colocated"
-                  : imageStrategy === "public"
-                    ? "public"
-                    : "custom"
-              }`}
-              title={`Image storage: ${imageStrategy}`}
-            >
-              {imageStrategy === "public" ? (
-                <FolderOpen size={12} />
-              ) : (
-                <Image size={12} />
+              className="wn-content-bar-title"
+              title={String(
+                currentContent.frontmatter.title ?? currentContent.id
               )}
-              {imageStrategy}
+            >
+              {String(currentContent.frontmatter.title ?? currentContent.id)}
             </span>
           </div>
 
@@ -706,6 +754,7 @@ export function App({ apiBase }: AppProps): React.ReactElement {
               onToggle={() => setAutosaveEnabled(!autosaveEnabled)}
               announce={announce}
             />
+            <div className="wn-content-bar-separator" aria-hidden="true" />
             <button
               className={`wn-btn-secondary ${
                 currentContent.frontmatter.draft
@@ -718,15 +767,14 @@ export function App({ apiBase }: AppProps): React.ReactElement {
                   ? "Publish this content"
                   : "Set as draft"
               }
-              style={{ fontSize: "0.75rem" }}
             >
               {currentContent.frontmatter.draft ? (
                 <>
-                  <FileEdit size={12} /> Draft
+                  <FileEdit size={14} /> Draft
                 </>
               ) : (
                 <>
-                  <CheckCircle size={12} /> Published
+                  <CheckCircle size={14} /> Published
                 </>
               )}
             </button>
@@ -737,22 +785,25 @@ export function App({ apiBase }: AppProps): React.ReactElement {
                   href={generatePreviewUrl(
                     currentCollection.previewUrl,
                     selectedContentId,
-                    currentContent.frontmatter
+                    currentContent.frontmatter,
+                    config?.trailingSlash
                   )}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="wn-btn-secondary"
-                  style={{ fontSize: "0.75rem" }}
+                  className="wn-btn-secondary wn-btn-preview"
+                  title="Preview in new tab"
                 >
+                  <ExternalLink size={14} />
                   Preview
                 </a>
               )}
+            <div className="wn-content-bar-separator" aria-hidden="true" />
             <button
               className="wn-btn-primary"
               onClick={handleSave}
               disabled={!hasUnsavedChanges || saving}
-              style={{ fontSize: "0.75rem" }}
             >
+              <Save size={14} />
               {saving ? "Saving..." : "Save"}
             </button>
           </div>
@@ -816,7 +867,7 @@ export function App({ apiBase }: AppProps): React.ReactElement {
               />
             </div>
           ) : (
-            <EditorEmpty />
+            <EditorEmpty onNewContent={handleNewContentShortcut} />
           )}
         </main>
 

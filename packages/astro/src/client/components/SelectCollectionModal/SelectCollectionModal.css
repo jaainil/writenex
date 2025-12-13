@@ -1,0 +1,308 @@
+/**
+ * @fileoverview SelectCollectionModal styles
+ *
+ * Modal styling for collection selection dialog.
+ */
+
+/* ============================================================================
+   MODAL OVERLAY
+   ============================================================================ */
+
+.wn-select-collection-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: var(--wn-z-modal);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--wn-backdrop);
+  animation: wn-select-collection-fadeIn var(--wn-transition-fast) ease-out;
+}
+
+@keyframes wn-select-collection-fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* ============================================================================
+   MODAL CONTAINER
+   ============================================================================ */
+
+.wn-select-collection-modal {
+  width: 100%;
+  max-width: var(--wn-modal-sm);
+  max-height: 80vh;
+  overflow: hidden;
+  border-radius: var(--wn-radius-lg);
+  border: 1px solid var(--wn-zinc-700);
+  background-color: var(--wn-zinc-900);
+  display: flex;
+  flex-direction: column;
+  animation: wn-select-collection-zoomIn var(--wn-transition-fast) ease-out;
+}
+
+@keyframes wn-select-collection-zoomIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95) translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+/* ============================================================================
+   MODAL HEADER
+   ============================================================================ */
+
+.wn-select-collection-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--wn-space-5) var(--wn-space-6);
+  border-bottom: 1px solid var(--wn-zinc-700);
+  flex-shrink: 0;
+}
+
+.wn-select-collection-header-content {
+  display: flex;
+  align-items: center;
+  gap: var(--wn-space-4);
+}
+
+.wn-select-collection-icon {
+  color: var(--wn-brand-500);
+}
+
+.wn-select-collection-title {
+  font-size: var(--wn-font-md);
+  font-weight: 600;
+  color: var(--wn-zinc-50);
+  margin: 0;
+}
+
+.wn-select-collection-close {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--wn-icon-btn-md);
+  height: var(--wn-icon-btn-md);
+  padding: 0;
+  border: none;
+  border-radius: var(--wn-radius-md);
+  background-color: transparent;
+  color: var(--wn-zinc-400);
+  cursor: pointer;
+  transition:
+    background-color var(--wn-transition-fast),
+    color var(--wn-transition-fast);
+}
+
+.wn-select-collection-close:hover {
+  background-color: var(--wn-overlay-10);
+  color: var(--wn-zinc-50);
+}
+
+/* ============================================================================
+   MODAL BODY
+   ============================================================================ */
+
+.wn-select-collection-body {
+  padding: var(--wn-space-5) var(--wn-space-6);
+  flex: 1;
+  overflow-y: auto;
+}
+
+.wn-select-collection-hint {
+  font-size: var(--wn-font-base);
+  color: var(--wn-zinc-500);
+  margin: 0 0 var(--wn-space-5) 0;
+}
+
+/* Collection list */
+.wn-select-collection-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--wn-space-1);
+}
+
+.wn-select-collection-item {
+  display: flex;
+  align-items: center;
+  gap: var(--wn-space-4);
+  width: 100%;
+  padding: var(--wn-space-4) var(--wn-space-5);
+  border-radius: var(--wn-radius-md);
+  border: 1px solid transparent;
+  background-color: transparent;
+  color: var(--wn-zinc-400);
+  font-size: var(--wn-font-base);
+  text-align: left;
+  cursor: pointer;
+  transition: all var(--wn-transition-fast) ease;
+}
+
+.wn-select-collection-item:hover {
+  background-color: var(--wn-overlay-5);
+  color: var(--wn-zinc-50);
+}
+
+.wn-select-collection-item--focused {
+  background-color: var(--wn-brand-alpha-10);
+  border-color: var(--wn-brand-alpha-30);
+  color: var(--wn-brand-400);
+}
+
+.wn-select-collection-item-name {
+  flex: 1;
+  font-weight: 500;
+}
+
+.wn-select-collection-item-count {
+  font-size: var(--wn-font-xs);
+  color: var(--wn-zinc-500);
+}
+
+.wn-select-collection-item--focused .wn-select-collection-item-count {
+  color: var(--wn-brand-400);
+  opacity: 0.7;
+}
+
+.wn-select-collection-item-arrow {
+  opacity: 0;
+  transition: opacity var(--wn-transition-fast);
+}
+
+.wn-select-collection-item:hover .wn-select-collection-item-arrow,
+.wn-select-collection-item--focused .wn-select-collection-item-arrow {
+  opacity: 1;
+}
+
+/* Loading & Empty states */
+.wn-select-collection-loading,
+.wn-select-collection-empty {
+  padding: var(--wn-space-8);
+  text-align: center;
+  font-size: var(--wn-font-base);
+  color: var(--wn-zinc-500);
+}
+
+/* ============================================================================
+   MODAL FOOTER
+   ============================================================================ */
+
+.wn-select-collection-footer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--wn-space-7);
+  padding: var(--wn-space-4) var(--wn-space-6);
+  border-top: 1px solid var(--wn-zinc-700);
+  background-color: var(--wn-overlay-light-10);
+  flex-shrink: 0;
+}
+
+.wn-select-collection-shortcut {
+  display: flex;
+  align-items: center;
+  gap: var(--wn-space-1);
+  font-size: var(--wn-font-xs);
+  color: var(--wn-zinc-500);
+}
+
+.wn-select-collection-shortcut kbd {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 1.25rem;
+  height: 1.125rem;
+  padding: 0 var(--wn-space-1);
+  background-color: var(--wn-zinc-800);
+  border: 1px solid var(--wn-zinc-700);
+  border-radius: var(--wn-radius-sm);
+  font-family: inherit;
+  font-size: var(--wn-font-xs);
+  font-weight: 500;
+  color: var(--wn-zinc-400);
+}
+
+/* ============================================================================
+   LIGHT MODE OVERRIDES
+   ============================================================================ */
+
+.wn-light .wn-select-collection-overlay {
+  background-color: var(--wn-backdrop-light);
+}
+
+.wn-light .wn-select-collection-modal {
+  border-color: var(--wn-zinc-200);
+  background-color: #fff;
+}
+
+.wn-light .wn-select-collection-header {
+  border-bottom-color: var(--wn-zinc-200);
+}
+
+.wn-light .wn-select-collection-title {
+  color: var(--wn-zinc-900);
+}
+
+.wn-light .wn-select-collection-close {
+  color: var(--wn-zinc-500);
+}
+
+.wn-light .wn-select-collection-close:hover {
+  background-color: var(--wn-overlay-light-5);
+  color: var(--wn-zinc-900);
+}
+
+.wn-light .wn-select-collection-hint {
+  color: var(--wn-zinc-500);
+}
+
+.wn-light .wn-select-collection-item {
+  color: var(--wn-zinc-500);
+}
+
+.wn-light .wn-select-collection-item:hover {
+  background-color: var(--wn-overlay-light-5);
+  color: var(--wn-zinc-900);
+}
+
+.wn-light .wn-select-collection-item--focused {
+  background-color: var(--wn-brand-alpha-10);
+  border-color: var(--wn-brand-alpha-30);
+  color: var(--wn-brand-600);
+}
+
+.wn-light .wn-select-collection-item-count {
+  color: var(--wn-zinc-400);
+}
+
+.wn-light .wn-select-collection-item--focused .wn-select-collection-item-count {
+  color: var(--wn-brand-600);
+}
+
+.wn-light .wn-select-collection-loading,
+.wn-light .wn-select-collection-empty {
+  color: var(--wn-zinc-500);
+}
+
+.wn-light .wn-select-collection-footer {
+  border-top-color: var(--wn-zinc-200);
+  background-color: var(--wn-zinc-50);
+}
+
+.wn-light .wn-select-collection-shortcut kbd {
+  background-color: #fff;
+  border-color: var(--wn-zinc-200);
+  color: var(--wn-zinc-600);
+}

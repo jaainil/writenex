@@ -28,6 +28,8 @@ export interface MiddlewareContext {
   projectRoot: string;
   /** Resolved Writenex configuration */
   config: Required<WritenexConfig>;
+  /** Astro trailingSlash setting for preview URLs */
+  trailingSlash: "always" | "never" | "ignore";
 }
 
 /**

@@ -23,27 +23,27 @@
   position: absolute;
   top: 0;
   right: 0;
-  z-index: 50;
+  z-index: var(--wn-z-modal);
   background-color: var(--wn-zinc-900);
   border: 1px solid var(--wn-zinc-700);
   border-top: none;
   border-right: none;
-  border-bottom-left-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-  padding: 12px;
+  border-bottom-left-radius: var(--wn-radius-lg);
+  box-shadow: var(--wn-shadow-md);
+  padding: var(--wn-space-4);
 }
 
 .wn-search-panel-content {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: var(--wn-space-3);
 }
 
 /* Search row */
 .wn-search-row {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: var(--wn-space-3);
 }
 
 /* Input wrapper */
@@ -55,16 +55,17 @@
 /* Search input */
 .wn-search-input {
   width: 180px;
-  padding: 6px 28px 6px 10px;
-  font-size: 13px;
+  padding: var(--wn-space-2) var(--wn-icon-btn-md) var(--wn-space-2)
+    var(--wn-space-3);
+  font-size: var(--wn-font-sm);
   color: var(--wn-zinc-100);
-  border-radius: 4px;
+  border-radius: var(--wn-radius-sm);
   outline: none;
   box-shadow: none;
   -webkit-appearance: none;
   -moz-appearance: none;
   appearance: none;
-  transition: border-color 0.15s;
+  transition: border-color var(--wn-transition-fast);
 }
 
 .wn-search-input::placeholder {
@@ -72,7 +73,7 @@
 }
 
 .wn-search-input:focus {
-  border-color: var(--wn-blue-500);
+  border-color: var(--wn-brand-500);
   outline: none;
   box-shadow: none;
 }
@@ -91,7 +92,7 @@
 .wn-search-clear {
   position: absolute;
   top: 50%;
-  right: 6px;
+  right: var(--wn-space-2);
   transform: translateY(-50%);
   display: flex;
   align-items: center;
@@ -103,10 +104,10 @@
   border: none;
   color: var(--wn-zinc-500);
   cursor: pointer;
-  border-radius: 2px;
+  border-radius: var(--wn-radius-sm);
   transition:
-    color 0.15s,
-    background-color 0.15s;
+    color var(--wn-transition-fast),
+    background-color var(--wn-transition-fast);
 }
 
 .wn-search-clear:hover {
@@ -117,24 +118,24 @@
 /* Search options (toggle buttons) */
 .wn-search-options {
   display: flex;
-  gap: 2px;
+  gap: var(--wn-space-1);
 }
 
 .wn-search-option {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 28px;
-  height: 28px;
+  width: var(--wn-icon-btn-md);
+  height: var(--wn-icon-btn-md);
   padding: 0;
   background: none;
   border: none;
   color: var(--wn-zinc-500);
   cursor: pointer;
-  border-radius: 4px;
+  border-radius: var(--wn-radius-sm);
   transition:
-    color 0.15s,
-    background-color 0.15s;
+    color var(--wn-transition-fast),
+    background-color var(--wn-transition-fast);
 }
 
 .wn-search-option:hover {
@@ -143,20 +144,20 @@
 }
 
 .wn-search-option--active {
-  color: var(--wn-blue-400);
-  background-color: rgba(59, 130, 246, 0.15);
+  color: var(--wn-brand-400);
+  background-color: var(--wn-brand-alpha-15);
 }
 
 .wn-search-option--active:hover {
-  color: var(--wn-blue-400);
-  background-color: rgba(59, 130, 246, 0.25);
+  color: var(--wn-brand-400);
+  background-color: var(--wn-brand-alpha-20);
 }
 
 /* Match counter */
 .wn-search-counter {
   min-width: 70px;
   text-align: center;
-  font-size: 12px;
+  font-size: var(--wn-font-xs);
   color: var(--wn-zinc-500);
   white-space: nowrap;
 }
@@ -164,24 +165,24 @@
 /* Navigation buttons */
 .wn-search-nav {
   display: flex;
-  gap: 2px;
+  gap: var(--wn-space-1);
 }
 
 .wn-search-nav-btn {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 28px;
-  height: 28px;
+  width: var(--wn-icon-btn-md);
+  height: var(--wn-icon-btn-md);
   padding: 0;
   background: none;
   border: none;
   color: var(--wn-zinc-400);
   cursor: pointer;
-  border-radius: 4px;
+  border-radius: var(--wn-radius-sm);
   transition:
-    color 0.15s,
-    background-color 0.15s;
+    color var(--wn-transition-fast),
+    background-color var(--wn-transition-fast);
 }
 
 .wn-search-nav-btn:hover:not(:disabled) {
@@ -205,17 +206,17 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 28px;
-  height: 28px;
+  width: var(--wn-icon-btn-md);
+  height: var(--wn-icon-btn-md);
   padding: 0;
   background: none;
   border: none;
   color: var(--wn-zinc-400);
   cursor: pointer;
-  border-radius: 4px;
+  border-radius: var(--wn-radius-sm);
   transition:
-    color 0.15s,
-    background-color 0.15s;
+    color var(--wn-transition-fast),
+    background-color var(--wn-transition-fast);
 }
 
 .wn-search-action-btn:hover:not(:disabled) {
@@ -234,66 +235,66 @@
 
 .wn-light .wn-search-panel {
   background-color: #fff;
-  border-color: #e4e4e7;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  border-color: var(--wn-zinc-200);
+  box-shadow: 0 4px 12px var(--wn-overlay-light-10);
 }
 
 .wn-light .wn-search-input {
-  color: #18181b;
-  background-color: #fafafa;
-  border-color: #e4e4e7;
+  color: var(--wn-zinc-900);
+  background-color: var(--wn-zinc-50);
+  border-color: var(--wn-zinc-200);
 }
 
 .wn-light .wn-search-input::placeholder {
-  color: #a1a1aa;
+  color: var(--wn-zinc-400);
 }
 
 .wn-light .wn-search-clear {
-  color: #a1a1aa;
+  color: var(--wn-zinc-400);
 }
 
 .wn-light .wn-search-clear:hover {
-  color: #18181b;
-  background-color: #e4e4e7;
+  color: var(--wn-zinc-900);
+  background-color: var(--wn-zinc-200);
 }
 
 .wn-light .wn-search-option {
-  color: #a1a1aa;
+  color: var(--wn-zinc-400);
 }
 
 .wn-light .wn-search-option:hover {
-  color: #18181b;
-  background-color: #f4f4f5;
+  color: var(--wn-zinc-900);
+  background-color: var(--wn-zinc-100);
 }
 
 .wn-light .wn-search-option--active {
-  color: #2563eb;
-  background-color: rgba(37, 99, 235, 0.1);
+  color: var(--wn-brand-600);
+  background-color: var(--wn-brand-alpha-10);
 }
 
 .wn-light .wn-search-option--active:hover {
-  color: #2563eb;
-  background-color: rgba(37, 99, 235, 0.15);
+  color: var(--wn-brand-600);
+  background-color: var(--wn-brand-alpha-15);
 }
 
 .wn-light .wn-search-counter {
-  color: #71717a;
+  color: var(--wn-zinc-500);
 }
 
 .wn-light .wn-search-nav-btn {
-  color: #71717a;
+  color: var(--wn-zinc-500);
 }
 
 .wn-light .wn-search-nav-btn:hover:not(:disabled) {
-  color: #18181b;
-  background-color: #f4f4f5;
+  color: var(--wn-zinc-900);
+  background-color: var(--wn-zinc-100);
 }
 
 .wn-light .wn-search-action-btn {
-  color: #71717a;
+  color: var(--wn-zinc-500);
 }
 
 .wn-light .wn-search-action-btn:hover:not(:disabled) {
-  color: #18181b;
-  background-color: #f4f4f5;
+  color: var(--wn-zinc-900);
+  background-color: var(--wn-zinc-100);
 }

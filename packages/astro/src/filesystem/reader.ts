@@ -310,11 +310,15 @@ export async function readCollection(
 export function toContentSummary(item: ContentItem): ContentSummary {
   const { id, path, frontmatter, body } = item;
 
+  // Support both pubDate and publishDate naming conventions
+  const dateValue =
+    frontmatter.pubDate ?? frontmatter.publishDate ?? frontmatter.date;
+
   return {
     id,
     path,
     title: String(frontmatter.title ?? id),
-    pubDate: frontmatter.pubDate ? String(frontmatter.pubDate) : undefined,
+    pubDate: dateValue ? String(dateValue) : undefined,
     draft: frontmatter.draft === true,
     excerpt: generateExcerpt(body),
   };

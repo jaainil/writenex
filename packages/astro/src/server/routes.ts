@@ -221,14 +221,16 @@ export function createApiRouter(
 /**
  * GET /api/config - Get current configuration
  *
- * Returns the current Writenex configuration including image settings.
+ * Returns the current Writenex configuration including image settings
+ * and Astro's trailingSlash setting for preview URLs.
  */
 const handleGetConfig: RouteHandler = async (_req, res, _params, context) => {
-  const { config } = context;
+  const { config, trailingSlash } = context;
 
   sendJson(res, {
     images: config.images,
     editor: config.editor,
+    trailingSlash,
   });
 };
 

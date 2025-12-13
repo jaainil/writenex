@@ -9,7 +9,7 @@
  */
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import { FileText } from "lucide-react";
+import { FileText, Plus } from "lucide-react";
 import {
   MDXEditor,
   headingsPlugin,
@@ -402,9 +402,19 @@ export function EditorLoading(): React.ReactElement {
 }
 
 /**
+ * Props for EditorEmpty component
+ */
+interface EditorEmptyProps {
+  /** Callback when new content button is clicked */
+  onNewContent?: () => void;
+}
+
+/**
  * Empty state when no content is selected
  */
-export function EditorEmpty(): React.ReactElement {
+export function EditorEmpty({
+  onNewContent,
+}: EditorEmptyProps): React.ReactElement {
   return (
     <div className="wn-editor-empty">
       <div className="wn-editor-empty-icon">
@@ -415,6 +425,18 @@ export function EditorEmpty(): React.ReactElement {
         Choose a collection and content item from the sidebar, or create new
         content.
       </p>
+      <button className="wn-editor-empty-btn" onClick={onNewContent}>
+        <Plus size={16} />
+        New Content
+      </button>
+      <div className="wn-editor-empty-shortcuts">
+        <span className="wn-editor-empty-shortcut">
+          <kbd>Alt</kbd> + <kbd>N</kbd> New content
+        </span>
+        <span className="wn-editor-empty-shortcut">
+          <kbd>Ctrl</kbd> + <kbd>/</kbd> Keyboard shortcuts
+        </span>
+      </div>
     </div>
   );
 }

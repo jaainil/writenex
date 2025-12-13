@@ -11,11 +11,11 @@
    ============================================================================ */
 
 ::highlight(MdxSearch) {
-  background-color: rgba(253, 224, 71, 0.25); /* yellow-300 with opacity */
+  background-color: var(--wn-highlight-alpha-25);
 }
 
 ::highlight(MdxFocusSearch) {
-  background-color: #fde047; /* yellow-300 */
+  background-color: var(--wn-highlight);
   color: #000000;
 }
 
@@ -29,14 +29,14 @@
   flex: 1;
   min-width: 0;
   height: 100%;
-  background-color: #18181b; /* zinc-900 */
+  background-color: var(--wn-zinc-900);
 }
 
 .wn-editor-content {
   flex: 1;
   overflow: auto;
-  background-color: #18181b; /* zinc-900 */
-  padding: 0.5rem 1rem;
+  background-color: var(--wn-zinc-900);
+  padding: var(--wn-space-3) var(--wn-space-5);
 }
 
 .wn-editor-wrapper {
@@ -51,28 +51,28 @@
 /* Base MDXEditor variables */
 .mdxeditor {
   /* Background colors */
-  --baseBg: #18181b; /* zinc-900 */
-  --baseBgSubtle: #27272a; /* zinc-800 */
-  --baseBgHover: rgba(255, 255, 255, 0.1);
-  --baseBgActive: rgba(255, 255, 255, 0.15);
-  --basePageBg: #09090b; /* zinc-950 */
+  --baseBg: var(--wn-zinc-900);
+  --baseBgSubtle: var(--wn-zinc-800);
+  --baseBgHover: var(--wn-overlay-10);
+  --baseBgActive: var(--wn-overlay-15);
+  --basePageBg: var(--wn-zinc-950);
 
   /* Border colors */
-  --baseBorder: #3f3f46; /* zinc-700 */
-  --baseBorderSubtle: #52525b; /* zinc-600 */
+  --baseBorder: var(--wn-zinc-700);
+  --baseBorderSubtle: var(--wn-zinc-600);
 
   /* Text colors */
-  --baseText: #a1a1aa; /* zinc-400 */
-  --baseTextContrast: #d4d4d8; /* zinc-300 - optimized for reading */
-  --baseTextMuted: #71717a; /* zinc-500 */
-  --baseTextSubtle: #52525b; /* zinc-600 */
+  --baseText: var(--wn-zinc-400);
+  --baseTextContrast: var(--wn-zinc-300);
+  --baseTextMuted: var(--wn-zinc-500);
+  --baseTextSubtle: var(--wn-zinc-600);
 
   /* Accent colors */
-  --accentColor: #5c7cff; /* brand blue */
-  --accentColorHover: rgba(92, 124, 255, 0.2);
+  --accentColor: var(--wn-brand-400);
+  --accentColorHover: var(--wn-brand-alpha-20);
 
   /* Selection */
-  --selectionBg: rgba(99, 102, 241, 0.3);
+  --selectionBg: var(--wn-selection);
 
   /* Font */
   --font-body:
@@ -107,16 +107,18 @@
 
 /* Prose base styling */
 .mdxeditor .prose {
-  max-width: none !important;
-  color: #e2e8f0 !important; /* slate-200 - body text */
-  font-size: 1rem !important;
+  max-width: 75ch !important; /* optimal reading width ~65-75 characters */
+  margin-left: auto !important;
+  margin-right: auto !important;
+  color: var(--wn-zinc-200) !important; /* body text */
+  font-size: var(--wn-font-prose) !important; /* 15-16px fluid */
   line-height: 1.75 !important;
 }
 
 /* Headings - brighter color, proper spacing */
 .mdxeditor .prose h1 {
-  color: #fafafa !important;
-  font-size: 2.25rem !important;
+  color: var(--wn-zinc-50) !important;
+  font-size: var(--wn-font-h1) !important; /* 28-36px fluid */
   font-weight: 700 !important;
   line-height: 1.2 !important;
   margin-top: 0 !important;
@@ -124,8 +126,8 @@
 }
 
 .mdxeditor .prose h2 {
-  color: #fafafa !important;
-  font-size: 1.5rem !important;
+  color: var(--wn-zinc-50) !important;
+  font-size: var(--wn-font-h2) !important; /* 20-24px fluid */
   font-weight: 600 !important;
   line-height: 1.3 !important;
   margin-top: 1.5rem !important;
@@ -133,40 +135,61 @@
 }
 
 .mdxeditor .prose h3 {
-  color: #fafafa !important;
-  font-size: 1.25rem !important;
+  color: var(--wn-zinc-50) !important;
+  font-size: var(--wn-font-h3) !important; /* 18-20px fluid */
   font-weight: 600 !important;
   line-height: 1.4 !important;
   margin-top: 1.25rem !important;
   margin-bottom: 0.5rem !important;
 }
 
-.mdxeditor .prose h4,
-.mdxeditor .prose h5,
-.mdxeditor .prose h6 {
-  color: #fafafa !important;
+.mdxeditor .prose h4 {
+  color: var(--wn-zinc-50) !important;
+  font-size: var(--wn-font-h4) !important; /* 16-18px fluid */
   font-weight: 600 !important;
   line-height: 1.4 !important;
   margin-top: 1rem !important;
   margin-bottom: 0.5rem !important;
 }
 
+.mdxeditor .prose h5 {
+  color: var(--wn-zinc-50) !important;
+  font-size: var(--wn-font-h5) !important; /* 15-16px, same as prose */
+  font-weight: 600 !important;
+  line-height: 1.4 !important;
+  margin-top: 1rem !important;
+  margin-bottom: 0.5rem !important;
+}
+
+.mdxeditor .prose h6 {
+  color: var(
+    --wn-zinc-300
+  ) !important; /* slightly muted for visual hierarchy */
+  font-size: var(--wn-font-h6) !important; /* 14px */
+  font-weight: 600 !important;
+  line-height: 1.4 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.05em !important;
+  margin-top: 1rem !important;
+  margin-bottom: 0.5rem !important;
+}
+
 /* Paragraphs */
 .mdxeditor .prose p {
-  color: #e2e8f0 !important;
+  color: var(--wn-zinc-200) !important;
   margin-top: 0 !important;
   margin-bottom: 1rem !important;
 }
 
 /* Strong/Bold text */
 .mdxeditor .prose strong {
-  color: #fafafa !important;
+  color: var(--wn-zinc-50) !important;
   font-weight: 600 !important;
 }
 
 /* Emphasis/Italic text */
 .mdxeditor .prose em {
-  color: #e2e8f0 !important;
+  color: var(--wn-zinc-200) !important;
 }
 
 /* Lists */
@@ -178,22 +201,22 @@
 }
 
 .mdxeditor .prose li {
-  color: #e2e8f0 !important;
+  color: var(--wn-zinc-200) !important;
   margin-top: 0.25rem !important;
   margin-bottom: 0.25rem !important;
 }
 
 .mdxeditor .prose ul > li::marker {
-  color: #71717a !important;
+  color: var(--wn-zinc-500) !important;
 }
 
 .mdxeditor .prose ol > li::marker {
-  color: #a1a1aa !important;
+  color: var(--wn-zinc-400) !important;
 }
 
 /* Lead paragraph (first paragraph after heading) */
 .mdxeditor .prose [class*="lead"] {
-  color: #a1a1aa !important;
+  color: var(--wn-zinc-400) !important;
 }
 
 /* Placeholder text */
@@ -210,7 +233,7 @@
   background-color: var(--baseBgSubtle) !important;
   border-color: var(--baseBorder) !important;
   border-bottom: 1px solid var(--baseBorder) !important;
-  padding: 0.25rem 0.5rem !important;
+  padding: var(--wn-space-1) var(--wn-space-3) !important;
   gap: 0.125rem !important;
 }
 
@@ -227,7 +250,7 @@
 .mdxeditor [class*="_toolbarRoot_"] button,
 .mdxeditor [class*="_toolbar_"] button {
   color: var(--baseText) !important;
-  border-radius: 0.25rem !important;
+  border-radius: var(--wn-radius-sm) !important;
 }
 
 .mdxeditor [class*="_toolbarRoot_"] button:hover,
@@ -289,8 +312,8 @@
 
 /* Delete button hover (red) */
 .mdxeditor [class*="_codeMirrorToolbar_"] button:last-child:hover {
-  background-color: rgba(239, 68, 68, 0.2) !important;
-  color: #f87171 !important;
+  background-color: var(--wn-error-alpha-20) !important;
+  color: var(--wn-error-400) !important;
 }
 
 /* CodeMirror editor */
@@ -331,8 +354,8 @@
   background-color: var(--baseBorder) !important;
   color: var(--baseTextContrast) !important;
   border: 1px solid var(--baseBorderSubtle) !important;
-  border-radius: 0.25rem !important;
-  padding: 0.125rem 0.375rem !important;
+  border-radius: var(--wn-radius-sm) !important;
+  padding: var(--wn-space-1) var(--wn-space-2) !important;
   font-family: var(--font-mono) !important;
 }
 
@@ -379,8 +402,8 @@
   max-width: 100% !important;
   height: auto !important;
   display: block !important;
-  margin: 1rem 0 !important;
-  border-radius: 0.375rem !important;
+  margin: var(--wn-space-5) 0 !important;
+  border-radius: var(--wn-radius-md) !important;
 }
 
 /* Image wrapper from MDXEditor */
@@ -397,11 +420,11 @@
 /* Blockquote - matches Writenex Editor */
 .mdxeditor blockquote {
   border-left: 4px solid var(--accentColor) !important;
-  background-color: #18181b !important;
-  padding: 1rem !important;
-  margin: 1rem 0 !important;
-  border-radius: 0 0.375rem 0.375rem 0 !important;
-  color: #e4e4e7 !important;
+  background-color: var(--wn-zinc-900) !important;
+  padding: var(--wn-space-5) !important;
+  margin: var(--wn-space-5) 0 !important;
+  border-radius: 0 var(--wn-radius-md) var(--wn-radius-md) 0 !important;
+  color: var(--wn-zinc-200) !important;
 }
 
 .mdxeditor blockquote p {
@@ -452,22 +475,22 @@
 [class*="_selectContainer_"],
 [class*="_toolbarNodeKindSelectContainer_"],
 [class*="_toolbarButtonDropdownContainer_"] {
-  background-color: #27272a !important;
-  border: 1px solid #3f3f46 !important;
-  color: #d4d4d8 !important;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3) !important;
+  background-color: var(--wn-zinc-800) !important;
+  border: 1px solid var(--wn-zinc-700) !important;
+  color: var(--wn-zinc-300) !important;
+  box-shadow: 0 4px 6px -1px var(--wn-backdrop-light) !important;
 }
 
 [class*="_selectItem_"] {
-  color: #d4d4d8 !important;
+  color: var(--wn-zinc-300) !important;
   background-color: transparent !important;
 }
 
 [class*="_selectItem_"]:hover,
 [class*="_selectItem_"][data-highlighted],
 [class*="_selectItem_"][data-state="checked"] {
-  background-color: #3f3f46 !important;
-  color: #d4d4d8 !important;
+  background-color: var(--wn-zinc-700) !important;
+  color: var(--wn-zinc-300) !important;
 }
 
 /* ============================================================================
@@ -476,28 +499,28 @@
 
 [class*="_diffSourceToggle_"],
 [class*="_toolbarModeSwitch_"] {
-  background-color: #27272a !important;
-  border-color: #3f3f46 !important;
-  border-radius: 0.375rem !important;
+  background-color: var(--wn-zinc-800) !important;
+  border-color: var(--wn-zinc-700) !important;
+  border-radius: var(--wn-radius-md) !important;
 }
 
 [class*="_diffSourceToggle_"] button,
 [class*="_toolbarModeSwitch_"] button {
-  color: #a1a1aa !important;
-  padding: 0.25rem 0.5rem !important;
-  font-size: 0.75rem !important;
+  color: var(--wn-zinc-400) !important;
+  padding: var(--wn-space-1) var(--wn-space-3) !important;
+  font-size: var(--wn-font-xs) !important; /* 12px */
 }
 
 [class*="_diffSourceToggle_"] button:hover,
 [class*="_toolbarModeSwitch_"] button:hover {
-  background-color: #3f3f46 !important;
-  color: #d4d4d8 !important;
+  background-color: var(--wn-zinc-700) !important;
+  color: var(--wn-zinc-300) !important;
 }
 
 [class*="_diffSourceToggle_"] button[data-state="on"],
 [class*="_toolbarModeSwitch_"] button[data-state="on"] {
-  background-color: #3f3f46 !important;
-  color: #d4d4d8 !important;
+  background-color: var(--wn-zinc-700) !important;
+  color: var(--wn-zinc-300) !important;
 }
 
 /* ============================================================================
@@ -545,12 +568,12 @@
 /* Diff mode */
 .mdxeditor [class*="_diffEditor_"],
 .mdxeditor .cm-mergeView {
-  background-color: #0d1117 !important;
+  background-color: var(--wn-zinc-950) !important;
 }
 
 .mdxeditor [class*="_diffEditor_"] .cm-editor,
 .mdxeditor .cm-mergeView .cm-scroller {
-  background-color: #0d1117 !important;
+  background-color: var(--wn-zinc-950) !important;
 }
 
 .mdxeditor [class*="_diffEditor_"] .cm-content {
@@ -559,22 +582,22 @@
 
 .mdxeditor [class*="_diffEditor_"] .cm-gutters,
 .mdxeditor .cm-mergeView .cm-gutters {
-  background-color: #161b22 !important;
-  border-right: 1px solid #30363d !important;
-  color: #6e7681 !important;
+  background-color: var(--wn-zinc-900) !important;
+  border-right: 1px solid var(--wn-zinc-700) !important;
+  color: var(--wn-zinc-500) !important;
 }
 
 /* Diff highlighting */
 .mdxeditor .cm-changedLine {
-  background-color: rgba(46, 160, 67, 0.15) !important;
+  background-color: var(--wn-success-alpha-15) !important;
 }
 
 .mdxeditor .cm-changedText {
-  background-color: rgba(46, 160, 67, 0.4) !important;
+  background-color: var(--wn-success-alpha-40) !important;
 }
 
 .mdxeditor .cm-deletedChunk {
-  background-color: rgba(248, 81, 73, 0.15) !important;
+  background-color: var(--wn-error-alpha-15) !important;
 }
 
 /* ============================================================================
@@ -582,8 +605,8 @@
    ============================================================================ */
 
 .mdxeditor [data-radix-popper-content-wrapper] [class*="tooltipContent"] {
-  background-color: #fafafa !important;
-  color: #18181b !important;
+  background-color: var(--wn-zinc-50) !important;
+  color: var(--wn-zinc-900) !important;
 }
 
 /* ============================================================================
@@ -596,21 +619,21 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 0.75rem;
-  color: #71717a; /* zinc-500 */
+  gap: var(--wn-space-4);
+  color: var(--wn-zinc-500);
 }
 
 .wn-editor-loading-spinner {
-  width: 1.5rem;
-  height: 1.5rem;
-  border: 2px solid #3f3f46; /* zinc-700 */
-  border-top-color: #3b82f6; /* blue-500 */
-  border-radius: 50%;
+  width: var(--wn-icon-btn-sm);
+  height: var(--wn-icon-btn-sm);
+  border: 2px solid var(--wn-zinc-700);
+  border-top-color: var(--wn-brand-500);
+  border-radius: var(--wn-radius-full);
   animation: wn-spin 1s linear infinite;
 }
 
 .wn-editor-loading-text {
-  font-size: 0.875rem;
+  font-size: var(--wn-font-base); /* 14px */
 }
 
 @keyframes wn-spin {
@@ -629,25 +652,83 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 1rem;
-  padding: 2rem;
+  gap: var(--wn-space-5);
+  padding: var(--wn-space-8);
   text-align: center;
 }
 
 .wn-editor-empty-icon {
-  color: #52525b; /* zinc-600 */
+  color: var(--wn-zinc-600);
 }
 
 .wn-editor-empty-title {
-  font-size: 1.125rem;
+  font-size: var(--wn-font-lg); /* 18px */
   font-weight: 500;
-  color: #f4f4f5; /* zinc-100 */
+  color: var(--wn-zinc-100);
 }
 
 .wn-editor-empty-text {
-  max-width: 24rem;
-  font-size: 0.875rem;
-  color: #71717a; /* zinc-500 */
+  max-width: var(--wn-modal-sm);
+  font-size: var(--wn-font-base); /* 14px */
+  color: var(--wn-zinc-500);
+}
+
+.wn-editor-empty-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--wn-space-3);
+  margin-top: var(--wn-space-5);
+  padding: var(--wn-space-3) var(--wn-space-6);
+  background-color: var(--wn-brand-500);
+  border: none;
+  border-radius: var(--wn-radius-lg);
+  font-size: var(--wn-font-base); /* 14px */
+  font-weight: 500;
+  color: #fff;
+  cursor: pointer;
+  transition: background-color var(--wn-transition-fast) ease;
+}
+
+.wn-editor-empty-btn:hover {
+  background-color: var(--wn-brand-600);
+}
+
+.wn-editor-empty-btn:focus-visible {
+  outline: 2px solid var(--wn-brand-500);
+  outline-offset: 2px;
+}
+
+.wn-editor-empty-shortcuts {
+  display: flex;
+  flex-direction: column;
+  gap: var(--wn-space-3);
+  margin-top: var(--wn-space-7);
+  padding-top: var(--wn-space-7);
+  border-top: 1px solid var(--wn-zinc-700);
+}
+
+.wn-editor-empty-shortcut {
+  display: flex;
+  align-items: center;
+  gap: var(--wn-space-2);
+  font-size: var(--wn-font-xs); /* 12px */
+  color: var(--wn-zinc-500);
+}
+
+.wn-editor-empty-shortcut kbd {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: var(--wn-icon-btn-sm);
+  height: 1.375rem;
+  padding: 0 var(--wn-space-2);
+  background-color: var(--wn-zinc-800);
+  border: 1px solid var(--wn-zinc-700);
+  border-radius: var(--wn-radius-sm);
+  font-family: inherit;
+  font-size: var(--wn-font-xs); /* 12px - increased from 11px for readability */
+  font-weight: 500;
+  color: var(--wn-zinc-400);
 }
 
 /* ============================================================================
@@ -663,84 +744,99 @@
 }
 
 .wn-light .wn-editor-loading {
-  color: #71717a;
+  color: var(--wn-zinc-500);
 }
 
 .wn-light .wn-editor-loading-spinner {
-  border-color: #e4e4e7;
-  border-top-color: #3b82f6;
+  border-color: var(--wn-zinc-200);
+  border-top-color: var(--wn-brand-500);
 }
 
 .wn-light .wn-editor-empty-icon {
-  color: #a1a1aa;
+  color: var(--wn-zinc-400);
 }
 
 .wn-light .wn-editor-empty-title {
-  color: #18181b;
+  color: var(--wn-zinc-900);
 }
 
 .wn-light .wn-editor-empty-text {
-  color: #71717a;
+  color: var(--wn-zinc-500);
+}
+
+.wn-light .wn-editor-empty-shortcuts {
+  border-top-color: var(--wn-zinc-200);
+}
+
+.wn-light .wn-editor-empty-shortcut kbd {
+  background-color: var(--wn-zinc-100);
+  border-color: var(--wn-zinc-200);
+  color: var(--wn-zinc-600);
 }
 
 /* MDXEditor Light Mode */
 .wn-light .mdxeditor {
   --baseBg: #ffffff;
-  --baseBgSubtle: #fafafa;
-  --baseBgHover: rgba(0, 0, 0, 0.05);
-  --baseBgActive: rgba(0, 0, 0, 0.1);
-  --basePageBg: #f4f4f5;
-  --baseBorder: #e4e4e7;
-  --baseBorderSubtle: #d4d4d8;
-  --baseText: #71717a;
-  --baseTextContrast: #27272a;
-  --baseTextMuted: #a1a1aa;
-  --baseTextSubtle: #d4d4d8;
-  --accentColor: #2563eb;
-  --accentColorHover: rgba(37, 99, 235, 0.1);
-  --selectionBg: rgba(99, 102, 241, 0.2);
+  --baseBgSubtle: var(--wn-zinc-50);
+  --baseBgHover: var(--wn-overlay-light-5);
+  --baseBgActive: var(--wn-overlay-light-10);
+  --basePageBg: var(--wn-zinc-100);
+  --baseBorder: var(--wn-zinc-200);
+  --baseBorderSubtle: var(--wn-zinc-300);
+  --baseText: var(--wn-zinc-500);
+  --baseTextContrast: var(--wn-zinc-800);
+  --baseTextMuted: var(--wn-zinc-400);
+  --baseTextSubtle: var(--wn-zinc-300);
+  --accentColor: var(--wn-brand-600);
+  --accentColorHover: var(--wn-brand-alpha-10);
+  --selectionBg: var(--wn-selection-light);
 }
 
 .wn-light .mdxeditor .prose {
-  color: #374151 !important;
+  color: var(--wn-zinc-700) !important;
 }
 
 .wn-light .mdxeditor .prose h1,
 .wn-light .mdxeditor .prose h2,
 .wn-light .mdxeditor .prose h3,
 .wn-light .mdxeditor .prose h4,
-.wn-light .mdxeditor .prose h5,
+.wn-light .mdxeditor .prose h5 {
+  color: var(--wn-zinc-900) !important;
+}
+
 .wn-light .mdxeditor .prose h6 {
-  color: #18181b !important;
+  color: var(
+    --wn-zinc-600
+  ) !important; /* slightly muted for visual hierarchy in light mode */
 }
 
 .wn-light .mdxeditor .prose p,
 .wn-light .mdxeditor .prose li,
 .wn-light .mdxeditor .prose em {
-  color: #374151 !important;
+  color: var(--wn-zinc-700) !important;
 }
 
 .wn-light .mdxeditor .prose strong {
-  color: #18181b !important;
+  color: var(--wn-zinc-900) !important;
 }
 
 .wn-light .mdxeditor .prose ul > li::marker {
-  color: #a1a1aa !important;
+  color: var(--wn-zinc-400) !important;
 }
 
 .wn-light .mdxeditor .prose ol > li::marker {
-  color: #71717a !important;
+  color: var(--wn-zinc-500) !important;
 }
 
 .wn-light .mdxeditor blockquote {
-  background-color: #f4f4f5 !important;
-  color: #52525b !important;
+  background-color: var(--wn-zinc-100) !important;
+  color: var(--wn-zinc-600) !important;
 }
 
 .wn-light .mdxeditor code:not(pre code) {
-  background-color: #f4f4f5 !important;
-  border-color: #e4e4e7 !important;
-  color: #18181b !important;
+  background-color: var(--wn-zinc-100) !important;
+  border-color: var(--wn-zinc-200) !important;
+  color: var(--wn-zinc-900) !important;
 }
 
 /* Light mode dropdowns */
@@ -748,40 +844,40 @@
 .wn-light [class*="_toolbarNodeKindSelectContainer_"],
 .wn-light [class*="_toolbarButtonDropdownContainer_"] {
   background-color: #fff !important;
-  border-color: #e4e4e7 !important;
-  color: #27272a !important;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1) !important;
+  border-color: var(--wn-zinc-200) !important;
+  color: var(--wn-zinc-800) !important;
+  box-shadow: 0 4px 6px -1px var(--wn-overlay-light-10) !important;
 }
 
 .wn-light [class*="_selectItem_"] {
-  color: #27272a !important;
+  color: var(--wn-zinc-800) !important;
 }
 
 .wn-light [class*="_selectItem_"]:hover,
 .wn-light [class*="_selectItem_"][data-highlighted],
 .wn-light [class*="_selectItem_"][data-state="checked"] {
-  background-color: #f4f4f5 !important;
+  background-color: var(--wn-zinc-100) !important;
 }
 
 .wn-light [class*="_diffSourceToggle_"],
 .wn-light [class*="_toolbarModeSwitch_"] {
-  background-color: #fafafa !important;
-  border-color: #e4e4e7 !important;
+  background-color: var(--wn-zinc-50) !important;
+  border-color: var(--wn-zinc-200) !important;
 }
 
 .wn-light [class*="_diffSourceToggle_"] button,
 .wn-light [class*="_toolbarModeSwitch_"] button {
-  color: #71717a !important;
+  color: var(--wn-zinc-500) !important;
 }
 
 .wn-light [class*="_diffSourceToggle_"] button:hover,
 .wn-light [class*="_toolbarModeSwitch_"] button:hover {
-  background-color: #e4e4e7 !important;
-  color: #27272a !important;
+  background-color: var(--wn-zinc-200) !important;
+  color: var(--wn-zinc-800) !important;
 }
 
 .wn-light [class*="_diffSourceToggle_"] button[data-state="on"],
 .wn-light [class*="_toolbarModeSwitch_"] button[data-state="on"] {
-  background-color: #e4e4e7 !important;
-  color: #27272a !important;
+  background-color: var(--wn-zinc-200) !important;
+  color: var(--wn-zinc-800) !important;
 }

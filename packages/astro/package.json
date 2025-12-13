@@ -1,6 +1,6 @@
 {
   "name": "@writenex/astro",
-  "version": "0.2.4",
+  "version": "0.2.6",
   "description": "Visual editor for Astro content collections - WYSIWYG editing for your Astro site",
   "type": "module",
   "main": "./dist/index.js",
@@ -22,7 +22,6 @@
   ],
   "scripts": {
     "build": "tsup",
-    "build:client": "tsup --config tsup.client.config.ts",
     "prepublishOnly": "pnpm build",
     "type-check": "tsc --noEmit",
     "lint": "eslint src/"

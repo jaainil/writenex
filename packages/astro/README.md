@@ -22,32 +22,15 @@ Visual editor for Astro content collections - WYSIWYG editing for your Astro sit
 - **Production Safe** - Disabled by default in production builds
 - **Version History** - Automatic shadow copies with restore capability
 
-## Installation
-
-```bash
-# npm
-npm install @writenex/astro
-
-# pnpm
-pnpm add @writenex/astro
-
-# yarn
-yarn add @writenex/astro
-```
-
 ## Quick Start
 
-### 1. Add the integration
+### 1. Install the integration
 
-```typescript
-// astro.config.mjs
-import { defineConfig } from "astro/config";
-import writenex from "@writenex/astro";
-
-export default defineConfig({
-  integrations: [writenex()],
-});
+```bash
+npx astro add @writenex/astro
 ```
+
+This will install the package and automatically configure your `astro.config.mjs`.
 
 ### 2. Start your dev server
 
@@ -60,6 +43,33 @@ astro dev
 Visit `http://localhost:4321/_writenex` in your browser.
 
 That's it! Writenex will auto-discover your content collections and you can start editing.
+
+### Manual Installation
+
+If you prefer to install manually:
+
+```bash
+# npm
+npm install @writenex/astro
+
+# pnpm
+pnpm add @writenex/astro
+
+# yarn
+yarn add @writenex/astro
+```
+
+Then add the integration to your config:
+
+```typescript
+// astro.config.mjs
+import { defineConfig } from "astro/config";
+import writenex from "@writenex/astro";
+
+export default defineConfig({
+  integrations: [writenex()],
+});
+```
 
 ## Configuration
 

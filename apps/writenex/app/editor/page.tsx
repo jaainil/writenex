@@ -45,7 +45,7 @@ const MarkdownEditor = dynamic(
     ssr: false,
     loading: () => (
       <div className="flex h-full items-center justify-center">
-        <div className="h-8 w-8 animate-spin rounded-full border-4 border-zinc-200 border-t-blue-600" />
+        <div className="border-t-brand-500 h-8 w-8 animate-spin rounded-full border-4 border-zinc-200" />
       </div>
     ),
   }

@@ -224,16 +224,16 @@ function HeroSection(): React.ReactElement {
     <section className="px-4 pt-32 pb-20 sm:px-6 lg:px-8">
       <div className="mx-auto max-w-4xl text-center">
         {/* Badge */}
-        <div className="mb-6 inline-flex items-center gap-2 rounded-full bg-blue-50 px-3 py-1 text-sm font-medium text-blue-700 dark:bg-blue-900/30 dark:text-blue-300">
+        <div className="bg-brand-500/10 text-brand-600 dark:bg-brand-500/20 dark:text-brand-400 mb-6 inline-flex items-center gap-2 rounded-full px-3 py-1 text-sm font-medium">
           <Zap className="h-4 w-4" />
-          Free Forever • No Sign Up
+          No Sign Up Required
         </div>
 
         {/* Headline */}
         <h1 className="mb-6 text-4xl leading-tight font-bold text-zinc-900 sm:text-5xl lg:text-6xl dark:text-zinc-100">
           Write Markdown,
           <br />
-          <span className="tracking-wider text-blue-600 dark:text-blue-400">
+          <span className="text-brand-500 dark:text-brand-400 tracking-wider">
             Effortlessly
           </span>
         </h1>
@@ -247,7 +247,7 @@ function HeroSection(): React.ReactElement {
         {/* CTA */}
         <Link
           href="/editor"
-          className="inline-flex items-center gap-2 rounded-lg bg-blue-600 px-5 py-3 text-lg font-normal text-white transition-colors hover:bg-blue-700"
+          className="bg-brand-500 hover:bg-brand-600 inline-flex items-center gap-2 rounded-lg px-5 py-3 text-lg font-normal text-white transition-colors"
         >
           Start Writing Now
           <ArrowRight className="h-5 w-5" />
@@ -288,8 +288,8 @@ function FeaturesSection(): React.ReactElement {
               key={feature.title}
               className="rounded-xl border border-zinc-200 bg-white p-6 shadow-sm dark:border-zinc-700 dark:bg-zinc-900"
             >
-              <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-lg bg-blue-50 dark:bg-blue-900/30">
-                <feature.icon className="h-6 w-6 text-blue-600 dark:text-blue-400" />
+              <div className="bg-brand-500/10 dark:bg-brand-500/20 mb-4 flex h-12 w-12 items-center justify-center rounded-lg">
+                <feature.icon className="text-brand-500 dark:text-brand-400 h-6 w-6" />
               </div>
               <h3 className="mb-2 text-lg font-semibold text-zinc-900 dark:text-zinc-100">
                 {feature.title}
@@ -327,7 +327,7 @@ function CTASection(): React.ReactElement {
         </p>
         <Link
           href="/editor"
-          className="inline-flex items-center gap-2 rounded-lg bg-blue-600 px-5 py-3 text-lg font-normal text-white transition-colors hover:bg-blue-700"
+          className="bg-brand-500 hover:bg-brand-600 inline-flex items-center gap-2 rounded-lg px-5 py-3 text-lg font-normal text-white transition-colors"
         >
           Start Typing Now
           <ArrowRight className="h-5 w-5" />
@@ -366,13 +366,13 @@ function HowItWorksSection(): React.ReactElement {
             <div key={step.title} className="relative text-center">
               {/* Connector line (hidden on mobile, shown on md+) */}
               {index < steps.length - 1 && (
-                <div className="absolute top-12 left-[60%] hidden h-0.5 w-[80%] bg-linear-to-r from-blue-200 to-blue-100 md:block dark:from-blue-800 dark:to-blue-900" />
+                <div className="from-brand-500/30 to-brand-500/10 dark:from-brand-500/40 dark:to-brand-500/20 absolute top-12 left-[60%] hidden h-0.5 w-[80%] bg-linear-to-r md:block" />
               )}
 
               {/* Step icon */}
-              <div className="relative mx-auto mb-6 flex h-24 w-24 items-center justify-center rounded-2xl bg-blue-50 dark:bg-blue-900/30">
-                <step.icon className="h-10 w-10 text-blue-600 dark:text-blue-400" />
-                <span className="absolute -top-2 -right-2 flex h-8 w-8 items-center justify-center rounded-full bg-blue-600 text-sm font-bold text-white">
+              <div className="bg-brand-500/10 dark:bg-brand-500/20 relative mx-auto mb-6 flex h-24 w-24 items-center justify-center rounded-2xl">
+                <step.icon className="text-brand-500 dark:text-brand-400 h-10 w-10" />
+                <span className="bg-brand-500 absolute -top-2 -right-2 flex h-8 w-8 items-center justify-center rounded-full text-sm font-bold text-white">
                   {step.step}
                 </span>
               </div>
@@ -391,7 +391,7 @@ function HowItWorksSection(): React.ReactElement {
         <div className="mt-12 text-center">
           <Link
             href="/editor"
-            className="inline-flex items-center gap-2 rounded-lg bg-blue-600 px-5 py-3 text-lg font-normal text-white transition-colors hover:bg-blue-700"
+            className="bg-brand-500 hover:bg-brand-600 inline-flex items-center gap-2 rounded-lg px-5 py-3 text-lg font-normal text-white transition-colors"
           >
             Open Editor
             <ArrowRight className="h-5 w-5" />
@@ -453,7 +453,7 @@ function RelatedSection(): React.ReactElement {
             </div>
             <Link
               href="/astro"
-              className="inline-flex shrink-0 items-center gap-2 rounded-lg bg-purple-600 px-4 py-2 font-normal text-white transition-colors hover:bg-purple-700"
+              className="bg-brand-500 hover:bg-brand-600 inline-flex shrink-0 items-center gap-2 rounded-lg px-4 py-2 font-normal text-white transition-colors"
             >
               Learn More
               <ArrowRight className="h-4 w-4" />

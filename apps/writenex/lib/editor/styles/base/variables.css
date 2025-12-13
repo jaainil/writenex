@@ -1,32 +1,172 @@
 /**
  * CSS Custom Properties (Variables)
- * 
- * Defines the design tokens for the application including colors and
- * theme configuration. Uses CSS custom properties for runtime theming.
- * 
+ *
+ * Consolidated color system for Writenex Editor.
+ * All colors should reference these variables for consistency.
+ * Synced with @writenex/astro color palette.
+ *
+ * Color Philosophy:
+ * - Minimal palette: fewer colors = more consistency
+ * - Brand colors for primary actions and accents
+ * - Zinc neutrals for UI chrome
+ * - Semantic colors only for status indicators
+ * - Alpha variants for overlays and subtle backgrounds
+ *
  * Note: Font families are configured in layout.tsx using next/font
  * and globals.css @theme block.
  */
 
 :root {
-  --background: #f8fafc;
-  --foreground: #1e293b;
+  /* ==========================================================================
+     Writenex Brand Colors (Blue Palette)
+     Primary brand identity - use for CTAs, links, focus states, selections
+
+     Base RGB values for alpha generation:
+     - brand-500: #335dff = rgb(51, 93, 255)
+   ========================================================================== */
+
+  --wn-brand-rgb: 51 93 255;
+  --wn-brand-400: #5c7cff; /* Secondary/hover - lighter brand */
+  --wn-brand-500: #335dff; /* Primary brand - logo color */
+  --wn-brand-600: #2a4ecc; /* Pressed/active states */
+
+  /* Brand with alpha - derived from --wn-brand-rgb */
+  --wn-brand-alpha-10: rgb(var(--wn-brand-rgb) / 0.1);
+  --wn-brand-alpha-15: rgb(var(--wn-brand-rgb) / 0.15);
+  --wn-brand-alpha-20: rgb(var(--wn-brand-rgb) / 0.2);
+  --wn-brand-alpha-30: rgb(var(--wn-brand-rgb) / 0.3);
+
+  /* ==========================================================================
+     Neutral Colors (Zinc Palette)
+     UI chrome, backgrounds, borders, text
+   ========================================================================== */
+
+  --wn-zinc-50: #fafafa;
+  --wn-zinc-100: #f4f4f5;
+  --wn-zinc-150: #ececef;
+  --wn-zinc-200: #e4e4e7;
+  --wn-zinc-300: #d4d4d8;
+  --wn-zinc-400: #a1a1aa;
+  --wn-zinc-500: #71717a;
+  --wn-zinc-600: #52525b;
+  --wn-zinc-700: #3f3f46;
+  --wn-zinc-800: #27272a;
+  --wn-zinc-850: #1f1f23;
+  --wn-zinc-900: #18181b;
+  --wn-zinc-950: #09090b;
+
+  /* ==========================================================================
+     Semantic Colors (Status Indicators)
+     Status indicators - success, warning, error, info
+
+     Each color has:
+     - RGB base for alpha generation
+     - 400 shade (lighter, for dark mode text/icons)
+     - 500 shade (base)
+     - Alpha variants derived from RGB base
+   ========================================================================== */
+
+  /* Success (Emerald) - saved, published, added
+   Base: #10b981 = rgb(16, 185, 129) */
+  --wn-success-rgb: 16 185 129;
+  --wn-success-400: #34d399;
+  --wn-success-500: #10b981;
+  --wn-success-alpha-10: rgb(var(--wn-success-rgb) / 0.1);
+  --wn-success-alpha-15: rgb(var(--wn-success-rgb) / 0.15);
+  --wn-success-alpha-20: rgb(var(--wn-success-rgb) / 0.2);
+  --wn-success-alpha-30: rgb(var(--wn-success-rgb) / 0.3);
+  --wn-success-alpha-40: rgb(var(--wn-success-rgb) / 0.4);
+
+  /* Warning (Amber) - draft, pending, caution
+   Base: #f59e0b = rgb(245, 158, 11) */
+  --wn-warning-rgb: 245 158 11;
+  --wn-warning-400: #fbbf24;
+  --wn-warning-500: #f59e0b;
+  --wn-warning-alpha-10: rgb(var(--wn-warning-rgb) / 0.1);
+  --wn-warning-alpha-30: rgb(var(--wn-warning-rgb) / 0.3);
+  --wn-warning-alpha-40: rgb(var(--wn-warning-rgb) / 0.4);
+
+  /* Error (Red) - errors, destructive actions, removed
+   Base: #ef4444 = rgb(239, 68, 68) */
+  --wn-error-rgb: 239 68 68;
+  --wn-error-400: #f87171;
+  --wn-error-500: #ef4444;
+  --wn-error-600: #dc2626;
+  --wn-error-alpha-10: rgb(var(--wn-error-rgb) / 0.1);
+  --wn-error-alpha-15: rgb(var(--wn-error-rgb) / 0.15);
+  --wn-error-alpha-20: rgb(var(--wn-error-rgb) / 0.2);
+
+  /* Info (Violet) - labels, badges, metadata
+   Base: #8b5cf6 = rgb(139, 92, 246) */
+  --wn-info-rgb: 139 92 246;
+  --wn-info-400: #a78bfa;
+  --wn-info-500: #8b5cf6;
+  --wn-info-600: #7c3aed;
+  --wn-info-alpha-10: rgb(var(--wn-info-rgb) / 0.1);
+  --wn-info-alpha-15: rgb(var(--wn-info-rgb) / 0.15);
+  --wn-info-alpha-20: rgb(var(--wn-info-rgb) / 0.2);
+
+  /* ==========================================================================
+     Overlay & Backdrop Colors
+     For modal backdrops, hover states, subtle backgrounds
+   ========================================================================== */
+
+  /* Dark mode overlays (white-based) */
+  --wn-overlay-3: rgba(255, 255, 255, 0.03);
+  --wn-overlay-5: rgba(255, 255, 255, 0.05);
+  --wn-overlay-10: rgba(255, 255, 255, 0.1);
+  --wn-overlay-15: rgba(255, 255, 255, 0.15);
+
+  /* Light mode overlays (black-based) */
+  --wn-overlay-light-3: rgba(0, 0, 0, 0.03);
+  --wn-overlay-light-5: rgba(0, 0, 0, 0.05);
+  --wn-overlay-light-8: rgba(0, 0, 0, 0.08);
+  --wn-overlay-light-10: rgba(0, 0, 0, 0.1);
+  --wn-overlay-light-20: rgba(0, 0, 0, 0.2);
+  --wn-overlay-light-30: rgba(0, 0, 0, 0.3);
+
+  /* Modal/dialog backdrops */
+  --wn-backdrop: rgba(0, 0, 0, 0.7);
+  --wn-backdrop-light: rgba(0, 0, 0, 0.5);
+  --wn-backdrop-heavy: rgba(0, 0, 0, 0.8);
+
+  /* ==========================================================================
+     Special Purpose Colors
+     Specific use cases that don't fit other categories
+   ========================================================================== */
+
+  /* Search/highlight */
+  --wn-highlight: #fde047;
+  --wn-highlight-alpha-25: rgba(253, 224, 71, 0.25);
+
+  /* Selection */
+  --wn-selection: rgba(99, 102, 241, 0.3);
+  --wn-selection-light: rgba(99, 102, 241, 0.2);
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
+/* ==========================================================================
+   Tailwind Theme Mapping
+   Maps CSS variables to Tailwind color classes via @theme block
+   ========================================================================== */
 
-  /* Brand Color Overrides (Slate Blue #335DFF) */
-  --color-blue-50: #eef2ff;
-  --color-blue-100: #e0e7ff;
-  --color-blue-200: #c7d2fe;
-  --color-blue-300: #a5b4fc;
-  --color-blue-400: #818cf8;
-  --color-blue-500: #5c7cff;
-  --color-blue-600: #335dff; /* Brand Color */
-  --color-blue-700: #254edb;
-  --color-blue-800: #1e308a;
-  --color-blue-900: #172554;
-  --color-blue-950: #0f172a;
+@theme inline {
+  /* Brand colors - use: bg-brand-500, text-brand-400, etc. */
+  --color-brand-400: var(--wn-brand-400);
+  --color-brand-500: var(--wn-brand-500);
+  --color-brand-600: var(--wn-brand-600);
+
+  /* Semantic colors - use: bg-success-500, text-error-400, etc. */
+  --color-success-400: var(--wn-success-400);
+  --color-success-500: var(--wn-success-500);
+
+  --color-warning-400: var(--wn-warning-400);
+  --color-warning-500: var(--wn-warning-500);
+
+  --color-error-400: var(--wn-error-400);
+  --color-error-500: var(--wn-error-500);
+  --color-error-600: var(--wn-error-600);
+
+  --color-info-400: var(--wn-info-400);
+  --color-info-500: var(--wn-info-500);
+  --color-info-600: var(--wn-info-600);
 }

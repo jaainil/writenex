@@ -69,7 +69,7 @@ export function LandingHeader(): React.ReactElement {
             {/* CTA */}
             <Link
               href="/editor"
-              className="inline-flex items-center gap-2 rounded-lg bg-blue-600 px-4 py-2 text-sm font-normal text-white transition-colors hover:bg-blue-700"
+              className="bg-brand-500 hover:bg-brand-600 inline-flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-normal text-white transition-colors"
             >
               Open Editor
               <ArrowRight className="h-4 w-4" />

@@ -43,7 +43,7 @@ export default function NotFound(): React.ReactElement {
     <div className="flex min-h-screen items-center justify-center bg-white px-4 sm:px-6 lg:px-8 dark:bg-zinc-900">
       <div className="text-center">
         {/* 404 Number */}
-        <p className="mb-4 text-8xl font-bold text-blue-600 sm:text-9xl dark:text-blue-500">
+        <p className="text-brand-500 dark:text-brand-400 mb-4 text-8xl font-bold sm:text-9xl">
           404
         </p>
 
@@ -68,7 +68,7 @@ export default function NotFound(): React.ReactElement {
           </Link>
           <Link
             href="/editor"
-            className="inline-flex items-center gap-2 rounded-lg bg-blue-600 px-5 py-3 text-white transition-colors hover:bg-blue-700"
+            className="bg-brand-500 hover:bg-brand-600 inline-flex items-center gap-2 rounded-lg px-5 py-3 text-white transition-colors"
           >
             <PenLine className="h-4 w-4" />
             Open Editor

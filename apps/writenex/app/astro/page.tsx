@@ -142,6 +142,72 @@ const shortcuts = [
   { keys: "Escape", action: "Close modal" },
 ];
 
+/**
+ * Image strategies for the image strategies section.
+ */
+const imageStrategies = [
+  {
+    name: "Colocated",
+    description:
+      "Images stored alongside content files in a folder with the same name. Best for content-specific images.",
+    structure: `src/content/blog/
+├── my-post.md
+└── my-post/
+    ├── hero.jpg
+    └── diagram.png`,
+    reference: "![Alt](./my-post/hero.jpg)",
+    isDefault: true,
+  },
+  {
+    name: "Public",
+    description:
+      "Images stored in the public directory. Best for shared images used across multiple content items.",
+    structure: `public/
+└── images/
+    └── blog/
+        └── my-post-hero.jpg`,
+    reference: "![Alt](/images/blog/my-post-hero.jpg)",
+    isDefault: false,
+  },
+];
+
+/**
+ * File patterns for the file patterns section.
+ */
+const filePatterns = [
+  { pattern: "{slug}.md", example: "my-post.md", useCase: "Simple (default)" },
+  {
+    pattern: "{slug}/index.md",
+    example: "my-post/index.md",
+    useCase: "Folder-based",
+  },
+  {
+    pattern: "{date}-{slug}.md",
+    example: "2024-01-15-my-post.md",
+    useCase: "Date-prefixed",
+  },
+  {
+    pattern: "{year}/{slug}.md",
+    example: "2024/my-post.md",
+    useCase: "Year folders",
+  },
+  {
+    pattern: "{year}/{month}/{slug}.md",
+    example: "2024/06/my-post.md",
+    useCase: "Year/month folders",
+  },
+  {
+    pattern: "{lang}/{slug}.md",
+    example: "en/my-post.md",
+    useCase: "Multi-language",
+  },
+  {
+    pattern: "{category}/{slug}.md",
+    example: "tutorials/my-post.md",
+    useCase: "Category folders",
+  },
+];
+
 // =============================================================================
 // COMPONENTS
 // =============================================================================
@@ -154,7 +220,7 @@ function HeroSection(): React.ReactElement {
     <section className="px-4 pt-32 pb-20 sm:px-6 lg:px-8">
       <div className="mx-auto max-w-4xl text-center">
         {/* Badge */}
-        <div className="mb-6 inline-flex items-center gap-2 rounded-full bg-purple-50 px-3 py-1 text-sm font-medium text-purple-700 dark:bg-purple-900/30 dark:text-purple-300">
+        <div className="bg-brand-500/10 text-brand-600 dark:bg-brand-500/20 dark:text-brand-400 mb-6 inline-flex items-center gap-2 rounded-full px-3 py-1 text-sm font-medium">
           <Terminal className="h-4 w-4" />
           Astro Integration
         </div>
@@ -163,7 +229,7 @@ function HeroSection(): React.ReactElement {
         <h1 className="mb-6 text-4xl leading-tight font-bold text-zinc-900 sm:text-5xl lg:text-6xl dark:text-zinc-100">
           Visual Editor for
           <br />
-          <span className="text-purple-600 dark:text-purple-400">
+          <span className="text-brand-500 dark:text-brand-400">
             Astro Content Collections
           </span>
         </h1>
@@ -180,7 +246,7 @@ function HeroSection(): React.ReactElement {
             href="https://www.npmjs.com/package/@writenex/astro"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 rounded-lg bg-purple-600 px-5 py-3 text-lg font-normal text-white transition-colors hover:bg-purple-700"
+            className="bg-brand-500 hover:bg-brand-600 inline-flex items-center gap-2 rounded-lg px-5 py-3 text-lg font-normal text-white transition-colors"
           >
             View on npm
             <ExternalLink className="h-5 w-5" />
@@ -228,7 +294,7 @@ function QuickStartSection(): React.ReactElement {
               <span className="text-green-400">astro</span> dev{"\n\n"}
               <span className="text-zinc-500"># Open the editor</span>
               {"\n"}
-              <span className="text-blue-400">
+              <span className="text-brand-400">
                 http://localhost:4321/_writenex
               </span>
             </code>
@@ -266,8 +332,8 @@ function FeaturesSection(): React.ReactElement {
               key={feature.title}
               className="rounded-xl border border-zinc-200 bg-white p-6 dark:border-zinc-700 dark:bg-zinc-900"
             >
-              <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-lg bg-purple-50 dark:bg-purple-900/30">
-                <feature.icon className="h-6 w-6 text-purple-600 dark:text-purple-400" />
+              <div className="bg-info-500/10 dark:bg-info-500/20 mb-4 flex h-12 w-12 items-center justify-center rounded-lg">
+                <feature.icon className="text-info-500 dark:text-info-400 h-6 w-6" />
               </div>
               <h3 className="mb-2 text-lg font-semibold text-zinc-900 dark:text-zinc-100">
                 {feature.title}
@@ -390,7 +456,7 @@ async function ConfigurationSection(): Promise<React.ReactElement> {
                 {schemaTypes.map((item) => (
                   <tr key={item.type}>
                     <td className="px-4 py-3">
-                      <code className="rounded bg-zinc-100 px-1.5 py-0.5 font-mono text-purple-600 dark:bg-zinc-800 dark:text-purple-400">
+                      <code className="text-info-500 dark:text-info-400 rounded bg-zinc-100 px-1.5 py-0.5 font-mono dark:bg-zinc-800">
                         {item.type}
                       </code>
                     </td>
@@ -406,6 +472,122 @@ async function ConfigurationSection(): Promise<React.ReactElement> {
             </table>
           </div>
         </div>
+      </div>
+    </section>
+  );
+}
+
+/**
+ * Image strategies section.
+ */
+function ImageStrategiesSection(): React.ReactElement {
+  return (
+    <section className="px-4 py-20 sm:px-6 lg:px-8">
+      <div className="mx-auto max-w-4xl">
+        <div className="mb-12 text-center">
+          <h2 className="mb-4 text-3xl font-bold text-zinc-900 sm:text-4xl dark:text-zinc-100">
+            Image Strategies
+          </h2>
+          <p className="text-lg text-zinc-600 dark:text-zinc-400">
+            Choose how images are stored in your project.
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+          {imageStrategies.map((strategy) => (
+            <div
+              key={strategy.name}
+              className="rounded-xl border border-zinc-200 bg-white p-6 dark:border-zinc-700 dark:bg-zinc-900"
+            >
+              <div className="mb-3 flex items-center gap-2">
+                <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-100">
+                  {strategy.name}
+                </h3>
+                {strategy.isDefault && (
+                  <span className="bg-info-500/10 text-info-600 dark:bg-info-500/20 dark:text-info-400 rounded-full px-2 py-0.5 text-xs font-medium">
+                    Default
+                  </span>
+                )}
+              </div>
+              <p className="mb-4 text-sm text-zinc-600 dark:text-zinc-400">
+                {strategy.description}
+              </p>
+              <div className="mb-3 rounded-lg bg-zinc-900 p-3 dark:bg-zinc-800">
+                <pre className="overflow-x-auto font-mono text-xs text-zinc-300">
+                  {strategy.structure}
+                </pre>
+              </div>
+              <p className="text-sm text-zinc-500 dark:text-zinc-500">
+                Reference:{" "}
+                <code className="rounded bg-zinc-100 px-1.5 py-0.5 font-mono text-xs dark:bg-zinc-800">
+                  {strategy.reference}
+                </code>
+              </p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/**
+ * File patterns section.
+ */
+function FilePatternsSection(): React.ReactElement {
+  return (
+    <section className="bg-zinc-50 px-4 py-20 sm:px-6 lg:px-8 dark:bg-zinc-800/50">
+      <div className="mx-auto max-w-4xl">
+        <div className="mb-12 text-center">
+          <h2 className="mb-4 text-3xl font-bold text-zinc-900 sm:text-4xl dark:text-zinc-100">
+            File Patterns
+          </h2>
+          <p className="text-lg text-zinc-600 dark:text-zinc-400">
+            Flexible file naming with automatic token resolution.
+          </p>
+        </div>
+
+        <div className="overflow-hidden rounded-xl border border-zinc-200 bg-white dark:border-zinc-700 dark:bg-zinc-900">
+          <div className="overflow-x-auto">
+            <table className="w-full text-left text-sm">
+              <thead className="border-b border-zinc-200 bg-zinc-50 dark:border-zinc-700 dark:bg-zinc-800">
+                <tr>
+                  <th className="px-4 py-3 font-medium text-zinc-900 dark:text-zinc-100">
+                    Pattern
+                  </th>
+                  <th className="px-4 py-3 font-medium text-zinc-900 dark:text-zinc-100">
+                    Example Output
+                  </th>
+                  <th className="px-4 py-3 font-medium text-zinc-900 dark:text-zinc-100">
+                    Use Case
+                  </th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-zinc-200 dark:divide-zinc-700">
+                {filePatterns.map((item) => (
+                  <tr key={item.pattern}>
+                    <td className="px-4 py-3">
+                      <code className="text-info-500 dark:text-info-400 rounded bg-zinc-100 px-1.5 py-0.5 font-mono dark:bg-zinc-800">
+                        {item.pattern}
+                      </code>
+                    </td>
+                    <td className="px-4 py-3 font-mono text-zinc-600 dark:text-zinc-400">
+                      {item.example}
+                    </td>
+                    <td className="px-4 py-3 text-zinc-600 dark:text-zinc-400">
+                      {item.useCase}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <p className="mt-6 text-center text-sm text-zinc-500 dark:text-zinc-500">
+          Patterns are auto-detected from existing content or can be configured
+          explicitly.
+        </p>
       </div>
     </section>
   );
@@ -491,12 +673,12 @@ function CTASection(): React.ReactElement {
         </p>
         <div className="flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
           <a
-            href="https://www.npmjs.com/package/@writenex/astro"
+            href="https://github.com/erlandv/writenex/tree/main/packages/astro#readme"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 rounded-lg bg-purple-600 px-5 py-3 text-lg font-normal text-white transition-colors hover:bg-purple-700"
+            className="bg-brand-500 hover:bg-brand-600 inline-flex items-center gap-2 rounded-lg px-5 py-3 text-lg font-normal text-white transition-colors"
           >
-            Install from npm
+            View Full Documentation
             <ExternalLink className="h-5 w-5" />
           </a>
         </div>
@@ -525,7 +707,7 @@ function RelatedSection(): React.ReactElement {
             </div>
             <Link
               href="/editor"
-              className="inline-flex shrink-0 items-center gap-2 rounded-lg bg-blue-600 px-4 py-2 font-normal text-white transition-colors hover:bg-blue-700"
+              className="bg-brand-500 hover:bg-brand-600 inline-flex shrink-0 items-center gap-2 rounded-lg px-4 py-2 font-normal text-white transition-colors"
             >
               Open Editor
               <ArrowRight className="h-4 w-4" />
@@ -570,6 +752,8 @@ export default async function AstroPage(): Promise<React.ReactElement> {
         <QuickStartSection />
         <FeaturesSection />
         {configSection}
+        <ImageStrategiesSection />
+        <FilePatternsSection />
         <ShortcutsSection />
         <SecuritySection />
         <CTASection />

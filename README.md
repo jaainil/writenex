@@ -69,7 +69,8 @@ pnpm clean
 
 ```bash
 # Run command in specific package
-pnpm --filter @writenex/astro build:client
+pnpm --filter @writenex/astro build
+pnpm --filter writenex build
 pnpm --filter writenex dev
 
 # Type check specific package
@@ -79,7 +80,7 @@ pnpm --filter @writenex/astro type-check
 ## Tech Stack
 
 - **Monorepo**: pnpm workspaces + Turborepo
-- **Framework**: Next.js 15+ (App Router, Turbopack)
+- **Framework**: Next.js 16+ (App Router, Turbopack)
 - **React**: 19.x
 - **Language**: TypeScript 5 (Strict mode)
 - **Styling**: Tailwind CSS 4

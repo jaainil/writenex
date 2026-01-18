@@ -1,6 +1,6 @@
 {
-  "name": "@writenex/astro",
-  "version": "0.3.1",
+  "name": "@imjp/writenex-astro",
+  "version": "0.1.0",
   "description": "Visual editor for Astro content collections - WYSIWYG editing for your Astro site",
   "type": "module",
   "main": "./dist/index.js",
@@ -53,16 +53,19 @@
     "mdx",
     "visual-editor"
   ],
-  "author": "Erland <hello@erland.me>",
+  "author": "Jainil <jaainil@users.noreply.github.com>",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/erlandv/writenex.git",
+    "url": "https://github.com/jaainil/writenex.git",
     "directory": "packages/astro"
   },
-  "homepage": "https://writenex.com/astro",
+  "homepage": "https://github.com/jaainil/writenex",
   "bugs": {
-    "url": "https://github.com/erlandv/writenex/issues"
+    "url": "https://github.com/jaainil/writenex/issues"
+  },
+  "publishConfig": {
+    "access": "public"
   },
   "dependencies": {
     "@mdxeditor/editor": "^3.52.1",

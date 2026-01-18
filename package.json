@@ -7,7 +7,7 @@
   "homepage": "https://writenex.com",
   "repository": {
     "type": "git",
-    "url": "https://github.com/erlandv/writenex.git"
+    "url": "https://github.com/jaainil/writenex.git"
   },
   "packageManager": "pnpm@10.15.1",
   "scripts": {

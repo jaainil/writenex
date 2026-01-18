@@ -15,7 +15,7 @@
     "dev:writenex": "pnpm --filter writenex dev",
     "build": "turbo build",
     "build:writenex": "turbo build --filter writenex",
-    "build:astro": "turbo build --filter @writenex/astro",
+    "build:astro": "turbo build --filter @imjp/writenex-astro",
     "lint": "turbo lint",
     "type-check": "turbo type-check",
     "clean": "turbo clean && rm -rf node_modules",

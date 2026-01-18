@@ -345,40 +345,68 @@ export function Editor({
               codeBlockPlugin({ defaultCodeBlockLanguage: "typescript" }),
               codeMirrorPlugin({
                 codeBlockLanguages: {
-                  js: "JS",
+                  // Empty string fallback for unknown languages
+                  "": "Custom",
+                  // JavaScript family
+                  js: "JavaScript",
                   javascript: "JavaScript",
-                  ts: "TS",
+                  ts: "TypeScript",
                   typescript: "TypeScript",
                   jsx: "JSX",
                   tsx: "TSX",
-                  css: "CSS",
+                  // Web languages
                   html: "HTML",
+                  css: "CSS",
                   json: "JSON",
-                  md: "MD",
-                  markdown: "Markdown",
-                  txt: "Txt",
-                  text: "Text",
-                  java: "Java",
+                  xml: "XML",
+                  // Scripting & Shell
+                  bash: "Bash",
+                  shell: "Shell",
+                  sh: "Shell",
+                  zsh: "Zsh",
+                  // Configuration
+                  yaml: "YAML",
+                  yml: "YAML",
+                  dockerfile: "Dockerfile",
+                  docker: "Dockerfile",
+                  toml: "TOML",
+                  ini: "INI",
+                  env: "ENV",
+                  // Systems programming
                   c: "C",
                   cpp: "C++",
                   csharp: "C#",
-                  php: "PHP",
-                  ruby: "Ruby",
-                  go: "Go",
                   rust: "Rust",
-                  python: "Python",
-                  swift: "Swift",
+                  go: "Go",
+                  // JVM languages
+                  java: "Java",
                   kotlin: "Kotlin",
-                  r: "R",
                   scala: "Scala",
-                  bash: "Bash",
-                  shell: "Shell",
-                  yaml: "YAML",
+                  // Scripting languages
+                  python: "Python",
+                  py: "Python",
+                  ruby: "Ruby",
+                  rb: "Ruby",
+                  php: "PHP",
+                  perl: "Perl",
+                  lua: "Lua",
+                  r: "R",
+                  // Mobile
+                  swift: "Swift",
+                  // Database
                   sql: "SQL",
-                  mermaid: "Mermaid",
-                  xml: "XML",
-                  astro: "Astro",
+                  graphql: "GraphQL",
+                  // Markdown & Documentation
+                  md: "Markdown",
+                  markdown: "Markdown",
                   mdx: "MDX",
+                  astro: "Astro",
+                  // Diagrams
+                  mermaid: "Mermaid",
+                  // Plain text
+                  txt: "Plain Text",
+                  text: "Plain Text",
+                  plaintext: "Plain Text",
                 },
               }),
 

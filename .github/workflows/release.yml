@@ -19,18 +19,19 @@ jobs:
               with:
                   fetch-depth: 0
 
-            - uses: oven-sh/setup-bun@v2
+            - uses: pnpm/action-setup@v4
               with:
-                  bun-version: latest
+                  version: 10
 
             - uses: actions/setup-node@v4
               with:
                   node-version: 22
+                  cache: "pnpm"
                   registry-url: "https://registry.npmjs.org"
 
-            - run: bun install --frozen-lockfile
+            - run: pnpm install --frozen-lockfile
 
-            - run: bun run build:astro
+            - run: pnpm build:astro
 
             - name: Release
               env:

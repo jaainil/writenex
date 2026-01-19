@@ -1,10 +1,10 @@
-# @writenex/astro
+# @imjp/writenex-astro
 
 Visual editor for Astro content collections - WYSIWYG editing for your Astro site.
 
 ## Overview
 
-**@writenex/astro** is an Astro integration that provides a WYSIWYG editor interface for managing your content collections. It runs alongside your Astro dev server and provides direct filesystem access to your content.
+**@imjp/writenex-astro** is an Astro integration that provides a WYSIWYG editor interface for managing your content collections. It runs alongside your Astro dev server and provides direct filesystem access to your content.
 
 ### Key Features
 
@@ -27,7 +27,7 @@ Visual editor for Astro content collections - WYSIWYG editing for your Astro sit
 ### 1. Install the integration
 
 ```bash
-npx astro add @writenex/astro
+npx astro add @imjp/writenex-astro
 ```
 
 This will install the package and automatically configure your `astro.config.mjs`.
@@ -50,13 +50,13 @@ If you prefer to install manually:
 
 ```bash
 # npm
-npm install @writenex/astro
+npm install @imjp/writenex-astro
 
 # pnpm
-pnpm add @writenex/astro
+pnpm add @imjp/writenex-astro
 
 # yarn
-yarn add @writenex/astro
+yarn add @imjp/writenex-astro
 ```
 
 Then add the integration to your config:
@@ -64,7 +64,7 @@ Then add the integration to your config:
 ```typescript
 // astro.config.mjs
 import { defineConfig } from "astro/config";
-import writenex from "@writenex/astro";
+import writenex from "@imjp/writenex-astro";
 
 export default defineConfig({
   integrations: [writenex()],
@@ -83,7 +83,7 @@ Create `writenex.config.ts` in your project root for full control:
 
 ```typescript
 // writenex.config.ts
-import { defineConfig } from "@writenex/astro";
+import { defineConfig } from "@imjp/writenex-astro";
 
 export default defineConfig({
   // Define collections explicitly
@@ -240,7 +240,7 @@ Writenex automatically creates shadow copies of your content before each save, p
 
 ```typescript
 // writenex.config.ts
-import { defineConfig } from "@writenex/astro";
+import { defineConfig } from "@imjp/writenex-astro";
 
 export default defineConfig({
   versionHistory: {
@@ -327,7 +327,7 @@ import {
   saveVersionWithConfig,
   getVersionsWithConfig,
   restoreVersionWithConfig,
-} from "@writenex/astro";
+} from "@imjp/writenex-astro";
 
 // Save a version with label
 await saveVersionWithConfig(
@@ -525,7 +525,7 @@ writenex({
 ### Future Plans
 
 - MDX full support (components, imports)
-- CLI wrapper (`npx @writenex/astro`)
+- CLI wrapper (`npx @imjp/writenex-astro`)
 - Git integration (auto-commit on save)
 - Media library management
 

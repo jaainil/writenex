@@ -7,7 +7,7 @@ A collection of tools for modern markdown editing and content management.
 | **Product**                          | **Description**                                                      |
 | ------------------------------------ | -------------------------------------------------------------------- |
 | [Writenex Editor](./apps/writenex/)  | WYSIWYG Markdown editor that works offline and keeps your data local |
-| [@writenex/astro](./packages/astro/) | WYSIWYG Markdown editor for Astro Content Collections                |
+| [@imjp/writenex-astro](./packages/astro/) | WYSIWYG Markdown editor for Astro Content Collections                |
 
 ## Project Structure
 
@@ -18,7 +18,7 @@ writenex/
 │       └── lib/               # Core modules (db, editor, hooks, store, ui, utils)
 │
 ├── packages/
-│   ├── astro/                 # @writenex/astro - Astro integration
+│   ├── astro/                 # @imjp/writenex-astro - Astro integration
 │   └── config/                # Shared configurations
 │       ├── typescript/        # @writenex/tsconfig
 │       └── eslint/            # @writenex/eslint-config
@@ -38,7 +38,7 @@ writenex/
 ### Installation
 
 ```bash
-git clone https://github.com/erlandv/writenex.git
+git clone https://github.com/jaainil/writenex.git
 cd writenex
 pnpm install
 ```
@@ -72,7 +72,7 @@ pnpm clean
 pnpm dev:writenex
 pnpm build:writenex
 
-# @writenex/astro
+# @imjp/writenex-astro
 pnpm build:astro
 ```
 

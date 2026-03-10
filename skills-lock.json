@@ -26,6 +26,11 @@
       "sourceType": "github",
       "computedHash": "34cda20e3d29bd7313797560e0207ff41eb2b52337b47d5a6db18f7104229ad4"
     },
+    "github-action": {
+      "source": "letta-ai/letta-code-action",
+      "sourceType": "github",
+      "computedHash": "2ee3fa188647b08c8d6980b9f9346ac37fec395d6c8eb522d883ea7ce63ab0bf"
+    },
     "lint-rule-development": {
       "source": "biomejs/biome",
       "sourceType": "github",

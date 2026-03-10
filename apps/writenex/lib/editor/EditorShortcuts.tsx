@@ -24,32 +24,32 @@
  * @see {@link KeyboardShortcutsModal} - UI showing all available shortcuts
  */
 
-import { useEffect } from "react";
 import {
-  rootEditor$,
-  useCellValue,
-  usePublisher,
-  openNewImageDialog$,
-} from "@mdxeditor/editor";
-import type { LexicalEditor } from "lexical";
-import {
-  FORMAT_TEXT_COMMAND,
-  KEY_DOWN_COMMAND,
-  COMMAND_PRIORITY_HIGH,
-  $getSelection,
-  $isRangeSelection,
-} from "lexical";
-import {
-  INSERT_UNORDERED_LIST_COMMAND,
-  INSERT_ORDERED_LIST_COMMAND,
   INSERT_CHECK_LIST_COMMAND,
+  INSERT_ORDERED_LIST_COMMAND,
+  INSERT_UNORDERED_LIST_COMMAND,
 } from "@lexical/list";
-import { $setBlocksType } from "@lexical/selection";
 import {
   $createHeadingNode,
   $createQuoteNode,
   type HeadingTagType,
 } from "@lexical/rich-text";
+import { $setBlocksType } from "@lexical/selection";
+import {
+  openNewImageDialog$,
+  rootEditor$,
+  useCellValue,
+  usePublisher,
+} from "@mdxeditor/editor";
+import type { LexicalEditor } from "lexical";
+import {
+  $getSelection,
+  $isRangeSelection,
+  COMMAND_PRIORITY_HIGH,
+  FORMAT_TEXT_COMMAND,
+  KEY_DOWN_COMMAND,
+} from "lexical";
+import { useEffect } from "react";
 
 export const EditorShortcuts = () => {
   const rootEditor = useCellValue(rootEditor$) as LexicalEditor | null;

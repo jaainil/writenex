@@ -14,12 +14,12 @@
  * @module @writenex/astro/discovery/collections
  */
 
-import { readdir, stat } from "node:fs/promises";
 import { existsSync } from "node:fs";
+import { readdir, stat } from "node:fs/promises";
 import { join } from "node:path";
-import type { DiscoveredCollection, CollectionConfig } from "@/types";
-import { getCollectionCount } from "@/filesystem/reader";
 import { DEFAULT_FILE_PATTERN } from "@/config/defaults";
+import { getCollectionCount } from "@/filesystem/reader";
+import type { CollectionConfig, DiscoveredCollection } from "@/types";
 import { detectFilePattern as detectPattern } from "./patterns";
 import { detectSchema } from "./schema";
 

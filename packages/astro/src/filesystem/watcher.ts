@@ -8,9 +8,9 @@
  * @module @writenex/astro/filesystem/watcher
  */
 
-import { watch, type FSWatcher } from "chokidar";
 import { stat } from "node:fs/promises";
 import { join } from "node:path";
+import { type FSWatcher, watch } from "chokidar";
 
 /**
  * File change event types

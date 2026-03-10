@@ -8,42 +8,42 @@
  * @module @writenex/astro/client/components/Editor
  */
 
-import { useCallback, useEffect, useRef, useState } from "react";
-import { FileText, Plus } from "lucide-react";
 import {
-  MDXEditor,
-  headingsPlugin,
-  listsPlugin,
-  quotePlugin,
-  thematicBreakPlugin,
-  markdownShortcutPlugin,
-  linkPlugin,
-  linkDialogPlugin,
-  imagePlugin,
-  tablePlugin,
+  addComposerChild$,
+  BlockTypeSelect,
+  BoldItalicUnderlineToggles,
+  CodeToggle,
+  CreateLink,
   codeBlockPlugin,
   codeMirrorPlugin,
-  toolbarPlugin,
+  DiffSourceToggleWrapper,
   diffSourcePlugin,
-  frontmatterPlugin,
-  searchPlugin,
-  editorSearchTerm$,
   editorSearchCursor$,
-  usePublisher,
-  addComposerChild$,
-  BoldItalicUnderlineToggles,
-  BlockTypeSelect,
-  CreateLink,
+  editorSearchTerm$,
+  frontmatterPlugin,
+  headingsPlugin,
+  InsertCodeBlock,
   InsertImage,
   InsertTable,
-  ListsToggle,
-  UndoRedo,
-  CodeToggle,
   InsertThematicBreak,
-  InsertCodeBlock,
-  DiffSourceToggleWrapper,
+  imagePlugin,
+  ListsToggle,
+  linkDialogPlugin,
+  linkPlugin,
+  listsPlugin,
+  MDXEditor,
   type MDXEditorMethods,
+  markdownShortcutPlugin,
+  quotePlugin,
+  searchPlugin,
+  tablePlugin,
+  thematicBreakPlugin,
+  toolbarPlugin,
+  UndoRedo,
+  usePublisher,
 } from "@mdxeditor/editor";
+import { FileText, Plus } from "lucide-react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import "@mdxeditor/editor/style.css";
 import "./Editor.css";
 import { ImageDialog } from "./ImageDialog";
@@ -138,7 +138,7 @@ function SearchBridge(): null {
  */
 function createSearchBridgePlugin() {
   return {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    // biome-ignore lint/suspicious/noExplicitAny: third party type
     init: (realm: any) => {
       realm.pub(addComposerChild$, SearchBridge);
     },

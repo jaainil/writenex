@@ -23,16 +23,21 @@
 
 "use client";
 
-import React, { useState, useMemo } from "react";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/lib/ui"; // dialog";
-import { Input } from "@/lib/ui"; // input";
+import React, { useMemo, useState } from "react";
 import { useEditorStore } from "@/lib/store";
-import { cn } from "@/lib/utils";
 import {
-  SHORTCUT_CATEGORIES,
-  searchShortcuts,
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  Input,
+} from "@/lib/ui"; // input";
+import {
+  cn,
   type KeyboardShortcut,
+  SHORTCUT_CATEGORIES,
   type ShortcutCategory,
+  searchShortcuts,
 } from "@/lib/utils";
 
 /**

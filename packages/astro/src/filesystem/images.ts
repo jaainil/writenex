@@ -12,12 +12,12 @@
  * @module @writenex/astro/filesystem/images
  */
 
-import { writeFile, mkdir, readdir, stat } from "node:fs/promises";
 import { existsSync } from "node:fs";
-import { join, dirname, basename, extname, relative } from "node:path";
+import { mkdir, readdir, stat, writeFile } from "node:fs/promises";
+import { basename, dirname, extname, join, relative } from "node:path";
 import type {
-  ImageConfig,
   DiscoveredImage,
+  ImageConfig,
   ImageDiscoveryOptions,
   ImageDiscoveryResult,
 } from "@/types";

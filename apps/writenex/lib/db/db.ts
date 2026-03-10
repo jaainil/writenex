@@ -11,9 +11,9 @@ import Dexie, { type EntityTable, type Transaction } from "dexie";
 import { DEFAULT_DOCUMENT_TITLE } from "@/lib/utils";
 import type {
   DocumentEntry,
-  VersionEntry,
   ImageEntry,
   SettingsEntry,
+  VersionEntry,
 } from "./types";
 
 export type { DocumentEntry, VersionEntry, ImageEntry, SettingsEntry };

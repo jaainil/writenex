@@ -16,7 +16,7 @@
 
 import type { Metadata } from "next";
 import { createBreadcrumbSchema } from "@/app/lib/jsonld";
-import { LandingHeader, LandingFooter } from "@/components/landing";
+import { LandingFooter, LandingHeader } from "@/components/landing";
 
 /**
  * Metadata for the Privacy Policy page.

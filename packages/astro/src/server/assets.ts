@@ -11,10 +11,10 @@
  * @module @writenex/astro/server/assets
  */
 
-import type { IncomingMessage, ServerResponse } from "node:http";
-import { readFile } from "node:fs/promises";
 import { existsSync } from "node:fs";
-import { join, extname } from "node:path";
+import { readFile } from "node:fs/promises";
+import type { IncomingMessage, ServerResponse } from "node:http";
+import { extname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import type { MiddlewareContext } from "./middleware";
 

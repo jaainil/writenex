@@ -15,19 +15,19 @@
  * @module @writenex/astro/filesystem/writer
  */
 
-import { writeFile, unlink, mkdir, readFile, stat } from "node:fs/promises";
 import { existsSync } from "node:fs";
-import { join, dirname, basename } from "node:path";
+import { mkdir, readFile, stat, unlink, writeFile } from "node:fs/promises";
+import { basename, dirname, join } from "node:path";
 import slugify from "slugify";
-import { readContentFile } from "./reader";
-import { saveVersion } from "./versions";
+import { ContentConflictError } from "@/core/errors";
 import {
   generatePathFromPattern,
-  resolvePatternTokens,
   isValidPattern,
+  resolvePatternTokens,
 } from "@/discovery/patterns";
 import type { VersionHistoryConfig } from "@/types";
-import { ContentConflictError } from "@/core/errors";
+import { readContentFile } from "./reader";
+import { saveVersion } from "./versions";
 
 /**
  * Options for creating content

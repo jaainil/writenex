@@ -25,11 +25,11 @@
  */
 
 import type { AstroIntegration } from "astro";
-import type { WritenexOptions, WritenexConfig } from "@/types";
 import { loadConfig } from "@/config/loader";
-import { createMiddleware } from "@/server/middleware";
 import { ContentWatcher } from "@/filesystem/watcher";
 import { getCache } from "@/server/cache";
+import { createMiddleware } from "@/server/middleware";
+import type { WritenexConfig, WritenexOptions } from "@/types";
 
 /**
  * Default base path for the Writenex editor UI

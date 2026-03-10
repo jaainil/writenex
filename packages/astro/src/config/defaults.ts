@@ -9,12 +9,12 @@
  */
 
 import type {
-  WritenexConfig,
-  ImageConfig,
-  EditorConfig,
-  DiscoveryConfig,
   CollectionConfig,
+  DiscoveryConfig,
+  EditorConfig,
+  ImageConfig,
   VersionHistoryConfig,
+  WritenexConfig,
 } from "@/types";
 
 /**

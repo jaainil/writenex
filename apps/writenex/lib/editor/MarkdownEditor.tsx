@@ -38,56 +38,63 @@
 
 "use client";
 
-import React, {
-  useEffect,
-  useCallback,
-  useRef,
-  useState,
-  useMemo,
-} from "react";
-import dynamic from "next/dynamic";
 import {
-  MDXEditor,
-  headingsPlugin,
-  listsPlugin,
-  quotePlugin,
-  thematicBreakPlugin,
-  linkPlugin,
-  linkDialogPlugin,
-  imagePlugin,
-  tablePlugin,
-  codeBlockPlugin,
-  codeMirrorPlugin,
-  toolbarPlugin,
-  markdownShortcutPlugin,
-  frontmatterPlugin,
-  diffSourcePlugin,
-  type MDXEditorMethods,
+  addComposerChild$,
+  BlockTypeSelect,
   // Toolbar components for formatting
   BoldItalicUnderlineToggles,
-  UndoRedo,
-  BlockTypeSelect,
+  CodeToggle,
   CreateLink,
+  codeBlockPlugin,
+  codeMirrorPlugin,
+  DiffSourceToggleWrapper,
+  diffSourcePlugin,
+  editorSearchCursor$,
+  editorSearchTerm$,
+  frontmatterPlugin,
+  headingsPlugin,
+  InsertCodeBlock,
+  InsertFrontmatter,
   InsertImage,
   InsertTable,
   InsertThematicBreak,
-  InsertCodeBlock,
-  InsertFrontmatter,
+  imagePlugin,
   ListsToggle,
-  CodeToggle,
+  linkDialogPlugin,
+  linkPlugin,
+  listsPlugin,
+  MDXEditor,
+  type MDXEditorMethods,
+  markdownShortcutPlugin,
+  quotePlugin,
   StrikeThroughSupSubToggles,
-  DiffSourceToggleWrapper,
   searchPlugin,
-  editorSearchTerm$,
-  editorSearchCursor$,
+  tablePlugin,
+  thematicBreakPlugin,
+  toolbarPlugin,
+  UndoRedo,
   usePublisher,
-  addComposerChild$,
 } from "@mdxeditor/editor";
+import dynamic from "next/dynamic";
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import "@mdxeditor/editor/style.css";
 // Import theme customizations AFTER MDXEditor styles to ensure our overrides take precedence
 import "./styles/vendor/mdxeditor/theme.css";
-// Toolbar components
-import { StatusBar, DocumentTabs } from "./toolbar";
+import { getImage, saveImage } from "@/lib/db";
+import {
+  useActiveDocumentPersistence,
+  useAutoSave,
+  useDocumentInit,
+  useKeyboardShortcuts,
+} from "@/lib/hooks";
+import { useEditorStore } from "@/lib/store";
+import { cn, EDITOR_PLACEHOLDER } from "@/lib/utils";
 // Dialog components
 import {
   ClearEditorDialog,
@@ -97,23 +104,18 @@ import {
   LinkDialog,
   WelcomeTourModal,
 } from "./dialogs";
+import { EditorShortcuts } from "./EditorShortcuts";
+// Indicator components
+import { BackupReminder, StorageWarning } from "./indicators";
 // Panel components
 import {
+  type SearchOptions,
   SearchReplacePanel,
   TocPanel,
   VersionHistoryPanel,
-  type SearchOptions,
 } from "./panels";
-// Indicator components
-import { BackupReminder, StorageWarning } from "./indicators";
-import { useEditorStore } from "@/lib/store";
-import { useAutoSave } from "@/lib/hooks";
-import { useDocumentInit, useActiveDocumentPersistence } from "@/lib/hooks";
-import { useKeyboardShortcuts } from "@/lib/hooks";
-import { cn } from "@/lib/utils";
-import { EDITOR_PLACEHOLDER } from "@/lib/utils";
-import { saveImage, getImage } from "@/lib/db";
-import { EditorShortcuts } from "./EditorShortcuts";
+// Toolbar components
+import { DocumentTabs, StatusBar } from "./toolbar";
 
 /**
  * Visual separator for the MDXEditor toolbar.
@@ -218,7 +220,7 @@ const SearchBridge = () => {
  */
 const searchBridgePlugin = () => {
   return {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    // biome-ignore lint/suspicious/noExplicitAny: third party type
     init: (realm: any) => {
       realm.pub(addComposerChild$, SearchBridge);
     },
@@ -232,7 +234,7 @@ const searchBridgePlugin = () => {
  */
 const shortcutsPlugin = () => {
   return {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    // biome-ignore lint/suspicious/noExplicitAny: third party type
     init: (realm: any) => {
       realm.pub(addComposerChild$, EditorShortcuts);
     },

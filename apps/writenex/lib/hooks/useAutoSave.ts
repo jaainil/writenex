@@ -23,9 +23,9 @@
  * @see {@link db} - Database persistence layer
  */
 
-import { useEffect, useRef, useCallback } from "react";
+import { useCallback, useEffect, useRef } from "react";
+import { getLastVersionTimestamp, saveVersion, updateDocument } from "@/lib/db";
 import { useEditorStore } from "@/lib/store";
-import { saveVersion, getLastVersionTimestamp, updateDocument } from "@/lib/db";
 import {
   AUTO_SAVE_DEBOUNCE,
   IDLE_THRESHOLD,

@@ -29,9 +29,9 @@
  * @module @writenex/astro/discovery/patterns
  */
 
-import { readdir } from "node:fs/promises";
 import { existsSync } from "node:fs";
-import { join, extname, relative } from "node:path";
+import { readdir } from "node:fs/promises";
+import { extname, join, relative } from "node:path";
 import { isContentFile } from "@/filesystem/reader";
 
 /**

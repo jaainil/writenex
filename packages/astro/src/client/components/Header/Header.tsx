@@ -7,20 +7,20 @@
  * @module @writenex/astro/client/components/Header
  */
 
-import { useState, useRef, useEffect } from "react";
 import {
-  Keyboard,
-  Settings,
   Folder,
-  Info,
-  Search,
-  Sun,
-  Moon,
-  Monitor,
   History,
+  Info,
+  Keyboard,
+  Monitor,
+  Moon,
   Plus,
+  Search,
+  Settings,
+  Sun,
 } from "lucide-react";
-import { useTheme, type Theme } from "../../context/ThemeContext";
+import { useEffect, useRef, useState } from "react";
+import { type Theme, useTheme } from "../../context/ThemeContext";
 import "./Header.css";
 
 /**

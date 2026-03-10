@@ -21,26 +21,26 @@
  * @see {@link VersionManifest} - Manifest structure type
  */
 
+import { existsSync } from "node:fs";
 import {
-  readFile,
-  writeFile,
   mkdir,
   readdir,
+  readFile,
   stat,
   unlink,
+  writeFile,
 } from "node:fs/promises";
-import { existsSync } from "node:fs";
-import { join, basename } from "node:path";
+import { basename, join } from "node:path";
 import matter from "gray-matter";
 import type {
-  VersionEntry,
-  VersionManifest,
-  VersionHistoryConfig,
-  Version,
-  VersionResult,
-  SaveVersionOptions,
-  RestoreVersionOptions,
   RestoreResult,
+  RestoreVersionOptions,
+  SaveVersionOptions,
+  Version,
+  VersionEntry,
+  VersionHistoryConfig,
+  VersionManifest,
+  VersionResult,
 } from "@/types";
 
 // =============================================================================

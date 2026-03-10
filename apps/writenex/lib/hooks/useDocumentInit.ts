@@ -26,16 +26,16 @@
  * @see {@link createDocument} - IndexedDB document creation
  */
 
-import { useEffect, useRef, useCallback } from "react";
-import { useEditorStore } from "@/lib/store";
-import { DEFAULT_DOCUMENT_CONTENT, DEFAULT_DOCUMENT_TITLE } from "@/lib/utils";
+import { useCallback, useEffect, useRef } from "react";
 import {
+  createDocument,
   getAllDocuments,
   getDocument,
-  createDocument,
   getSetting,
   saveSetting,
 } from "@/lib/db";
+import { useEditorStore } from "@/lib/store";
+import { DEFAULT_DOCUMENT_CONTENT, DEFAULT_DOCUMENT_TITLE } from "@/lib/utils";
 
 /**
  * Custom hook for initializing documents on application startup.

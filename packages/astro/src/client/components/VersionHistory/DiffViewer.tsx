@@ -8,8 +8,8 @@
  * @module @writenex/astro/client/components/VersionHistory/DiffViewer
  */
 
-import { useState, useMemo, useEffect, useRef } from "react";
-import { X, Columns, AlignLeft } from "lucide-react";
+import { AlignLeft, Columns, X } from "lucide-react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useFocusTrap } from "../../hooks/useFocusTrap";
 import "./DiffViewer.css";
 

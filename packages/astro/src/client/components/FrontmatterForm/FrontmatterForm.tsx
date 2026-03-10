@@ -8,8 +8,8 @@
  * @module @writenex/astro/client/components/FrontmatterForm
  */
 
+import { AlertCircle, Info, X } from "lucide-react";
 import { useCallback, useState } from "react";
-import { X, Info, AlertCircle } from "lucide-react";
 import type { CollectionSchema, SchemaField } from "../../../types";
 import "./FrontmatterForm.css";
 

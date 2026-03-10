@@ -29,28 +29,26 @@
 
 "use client";
 
-import React, { useEffect, useState, useCallback } from "react";
 import {
-  X,
+  Download,
+  GitCompare,
   History,
   RotateCcw,
-  GitCompare,
-  Trash2,
-  Download,
   Trash,
+  Trash2,
+  X,
 } from "lucide-react";
-import { Button } from "@/lib/ui"; // button";
-import { SimpleTooltip } from "@/lib/ui"; // simple-tooltip";
-import { DeleteVersionDialog } from "../dialogs";
-import { DestructiveActionDialog } from "@/lib/ui"; // destructive-action-dialog";
-import { useEditorStore } from "@/lib/store";
+import React, { useCallback, useEffect, useState } from "react";
 import {
-  getVersions,
-  deleteVersion,
   clearAllVersions,
+  deleteVersion,
+  getVersions,
   type VersionEntry,
 } from "@/lib/db";
+import { useEditorStore } from "@/lib/store";
+import { Button, DestructiveActionDialog, SimpleTooltip } from "@/lib/ui"; // destructive-action-dialog";
 import { cn, formatShortDateTime } from "@/lib/utils";
+import { DeleteVersionDialog } from "../dialogs";
 
 /**
  * Props for the VersionHistoryPanel component
@@ -133,7 +131,7 @@ export function VersionHistoryPanel({
     isReadOnly,
     content,
     activeDocumentId,
-    versionHistoryRefreshKey,
+    versionHistoryRefreshKey: _versionHistoryRefreshKey,
   } = useEditorStore();
   const [versions, setVersions] = useState<VersionEntry[]>([]);
   const [selectedVersion, setSelectedVersion] = useState<number | null>(null);
@@ -161,12 +159,7 @@ export function VersionHistoryPanel({
     if (isVersionHistoryOpen && activeDocumentId) {
       loadVersions();
     }
-  }, [
-    isVersionHistoryOpen,
-    activeDocumentId,
-    loadVersions,
-    versionHistoryRefreshKey,
-  ]);
+  }, [isVersionHistoryOpen, activeDocumentId, loadVersions]);
 
   const handleRestore = useCallback(
     (version: VersionEntry) => {

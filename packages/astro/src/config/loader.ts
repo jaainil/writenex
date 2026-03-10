@@ -13,11 +13,11 @@
  */
 
 import { existsSync } from "node:fs";
-import { pathToFileURL } from "node:url";
 import { join, resolve } from "node:path";
+import { pathToFileURL } from "node:url";
 import type { WritenexConfig } from "@/types";
-import { validateConfig } from "./schema";
 import { applyConfigDefaults } from "./defaults";
+import { validateConfig } from "./schema";
 
 /**
  * Supported configuration file names in order of priority

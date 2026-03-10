@@ -409,7 +409,7 @@
 
 /* Date input calendar icon - no invert for light mode */
 .wn-light
-  .wn-frontmatter-input[type="date"]::-webkit-calendar-picker-indicator {
+.wn-frontmatter-input[type="date"]::-webkit-calendar-picker-indicator {
   filter: none;
   opacity: 0.6;
 }

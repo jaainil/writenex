@@ -7,26 +7,26 @@
  * @module app/astro/page
  */
 
-import Link from "next/link";
-import type { Metadata } from "next";
 import {
   ArrowRight,
-  Rocket,
-  FolderOpen,
-  Image,
-  Settings,
-  History,
-  Search,
-  Keyboard,
-  Eye,
-  Save,
-  FileText,
-  Terminal,
   ExternalLink,
+  Eye,
+  FileText,
+  FolderOpen,
+  History,
+  Image,
+  Keyboard,
+  Rocket,
+  Save,
+  Search,
+  Settings,
+  Terminal,
 } from "lucide-react";
+import type { Metadata } from "next";
+import Link from "next/link";
 import { codeToHtml } from "shiki";
 import { createBreadcrumbSchema } from "@/app/lib/jsonld";
-import { LandingHeader, LandingFooter } from "@/components/landing";
+import { LandingFooter, LandingHeader } from "@/components/landing";
 
 /**
  * Page-specific metadata for SEO optimization.

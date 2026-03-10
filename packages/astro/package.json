@@ -31,16 +31,12 @@
       "import": "./dist/server/index.js"
     }
   },
-  "files": [
-    "dist",
-    "src",
-    "README.md"
-  ],
+  "files": ["dist", "src", "README.md"],
   "scripts": {
     "build": "tsup",
     "prepublishOnly": "pnpm build",
     "type-check": "tsc --noEmit",
-    "lint": "eslint src/"
+    "lint": "biome lint src/"
   },
   "keywords": [
     "astro",
@@ -84,7 +80,6 @@
     "@types/node": "^25.4.0",
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",
-    "@writenex/eslint-config": "workspace:*",
     "@writenex/tsconfig": "workspace:*",
     "astro": "^5.18.0",
     "tsup": "^8.5.1",

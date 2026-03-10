@@ -17,8 +17,8 @@
  * @module components/landing/LandingHeader
  */
 
-import Link from "next/link";
 import { ArrowRight } from "lucide-react";
+import Link from "next/link";
 
 /**
  * Fixed header component with logo, navigation, and CTA.

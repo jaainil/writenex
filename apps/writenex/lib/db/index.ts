@@ -3,30 +3,29 @@
  * @module lib/db
  */
 
+export {
+  clearAllVersions,
+  createDocument,
+  db,
+  deleteDocument,
+  deleteVersion,
+  generateDocumentId,
+  getAllDocuments,
+  getDocument,
+  getDocumentCount,
+  getImage,
+  getLastVersionTimestamp,
+  getSetting,
+  getVersion,
+  getVersions,
+  saveImage,
+  saveSetting,
+  saveVersion,
+  updateDocument,
+} from "./db";
 export type {
   DocumentEntry,
-  VersionEntry,
   ImageEntry,
   SettingsEntry,
+  VersionEntry,
 } from "./types";
-
-export {
-  db,
-  generateDocumentId,
-  createDocument,
-  getDocument,
-  getAllDocuments,
-  updateDocument,
-  deleteDocument,
-  getDocumentCount,
-  getLastVersionTimestamp,
-  saveVersion,
-  getVersions,
-  getVersion,
-  deleteVersion,
-  clearAllVersions,
-  saveImage,
-  getImage,
-  saveSetting,
-  getSetting,
-} from "./db";

@@ -17,9 +17,9 @@
  * @module @writenex/astro/tsup.config
  */
 
-import { defineConfig } from "tsup";
 import { copyFileSync, mkdirSync } from "node:fs";
 import { join, resolve } from "node:path";
+import { defineConfig } from "tsup";
 
 /**
  * Base path for source files

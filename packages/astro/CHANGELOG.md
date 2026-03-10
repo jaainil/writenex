@@ -1,3 +1,10 @@
+# [1.2.0](https://github.com/jaainil/writenex/compare/@imjp/writenex-astro@1.1.3...@imjp/writenex-astro@1.2.0) (2026-03-10)
+
+
+### Features
+
+* add GitHub Action skill documentation and update skills-lock.json ([0275ef1](https://github.com/jaainil/writenex/commit/0275ef10d9b511d06065bdb11d3e1ac1ee417c4c))
+
 ## [1.1.3](https://github.com/jaainil/writenex/compare/@imjp/writenex-astro@1.1.2...@imjp/writenex-astro@1.1.3) (2026-03-10)
 
 

@@ -31,6 +31,9 @@ jobs:
 
             - run: pnpm build:astro
 
+            - name: Configure npm auth
+              run: echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" >> ~/.npmrc
+
             - name: Release
               env:
                   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

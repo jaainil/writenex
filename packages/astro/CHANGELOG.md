@@ -1,3 +1,10 @@
+## [1.2.1](https://github.com/jaainil/writenex/compare/@imjp/writenex-astro@1.2.0...@imjp/writenex-astro@1.2.1) (2026-03-10)
+
+
+### Bug Fixes
+
+* remove conflicting .npmrc config from release workflow ([337e2ef](https://github.com/jaainil/writenex/commit/337e2efafd17d6b3eeb6d35ec5a3225c7cb6adbd))
+
 # [1.2.0](https://github.com/jaainil/writenex/compare/@imjp/writenex-astro@1.1.3...@imjp/writenex-astro@1.2.0) (2026-03-10)
 
 

@@ -91,7 +91,7 @@ export function KeyboardShortcutsModal(): React.ReactElement | null {
     <Dialog open={isShortcutsOpen} onOpenChange={setShortcutsOpen}>
       <DialogContent
         className="flex max-h-[80vh] max-w-2xl flex-col overflow-hidden"
-        aria-describedby={undefined}
+        description="View all keyboard shortcuts for the editor"
       >
         <DialogHeader>
           <DialogTitle>Keyboard Shortcuts</DialogTitle>

@@ -159,7 +159,10 @@ export function ImageDialog() {
         if (!open) closeImageDialog();
       }}
     >
-      <DialogContent className="sm:max-w-[400px]" aria-describedby={undefined}>
+      <DialogContent
+        className="sm:max-w-[400px]"
+        description="Insert or edit an image in your document"
+      >
         <DialogHeader>
           <DialogTitle>
             {state.type === "editing" ? "Edit Image" : "Insert Image"}

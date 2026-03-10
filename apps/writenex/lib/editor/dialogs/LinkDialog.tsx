@@ -206,7 +206,10 @@ export function LinkDialog(): React.ReactElement {
   // EDIT MODE: Render as a Modal Dialog
   return (
     <Dialog open={state.type === "edit"} onOpenChange={handleOpenChange}>
-      <DialogContent className="sm:max-w-[400px]" aria-describedby={undefined}>
+      <DialogContent
+        className="sm:max-w-[400px]"
+        description="Enter the URL for your link"
+      >
         <DialogHeader>
           <DialogTitle>{isEditMode ? "Edit Link" : "Insert Link"}</DialogTitle>
         </DialogHeader>

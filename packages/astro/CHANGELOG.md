@@ -1,3 +1,10 @@
+## [1.1.3](https://github.com/jaainil/writenex/compare/@imjp/writenex-astro@1.1.2...@imjp/writenex-astro@1.1.3) (2026-03-10)
+
+
+### Bug Fixes
+
+* add npm whoami verification step to debug auth ([7785168](https://github.com/jaainil/writenex/commit/77851688894f669e56c888a20058f97f744675fe))
+
 ## [1.1.2](https://github.com/jaainil/writenex/compare/@imjp/writenex-astro@1.1.1...@imjp/writenex-astro@1.1.2) (2026-03-10)
 
 

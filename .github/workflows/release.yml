@@ -31,19 +31,9 @@ jobs:
 
             - run: pnpm build:astro
 
-            - name: Bump version
-              id: version
-              run: |
-                  VERSION=$(node -e "const pkg=require('./packages/astro/package.json'); const v=pkg.version.split('.').map(Number); v[2]++; console.log('v'+v.join('.'))")
-                  echo "VERSION=$VERSION" >> $GITHUB_OUTPUT
-                  npm version $VERSION --no-git-tag-version --allow-same-version --workspace=@imjp/writenex-astro
-
-            - name: Publish to npm
-              run: npm publish --access public --workspace=@imjp/writenex-astro
-
-            - name: Create GitHub Release
-              uses: ncipollo/release-action@v1
-              with:
-                  tagName: ${{ steps.version.outputs.VERSION }}
-                  generateReleaseNotes: true
-                  token: ${{ secrets.GITHUB_TOKEN }}
+            - name: Release
+              env:
+                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+                  NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+                  NPM_CONFIG_PROVENANCE: true
+              run: npx semantic-release

@@ -1,3 +1,15 @@
+# [1.1.0](https://github.com/jaainil/writenex/compare/@imjp/writenex-astro@1.0.0...@imjp/writenex-astro@1.1.0) (2026-03-10)
+
+
+### Features
+
+* add image, link, and keyboard shortcuts dialogs for the editor, along with a generic dialog component. ([ebd1caa](https://github.com/jaainil/writenex/commit/ebd1caa9909f720f580ee5e167b387ed600ff32d))
+* Add Zod-based configuration schema with validation and a version history diff viewer component. ([a38449b](https://github.com/jaainil/writenex/commit/a38449b6f4296b01bb5ebbb3994e4cf964eb9524))
+* Implement the initial Writenex application with its core Astro component library, editor, and filesystem management. ([0e674cc](https://github.com/jaainil/writenex/commit/0e674cc65e1bab23cffddc3898dc5bf30eaa838c))
+* Introduce new `@writenex/eslint-config` package with Prettier integration. ([c955ab6](https://github.com/jaainil/writenex/commit/c955ab61221d8c24c26ef2ea0897f44a39b44450))
+* Introduce new agent skills for Biome.js, ESLint/Prettier migration, and various development-related tasks, updating the skills lock file. ([cc06929](https://github.com/jaainil/writenex/commit/cc069292bf2f16c7ac7713c0761d0518f051c819))
+* Introduce new agent skills for Next.js best practices, covering various topics and updating package configurations. ([d90c9aa](https://github.com/jaainil/writenex/commit/d90c9aacb5463a5d9cb36003cf51238900238452))
+
 # 1.0.0 (2026-01-18)
 
 

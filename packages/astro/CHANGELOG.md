@@ -1,3 +1,10 @@
+## [1.1.1](https://github.com/jaainil/writenex/compare/@imjp/writenex-astro@1.1.0...@imjp/writenex-astro@1.1.1) (2026-03-10)
+
+
+### Bug Fixes
+
+* trigger npm publish ([454b428](https://github.com/jaainil/writenex/commit/454b428f21693ddabb97e854df028858455899e4))
+
 # [1.1.0](https://github.com/jaainil/writenex/compare/@imjp/writenex-astro@1.0.0...@imjp/writenex-astro@1.1.0) (2026-03-10)
 
 

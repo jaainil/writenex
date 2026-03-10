@@ -1,3 +1,10 @@
+## [1.1.2](https://github.com/jaainil/writenex/compare/@imjp/writenex-astro@1.1.1...@imjp/writenex-astro@1.1.2) (2026-03-10)
+
+
+### Bug Fixes
+
+* configure npm auth in workflow for semantic-release ([6820ca1](https://github.com/jaainil/writenex/commit/6820ca15b865039b431fb0034e66af2322025ef9))
+
 ## [1.1.1](https://github.com/jaainil/writenex/compare/@imjp/writenex-astro@1.1.0...@imjp/writenex-astro@1.1.1) (2026-03-10)
 
 

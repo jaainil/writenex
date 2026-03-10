@@ -26,17 +26,21 @@
   "devDependencies": {
     "@semantic-release/changelog": "^6.0.3",
     "@semantic-release/git": "^10.0.1",
-    "@typescript-eslint/eslint-plugin": "^8.53.0",
-    "@typescript-eslint/parser": "^8.53.0",
-    "eslint": "^9.39.2",
+    "@typescript-eslint/eslint-plugin": "^8.57.0",
+    "@typescript-eslint/parser": "^8.57.0",
+    "eslint": "^10.0.3",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-react": "^7.37.5",
     "eslint-plugin-react-hooks": "^7.0.1",
-    "globals": "^17.0.0",
-    "prettier": "^3.8.0",
+    "globals": "^17.4.0",
+    "prettier": "^3.8.1",
     "prettier-plugin-tailwindcss": "^0.7.2",
-    "semantic-release": "^25.0.2",
-    "turbo": "^2.7.5",
+    "semantic-release": "^25.0.3",
+    "turbo": "^2.8.15",
     "typescript": "^5.9.3"
+  },
+  "dependencies": {
+    "pnpm": "^10.32.0",
+    "yjs": "^13.6.29"
   }
 }

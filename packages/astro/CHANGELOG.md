@@ -1,3 +1,10 @@
+## [1.2.2](https://github.com/jaainil/writenex/compare/@imjp/writenex-astro@1.2.1...@imjp/writenex-astro@1.2.2) (2026-03-10)
+
+
+### Bug Fixes
+
+* update package description ([dfae2ce](https://github.com/jaainil/writenex/commit/dfae2cec482d00ed85e8ab2c0346450482520792))
+
 ## [1.2.1](https://github.com/jaainil/writenex/compare/@imjp/writenex-astro@1.2.0...@imjp/writenex-astro@1.2.1) (2026-03-10)
 
 

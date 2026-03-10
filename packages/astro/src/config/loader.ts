@@ -135,8 +135,10 @@ export async function loadConfig(
       const validationResult = validateConfig(userConfig);
 
       if (!validationResult.success) {
-        const errors = validationResult.error.errors
-          .map((e) => `${e.path.join(".")}: ${e.message}`)
+        const errors = validationResult.error.issues
+          .map(
+            (e: import("zod").ZodIssue) => `${e.path.join(".")}: ${e.message}`
+          )
           .join(", ");
         warnings.push(`Configuration validation warnings: ${errors}`);
       }

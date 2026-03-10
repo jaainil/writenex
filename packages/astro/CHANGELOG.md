@@ -1,3 +1,10 @@
+## [1.2.3](https://github.com/jaainil/writenex/compare/@imjp/writenex-astro@1.2.2...@imjp/writenex-astro@1.2.3) (2026-03-10)
+
+
+### Bug Fixes
+
+* remove NPM_TOKEN to use OIDC only ([ee5d5aa](https://github.com/jaainil/writenex/commit/ee5d5aad119cc6ea506f1f0253eb58d027f8d2a0))
+
 ## [1.2.2](https://github.com/jaainil/writenex/compare/@imjp/writenex-astro@1.2.1...@imjp/writenex-astro@1.2.2) (2026-03-10)
 
 

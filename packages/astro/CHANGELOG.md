@@ -1,3 +1,10 @@
+## [1.3.4](https://github.com/jaainil/writenex/compare/@imjp/writenex-astro@1.3.3...@imjp/writenex-astro@1.3.4) (2026-04-01)
+
+
+### Bug Fixes
+
+* normalize Windows paths in config loader, filesystem reader, and integration ([d946b39](https://github.com/jaainil/writenex/commit/d946b399b8c8b42ec187ba31ba20aa7d71e0bc04))
+
 ## [1.3.3](https://github.com/jaainil/writenex/compare/@imjp/writenex-astro@1.3.2...@imjp/writenex-astro@1.3.3) (2026-04-01)
 
 

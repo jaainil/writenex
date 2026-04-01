@@ -11,12 +11,6 @@
       }
     ],
     [
-      "@semantic-release/npm",
-      {
-        "pkgRoot": "packages/astro"
-      }
-    ],
-    [
       "@semantic-release/git",
       {
         "assets": [

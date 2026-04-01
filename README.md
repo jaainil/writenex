@@ -2,6 +2,10 @@
 
 A collection of tools for modern markdown editing and content management.
 
+## Version 2.0.0
+
+This major release includes significant improvements and breaking changes for better functionality.
+
 ## Products
 
 | **Product**                          | **Description**                                                      |

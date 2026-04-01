@@ -1,6 +1,20 @@
 # [1.3.0](https://github.com/jaainil/writenex/compare/@imjp/writenex-astro@1.2.3...@imjp/writenex-astro@1.3.0) (2026-04-01)
 
 
+### Bug Fixes
+
+* separate semantic-release from npm publishing for OIDC support ([aa6a328](https://github.com/jaainil/writenex/commit/aa6a328b127d006bc61493006a6e4b6b4ddd0460))
+* use direct npm publish with OIDC ([debebfa](https://github.com/jaainil/writenex/commit/debebfabde5c8896fe28bd0f77b6c07f36c56227))
+
+
+### Features
+
+* add Astro v6 compatibility and Node.js 22.12.0+ support ([8aa2bbc](https://github.com/jaainil/writenex/commit/8aa2bbc43ab36394bf373ed465edcb5d5cef066b))
+* add GitHub Actions workflow for automated releases ([1e5673c](https://github.com/jaainil/writenex/commit/1e5673c7d88814c1cf29d0915181e8b36f5d515c))
+
+# [1.3.0](https://github.com/jaainil/writenex/compare/@imjp/writenex-astro@1.2.3...@imjp/writenex-astro@1.3.0) (2026-04-01)
+
+
 ### Features
 
 * add Astro v6 support with Node.js 22.12.0+ requirement

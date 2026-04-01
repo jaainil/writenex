@@ -28,13 +28,8 @@ jobs:
 
             - run: pnpm install --frozen-lockfile
 
-            - name: Create Release (Version, Changelog, GitHub Release)
+            - name: Create Release and Publish
               env:
                   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+                  NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
               run: npx semantic-release
-
-            - run: pnpm build:astro
-
-            - name: Publish to npm (OIDC)
-              working-directory: ./packages/astro
-              run: npm publish

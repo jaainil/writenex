@@ -1,3 +1,10 @@
+## [1.3.1](https://github.com/jaainil/writenex/compare/@imjp/writenex-astro@1.3.0...@imjp/writenex-astro@1.3.1) (2026-04-01)
+
+
+### Bug Fixes
+
+* update release workflow for npm OIDC trusted publishing ([c6deaea](https://github.com/jaainil/writenex/commit/c6deaeade87d3b8314a7467f1763272e891eace3))
+
 # [1.3.0](https://github.com/jaainil/writenex/compare/@imjp/writenex-astro@1.2.3...@imjp/writenex-astro@1.3.0) (2026-04-01)
 
 

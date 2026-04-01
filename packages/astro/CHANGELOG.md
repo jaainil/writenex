@@ -1,3 +1,10 @@
+## [1.3.3](https://github.com/jaainil/writenex/compare/@imjp/writenex-astro@1.3.2...@imjp/writenex-astro@1.3.3) (2026-04-01)
+
+
+### Bug Fixes
+
+* restore registry-url in setup-node to enable OIDC auth detection ([98a0d24](https://github.com/jaainil/writenex/commit/98a0d248194e4766f02e1323cc24c5b94ad9fc29))
+
 ## [1.3.2](https://github.com/jaainil/writenex/compare/@imjp/writenex-astro@1.3.1...@imjp/writenex-astro@1.3.2) (2026-04-01)
 
 

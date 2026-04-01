@@ -1,3 +1,10 @@
+## [1.3.2](https://github.com/jaainil/writenex/compare/@imjp/writenex-astro@1.3.1...@imjp/writenex-astro@1.3.2) (2026-04-01)
+
+
+### Bug Fixes
+
+* type (triggers a patch release in semantic-release). ([36fabe1](https://github.com/jaainil/writenex/commit/36fabe15c3860f1e256bd195d2fb5017ce64a5cf))
+
 ## [1.3.1](https://github.com/jaainil/writenex/compare/@imjp/writenex-astro@1.3.0...@imjp/writenex-astro@1.3.1) (2026-04-01)
 
 

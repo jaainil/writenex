@@ -20,6 +20,21 @@ import { applyConfigDefaults } from "./defaults";
 import { validateConfig } from "./schema";
 
 /**
+ * Normalize a project root path that may have come from URL.pathname.
+ *
+ * On Windows, `config.root.pathname` returns `/C:/Users/...` — a leading slash
+ * before the drive letter that makes every subsequent `path.join` and
+ * `fs.existsSync` call fail silently.  Strip it so downstream code gets a
+ * valid Windows path like `C:\Users\...`.
+ *
+ * On macOS/Linux the path starts with a real `/` so the regex won't match
+ * and the string is returned unchanged.
+ */
+function normalizeProjectRoot(projectRoot: string): string {
+  return projectRoot.replace(/^\/([A-Za-z]:)/, "$1");
+}
+
+/**
  * Supported configuration file names in order of priority
  */
 const CONFIG_FILE_NAMES = [
@@ -50,6 +65,7 @@ export interface LoadConfigResult {
  * @returns Path to the configuration file, or null if not found
  */
 export function findConfigFile(projectRoot: string): string | null {
+  projectRoot = normalizeProjectRoot(projectRoot);
   for (const fileName of CONFIG_FILE_NAMES) {
     const filePath = join(projectRoot, fileName);
     if (existsSync(filePath)) {
@@ -117,6 +133,7 @@ async function loadConfigFile(configPath: string): Promise<WritenexConfig> {
 export async function loadConfig(
   projectRoot: string
 ): Promise<LoadConfigResult> {
+  projectRoot = normalizeProjectRoot(projectRoot);
   const warnings: string[] = [];
   let userConfig: WritenexConfig = {};
   let configPath: string | null = null;
@@ -171,6 +188,7 @@ export function contentDirectoryExists(
   projectRoot: string,
   contentPath: string = "src/content"
 ): boolean {
+  projectRoot = normalizeProjectRoot(projectRoot);
   const fullPath = join(projectRoot, contentPath);
   return existsSync(fullPath);
 }

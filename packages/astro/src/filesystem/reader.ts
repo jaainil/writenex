@@ -82,8 +82,10 @@ export function extractSlug(filePath: string, collectionPath: string): string {
   const ext = extname(filename);
 
   // Handle index files (folder-based content)
+  // On Windows, path.relative() uses backslashes — normalise to forward slashes
+  // so the split works on both platforms.
   if (filename === "index.md" || filename === "index.mdx") {
-    const parts = relativePath.split("/");
+    const parts = relativePath.replace(/\\/g, "/").split("/");
     if (parts.length >= 2) {
       const slug = parts[parts.length - 2];
       if (slug) return slug;

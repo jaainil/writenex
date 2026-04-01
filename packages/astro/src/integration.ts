@@ -115,7 +115,10 @@ export default function writenex(options?: WritenexOptions): AstroIntegration {
         }
 
         // Store project root
-        projectRoot = config.root.pathname;
+        // On Windows, URL.pathname produces /C:/Users/... with a leading slash
+        // before the drive letter which breaks path.join and fs.existsSync.
+        // Strip that leading slash so we get a valid Windows path (C:\Users\...).
+        projectRoot = config.root.pathname.replace(/^\/([A-Za-z]:)/, "$1");
 
         // Capture Astro's trailingSlash setting for preview URLs
         astroTrailingSlash = config.trailingSlash ?? "ignore";

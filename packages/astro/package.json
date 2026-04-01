@@ -1,6 +1,6 @@
 {
   "name": "@imjp/writenex-astro",
-  "version": "1.2.3",
+  "version": "1.3.0",
   "description": "Visual editor for Astro content collections - WYSIWYG editing for your Astro site.",
   "type": "module",
   "main": "./dist/index.js",
@@ -68,26 +68,26 @@
     "access": "public"
   },
   "dependencies": {
-    "@mdxeditor/editor": "^3.52.4",
+    "@mdxeditor/editor": "^3.53.1",
     "chokidar": "^5.0.0",
     "gray-matter": "^4.0.3",
-    "lucide-react": "^0.577.0",
-    "slugify": "^1.6.6",
+    "lucide-react": "^1.7.0",
+    "slugify": "^1.6.8",
     "zod": "^4.3.6"
   },
   "peerDependencies": {
-    "astro": "^4.0.0 || ^5.0.0",
+    "astro": "^4.0.0 || ^5.0.0 || ^6.0.0",
     "react": "^18.0.0 || ^19.0.0",
     "react-dom": "^18.0.0 || ^19.0.0"
   },
   "devDependencies": {
-    "@types/node": "^25.4.0",
+    "@types/node": "^25.5.0",
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",
     "@writenex/tsconfig": "workspace:*",
-    "astro": "^5.18.0",
+    "astro": "^6.1.2",
     "tsup": "^8.5.1",
-    "typescript": "^5.9.3",
-    "vite": "^7.3.1"
+    "typescript": "^6.0.2",
+    "vite": "^8.0.3"
   }
 }

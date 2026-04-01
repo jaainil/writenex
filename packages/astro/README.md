@@ -518,9 +518,9 @@ writenex({
 
 ## Requirements
 
-- Astro 4.x or 5.x
+- Astro 4.x, 5.x, or 6.x
 - React 18.x or 19.x
-- Node.js 18+
+- Node.js 22.12.0+ (Node 18 and 20 are no longer supported)
 
 ### Future Plans
 

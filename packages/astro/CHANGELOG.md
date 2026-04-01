@@ -1,3 +1,18 @@
+# [1.3.0](https://github.com/jaainil/writenex/compare/@imjp/writenex-astro@1.2.3...@imjp/writenex-astro@1.3.0) (2026-04-01)
+
+
+### Features
+
+* add Astro v6 support with Node.js 22.12.0+ requirement
+* update peer dependencies to support Astro 4.x, 5.x, and 6.x
+* add .nvmrc file specifying Node 22.12.0 as minimum version
+* upgrade dev dependencies to use Astro v6 and Vite 7
+
+### Breaking Changes
+
+* Node.js 18 and 20 are no longer supported (now requires Node 22.12.0+)
+* This aligns with Astro v6's Node.js support requirements
+
 ## [1.2.3](https://github.com/jaainil/writenex/compare/@imjp/writenex-astro@1.2.2...@imjp/writenex-astro@1.2.3) (2026-03-10)
 
 

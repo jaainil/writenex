@@ -1,3 +1,10 @@
+## [1.3.5](https://github.com/jaainil/writenex/compare/@imjp/writenex-astro@1.3.4...@imjp/writenex-astro@1.3.5) (2026-04-01)
+
+
+### Bug Fixes
+
+* build after semantic-release to publish correct version ([b62923a](https://github.com/jaainil/writenex/commit/b62923a3d5f2869be0ebd29387e59e00739fbce6))
+
 ## [1.3.4](https://github.com/jaainil/writenex/compare/@imjp/writenex-astro@1.3.3...@imjp/writenex-astro@1.3.4) (2026-04-01)
 
 

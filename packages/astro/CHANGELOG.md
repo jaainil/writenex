@@ -1,3 +1,10 @@
+## [1.3.6](https://github.com/jaainil/writenex/compare/@imjp/writenex-astro@1.3.5...@imjp/writenex-astro@1.3.6) (2026-04-01)
+
+
+### Bug Fixes
+
+* add npm plugin to semantic-release and update workflow ([f15f749](https://github.com/jaainil/writenex/commit/f15f749cb6281742e7a8ae696c47f8a6aa15fe46))
+
 ## [1.3.5](https://github.com/jaainil/writenex/compare/@imjp/writenex-astro@1.3.4...@imjp/writenex-astro@1.3.5) (2026-04-01)
 
 

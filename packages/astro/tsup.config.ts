@@ -87,6 +87,7 @@ export default defineConfig([
       "discovery/index": "src/discovery/index.ts",
       "filesystem/index": "src/filesystem/index.ts",
       "server/index": "src/server/index.ts",
+      "fields/index": "src/fields/index.ts",
     },
     outDir: "dist",
     format: ["esm"],

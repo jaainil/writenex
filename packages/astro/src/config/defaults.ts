@@ -93,6 +93,7 @@ export function applyConfigDefaults(
 ): Required<WritenexConfig> {
   return {
     collections: (config.collections ?? []).map(applyCollectionDefaults),
+    singletons: (config.singletons ?? []).map(applyCollectionDefaults),
     images: config.images
       ? { ...DEFAULT_IMAGE_CONFIG, ...config.images }
       : DEFAULT_IMAGE_CONFIG,

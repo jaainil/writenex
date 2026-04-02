@@ -7,6 +7,9 @@
  * @module @writenex/astro/config
  */
 
+export type { FieldDefinition, FieldKind, ValidationOptions } from "@/fields";
+// Fields API
+export { collection, fields, singleton } from "@/fields";
 // Defaults and constants
 export {
   applyCollectionDefaults,

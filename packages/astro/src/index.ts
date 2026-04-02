@@ -32,6 +32,7 @@ export { default, default as writenex } from "./integration";
 // =============================================================================
 
 export { defineConfig, loadConfig, validateConfig } from "@/config";
+export { collection, fields, singleton } from "@/fields";
 
 // =============================================================================
 // Core Types (essential for consumers)
@@ -45,10 +46,12 @@ export type {
   DiscoveredCollection,
   DiscoveryConfig,
   EditorConfig,
+  FieldKind,
   FieldType,
   ImageConfig,
   ImageStrategy,
   SchemaField,
+  ValidationOptions,
   VersionHistoryConfig,
   WritenexConfig,
   WritenexOptions,

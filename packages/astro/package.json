@@ -29,13 +29,13 @@
     "./server": {
       "types": "./dist/server/index.d.ts",
       "import": "./dist/server/index.js"
+    },
+    "./fields": {
+      "types": "./dist/fields/index.d.ts",
+      "import": "./dist/fields/index.js"
     }
   },
-  "files": [
-    "dist",
-    "src",
-    "README.md"
-  ],
+  "files": ["dist", "src", "README.md"],
   "scripts": {
     "build": "tsup",
     "prepublishOnly": "pnpm build",

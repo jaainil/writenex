@@ -413,7 +413,6 @@ function DynamicField({
 }): React.ReactElement {
   const fieldId = `fm-${name}`;
   const label = formatFieldLabel(name);
-  const enumOptions = parseEnumFromDescription(field.description);
 
   switch (field.type) {
     case "boolean":
@@ -428,6 +427,7 @@ function DynamicField({
       );
 
     case "number":
+    case "integer":
       return (
         <NumberField
           id={fieldId}
@@ -436,12 +436,25 @@ function DynamicField({
           onChange={onChange}
           disabled={disabled}
           required={field.required}
+          step={field.type === "integer" ? 1 : "any"}
         />
       );
 
     case "date":
       return (
         <DateField
+          id={fieldId}
+          label={label}
+          value={value}
+          onChange={onChange}
+          disabled={disabled}
+          required={field.required}
+        />
+      );
+
+    case "datetime":
+      return (
+        <DatetimeField
           id={fieldId}
           label={label}
           value={value}
@@ -458,6 +471,32 @@ function DynamicField({
           label={label}
           value={value as unknown[] | undefined}
           itemType={field.items}
+          onChange={onChange}
+          disabled={disabled}
+          required={field.required}
+        />
+      );
+
+    case "multiselect":
+      return (
+        <MultiselectField
+          id={fieldId}
+          label={label}
+          value={value as string[] | undefined}
+          options={field.options || []}
+          onChange={onChange}
+          disabled={disabled}
+          required={field.required}
+        />
+      );
+
+    case "select":
+      return (
+        <SelectField
+          id={fieldId}
+          label={label}
+          value={String(value ?? "")}
+          options={field.options || []}
           onChange={onChange}
           disabled={disabled}
           required={field.required}
@@ -481,24 +520,95 @@ function DynamicField({
         />
       );
 
+    case "file":
+      return (
+        <FileField
+          id={fieldId}
+          label={label}
+          value={value as string | undefined}
+          onChange={onChange}
+          disabled={disabled}
+          required={field.required}
+        />
+      );
+
+    case "slug":
+      return (
+        <SlugField
+          id={fieldId}
+          label={label}
+          value={String(value ?? "")}
+          onChange={onChange}
+          disabled={disabled}
+          required={field.required}
+        />
+      );
+
+    case "url":
+      return (
+        <UrlField
+          id={fieldId}
+          label={label}
+          value={String(value ?? "")}
+          onChange={onChange}
+          disabled={disabled}
+          required={field.required}
+        />
+      );
+
+    case "object":
+      return (
+        <ObjectField
+          id={fieldId}
+          label={label}
+          value={value as Record<string, unknown> | undefined}
+          fields={field.fields}
+          onChange={onChange}
+          disabled={disabled}
+          required={field.required}
+        />
+      );
+
+    case "relationship":
+      return (
+        <RelationshipField
+          id={fieldId}
+          label={label}
+          value={value as string | string[] | undefined}
+          collection={field.collection}
+          onChange={onChange}
+          disabled={disabled}
+          required={field.required}
+        />
+      );
+
+    case "markdoc":
+    case "mdx":
+      return (
+        <RichTextField
+          id={fieldId}
+          label={label}
+          value={String(value ?? "")}
+          onChange={onChange}
+          disabled={disabled}
+          required={field.required}
+        />
+      );
+
+    case "ignored":
+    case "empty":
+    case "empty-content":
+    case "empty-document":
+    case "child":
+      return <></>;
+
     case "string":
     default:
-      if (enumOptions.length > 0) {
-        return (
-          <SelectField
-            id={fieldId}
-            label={label}
-            value={String(value ?? "")}
-            options={enumOptions}
-            onChange={onChange}
-            disabled={disabled}
-            required={field.required}
-          />
-        );
-      }
-
       const isMultiline =
-        name === "description" || name === "excerpt" || name === "summary";
+        field.multiline ||
+        name === "description" ||
+        name === "excerpt" ||
+        name === "summary";
 
       return (
         <StringField
@@ -574,9 +684,11 @@ function NumberField({
   onChange,
   disabled,
   required,
+  step,
 }: BaseFieldProps & {
   value: number | undefined;
   onChange: (value: number | undefined) => void;
+  step?: string | number;
 }): React.ReactElement {
   return (
     <div className="wn-frontmatter-field">
@@ -588,6 +700,7 @@ function NumberField({
         id={id}
         type="number"
         value={value ?? ""}
+        step={step ?? "any"}
         onChange={(e) => {
           const val = e.target.value;
           onChange(val === "" ? undefined : Number(val));
@@ -869,6 +982,329 @@ function ImageField({
   );
 }
 
+function DatetimeField({
+  id,
+  label,
+  value,
+  onChange,
+  disabled,
+  required,
+}: BaseFieldProps & {
+  value: unknown;
+  onChange: (value: string | undefined) => void;
+}): React.ReactElement {
+  const datetimeValue = formatDatetimeForInput(value);
+
+  return (
+    <div className="wn-frontmatter-field">
+      <label htmlFor={id} className="wn-frontmatter-label">
+        {label}
+        {required && <span className="wn-frontmatter-required">*</span>}
+      </label>
+      <input
+        id={id}
+        type="datetime-local"
+        value={datetimeValue}
+        onChange={(e) => onChange(e.target.value || undefined)}
+        disabled={disabled}
+        className="wn-frontmatter-input"
+      />
+    </div>
+  );
+}
+
+function MultiselectField({
+  id,
+  label,
+  value,
+  options,
+  onChange,
+  disabled,
+  required,
+}: BaseFieldProps & {
+  value: string[] | undefined;
+  options: string[];
+  onChange: (value: string[]) => void;
+}): React.ReactElement {
+  const selectedValues = value || [];
+
+  const handleToggle = (option: string) => {
+    if (selectedValues.includes(option)) {
+      onChange(selectedValues.filter((v) => v !== option));
+    } else {
+      onChange([...selectedValues, option]);
+    }
+  };
+
+  return (
+    <div className="wn-frontmatter-field">
+      <label className="wn-frontmatter-label">
+        {label}
+        {required && <span className="wn-frontmatter-required">*</span>}
+      </label>
+      <div className="wn-frontmatter-checkbox-group">
+        {options.map((option) => (
+          <label key={option} className="wn-frontmatter-checkbox-label">
+            <input
+              type="checkbox"
+              checked={selectedValues.includes(option)}
+              onChange={() => handleToggle(option)}
+              disabled={disabled}
+              className="wn-frontmatter-checkbox"
+            />
+            <span>{option}</span>
+          </label>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function FileField({
+  id,
+  label,
+  value,
+  onChange,
+  disabled,
+  required,
+}: BaseFieldProps & {
+  value: string | undefined;
+  onChange: (value: string | undefined) => void;
+}): React.ReactElement {
+  return (
+    <div className="wn-frontmatter-field">
+      <label htmlFor={id} className="wn-frontmatter-label">
+        {label}
+        {required && <span className="wn-frontmatter-required">*</span>}
+      </label>
+      <input
+        id={id}
+        type="text"
+        value={value ?? ""}
+        onChange={(e) => onChange(e.target.value || undefined)}
+        disabled={disabled}
+        placeholder="./files/document.pdf"
+        className="wn-frontmatter-input"
+      />
+    </div>
+  );
+}
+
+function SlugField({
+  id,
+  label,
+  value,
+  onChange,
+  disabled,
+  required,
+}: BaseFieldProps & {
+  value: string;
+  onChange: (value: string) => void;
+}): React.ReactElement {
+  return (
+    <div className="wn-frontmatter-field">
+      <label htmlFor={id} className="wn-frontmatter-label">
+        {label}
+        {required && <span className="wn-frontmatter-required">*</span>}
+      </label>
+      <input
+        id={id}
+        type="text"
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+        disabled={disabled}
+        placeholder="enter-slug-here"
+        className="wn-frontmatter-input"
+      />
+    </div>
+  );
+}
+
+function UrlField({
+  id,
+  label,
+  value,
+  onChange,
+  disabled,
+  required,
+}: BaseFieldProps & {
+  value: string;
+  onChange: (value: string) => void;
+}): React.ReactElement {
+  return (
+    <div className="wn-frontmatter-field">
+      <label htmlFor={id} className="wn-frontmatter-label">
+        {label}
+        {required && <span className="wn-frontmatter-required">*</span>}
+      </label>
+      <input
+        id={id}
+        type="url"
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+        disabled={disabled}
+        placeholder="https://example.com"
+        className="wn-frontmatter-input"
+      />
+    </div>
+  );
+}
+
+function ObjectField({
+  id,
+  label,
+  value,
+  fields,
+  onChange,
+  disabled,
+  required,
+}: BaseFieldProps & {
+  value: Record<string, unknown> | undefined;
+  fields?: Record<string, SchemaField>;
+  onChange: (value: Record<string, unknown>) => void;
+}): React.ReactElement {
+  const objectValue = value || {};
+  const [isExpanded, setIsExpanded] = useState(true);
+
+  const handleFieldChange = (fieldName: string, fieldValue: unknown) => {
+    onChange({ ...objectValue, [fieldName]: fieldValue });
+  };
+
+  if (!fields || Object.keys(fields).length === 0) {
+    return (
+      <div className="wn-frontmatter-field">
+        <label className="wn-frontmatter-label">
+          {label}
+          {required && <span className="wn-frontmatter-required">*</span>}
+        </label>
+        <span className="wn-frontmatter-hint">No sub-fields defined</span>
+      </div>
+    );
+  }
+
+  return (
+    <div className="wn-frontmatter-field-group">
+      <button
+        type="button"
+        className="wn-frontmatter-group-toggle"
+        onClick={() => setIsExpanded(!isExpanded)}
+        disabled={disabled}
+      >
+        <span className="wn-frontmatter-label">
+          {label}
+          {required && <span className="wn-frontmatter-required">*</span>}
+        </span>
+        <span>{isExpanded ? "[-]" : "[+]"}</span>
+      </button>
+      {isExpanded && (
+        <div className="wn-frontmatter-group-content">
+          {Object.entries(fields).map(([fieldName, fieldDef]) => (
+            <DynamicField
+              key={fieldName}
+              name={fieldName}
+              field={fieldDef}
+              value={objectValue[fieldName]}
+              onChange={(fieldValue) =>
+                handleFieldChange(fieldName, fieldValue)
+              }
+              disabled={disabled}
+            />
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
+function RelationshipField({
+  id,
+  label,
+  value,
+  collection,
+  onChange,
+  disabled,
+  required,
+}: BaseFieldProps & {
+  value: string | string[] | undefined;
+  collection?: string;
+  onChange: (value: string | string[]) => void;
+}): React.ReactElement {
+  return (
+    <div className="wn-frontmatter-field">
+      <label htmlFor={id} className="wn-frontmatter-label">
+        {label}
+        {required && <span className="wn-frontmatter-required">*</span>}
+      </label>
+      <input
+        id={id}
+        type="text"
+        value={Array.isArray(value) ? value.join(", ") : (value ?? "")}
+        onChange={(e) => onChange(e.target.value)}
+        disabled={disabled}
+        placeholder={collection ? `Reference to ${collection}` : "Reference"}
+        className="wn-frontmatter-input"
+      />
+      {collection && (
+        <span className="wn-frontmatter-hint">References: {collection}</span>
+      )}
+    </div>
+  );
+}
+
+function RichTextField({
+  id,
+  label,
+  value,
+  onChange,
+  disabled,
+  required,
+}: BaseFieldProps & {
+  value: string;
+  onChange: (value: string) => void;
+}): React.ReactElement {
+  return (
+    <div className="wn-frontmatter-field wn-frontmatter-field--full">
+      <label htmlFor={id} className="wn-frontmatter-label">
+        {label}
+        {required && <span className="wn-frontmatter-required">*</span>}
+      </label>
+      <textarea
+        id={id}
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+        disabled={disabled}
+        placeholder={`Enter ${label.toLowerCase()}`}
+        rows={8}
+        className="wn-frontmatter-textarea wn-frontmatter-textarea--rich"
+      />
+    </div>
+  );
+}
+
+function formatDatetimeForInput(value: unknown): string {
+  if (!value) return "";
+
+  if (typeof value === "string") {
+    if (/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}/.test(value)) {
+      return value.slice(0, 16);
+    }
+    try {
+      const date = new Date(value);
+      if (!isNaN(date.getTime())) {
+        return date.toISOString().slice(0, 16) ?? "";
+      }
+    } catch {
+      return "";
+    }
+  }
+
+  if (value instanceof Date) {
+    return value.toISOString().slice(0, 16) ?? "";
+  }
+
+  return "";
+}
+
 // Utilities
 
 function formatFieldLabel(name: string): string {
@@ -901,14 +1337,4 @@ function formatDateForInput(value: unknown): string {
   }
 
   return "";
-}
-
-function parseEnumFromDescription(description?: string): string[] {
-  if (!description) return [];
-  const match = description.match(/^Options:\s*(.+)$/i);
-  if (!match || !match[1]) return [];
-  return match[1]
-    .split(",")
-    .map((s) => s.trim())
-    .filter(Boolean);
 }

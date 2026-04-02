@@ -1,3 +1,10 @@
+# [1.5.0](https://github.com/jaainil/writenex/compare/@imjp/writenex-astro@1.4.0...@imjp/writenex-astro@1.5.0) (2026-04-02)
+
+
+### Features
+
+* **fields:** add defaultValue support for field types and new field kinds ([c81c6c7](https://github.com/jaainil/writenex/commit/c81c6c782925942ca7a3acacebfa390e2290ac9c))
+
 # [1.4.0](https://github.com/jaainil/writenex/compare/@imjp/writenex-astro@1.3.6...@imjp/writenex-astro@1.4.0) (2026-04-02)
 
 

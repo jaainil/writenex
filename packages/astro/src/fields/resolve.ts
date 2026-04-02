@@ -39,8 +39,29 @@ const FIELD_KIND_TO_TYPE: Record<string, string> = {
   ignored: "ignored",
 };
 
+function resolveObjectFields(
+  fields: Record<string, FieldDefinition>
+): Record<string, SchemaField> {
+  const result: Record<string, SchemaField> = {};
+  for (const [key, value] of Object.entries(fields)) {
+    result[key] = resolveFieldDefinition(value);
+  }
+  return result;
+}
+
+function resolveBlockTypes(
+  blockTypes: Record<string, FieldDefinition>
+): Record<string, SchemaField> {
+  const result: Record<string, SchemaField> = {};
+  for (const [key, value] of Object.entries(blockTypes)) {
+    result[key] = resolveFieldDefinition(value);
+  }
+  return result;
+}
+
 export function resolveFieldDefinition(field: FieldDefinition): SchemaField {
   const type = FIELD_KIND_TO_TYPE[field.fieldKind] ?? "string";
+
   const base: SchemaField = {
     type: type as SchemaField["type"],
     required: field.validation?.isRequired ?? false,
@@ -50,16 +71,62 @@ export function resolveFieldDefinition(field: FieldDefinition): SchemaField {
   };
 
   switch (field.fieldKind) {
+    case "text":
+      return {
+        ...base,
+        multiline: field.multiline,
+      };
+
+    case "slug":
+    case "url":
+      return base;
+
+    case "number":
+      return {
+        ...base,
+        default:
+          field.defaultValue ?? (field as { placeholder?: number }).placeholder,
+      };
+
+    case "integer":
+      return {
+        ...base,
+        default:
+          field.defaultValue ?? (field as { placeholder?: number }).placeholder,
+      };
+
     case "select":
       return {
         ...base,
         options: field.options,
+        default: field.defaultValue,
       };
 
     case "multiselect":
       return {
         ...base,
         items: "string",
+        default: field.defaultValue,
+      };
+
+    case "checkbox":
+      return {
+        ...base,
+        default: field.defaultValue,
+      };
+
+    case "date":
+      return {
+        ...base,
+        format: "date",
+        default: field.defaultValue,
+      };
+
+    case "datetime":
+      return {
+        ...base,
+        format: "datetime-local",
+        default: field.defaultValue,
       };
 
     case "image":
@@ -102,6 +169,18 @@ export function resolveFieldDefinition(field: FieldDefinition): SchemaField {
         collection: field.collection,
       };
 
+    case "path-reference":
+      return {
+        ...base,
+        allowExternal: (
+          field as { contentTypes?: string[] }
+        ).contentTypes?.includes("url"),
+      };
+
+    case "markdoc":
+    case "mdx":
+      return base;
+
     case "conditional":
       return {
         ...base,
@@ -110,40 +189,15 @@ export function resolveFieldDefinition(field: FieldDefinition): SchemaField {
         showField: resolveFieldDefinition(field.showField),
       };
 
-    case "text":
-      return {
-        ...base,
-        multiline: field.multiline,
-      };
+    case "child":
+    case "cloud-image":
+      return base;
 
-    case "date":
-    case "datetime":
-      return {
-        ...base,
-        format: field.fieldKind === "datetime" ? "datetime-local" : "date",
-      };
-
+    case "empty":
+    case "empty-content":
+    case "empty-document":
+    case "ignored":
     default:
       return base;
   }
-}
-
-function resolveObjectFields(
-  fields: Record<string, FieldDefinition>
-): Record<string, SchemaField> {
-  const result: Record<string, SchemaField> = {};
-  for (const [key, value] of Object.entries(fields)) {
-    result[key] = resolveFieldDefinition(value);
-  }
-  return result;
-}
-
-function resolveBlockTypes(
-  blockTypes: Record<string, FieldDefinition>
-): Record<string, SchemaField> {
-  const result: Record<string, SchemaField> = {};
-  for (const [key, value] of Object.entries(blockTypes)) {
-    result[key] = resolveFieldDefinition(value);
-  }
-  return result;
 }

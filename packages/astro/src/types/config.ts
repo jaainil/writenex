@@ -154,4 +154,5 @@ export interface WritenexOptions {
 
 export interface ResolvedConfig extends Required<WritenexConfig> {
   collections: Required<CollectionConfig>[];
+  singletons: Required<SingletonConfig>[];
 }

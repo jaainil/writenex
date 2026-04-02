@@ -1,3 +1,10 @@
+# [1.4.0](https://github.com/jaainil/writenex/compare/@imjp/writenex-astro@1.3.6...@imjp/writenex-astro@1.4.0) (2026-04-02)
+
+
+### Features
+
+* add Keystatic-style Fields API with 25+ field types ([6e07181](https://github.com/jaainil/writenex/commit/6e0718153a736813b91b1ca8613fe693e955fffc))
+
 ## [1.3.6](https://github.com/jaainil/writenex/compare/@imjp/writenex-astro@1.3.5...@imjp/writenex-astro@1.3.6) (2026-04-01)
 
 

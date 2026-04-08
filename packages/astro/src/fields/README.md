@@ -42,7 +42,7 @@ The Fields API is included with `@imjp/writenex-astro`. Import it from:
 ```typescript
 import { fields, collection, singleton, defineConfig } from "@imjp/writenex-astro/config";
 // or
-import { fields, collection, singleton, defineConfig } from "@writenex/astro/config";
+import { fields, collection, singleton, defineConfig } from "@imjp/writenex-astro/config";
 ```
 
 ## Field Types

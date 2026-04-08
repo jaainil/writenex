@@ -153,7 +153,7 @@ The Fields API provides a TypeScript-first builder pattern for defining content 
 ```typescript
 import { defineConfig, collection, singleton, fields } from "@imjp/writenex-astro/config";
 // or
-import { defineConfig, collection, singleton, fields } from "@writenex/astro/config";
+import { defineConfig, collection, singleton, fields } from "@imjp/writenex-astro/config";
 ```
 
 ### collection() vs singleton()

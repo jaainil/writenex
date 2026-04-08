@@ -1,3 +1,10 @@
+## [1.6.1](https://github.com/jaainil/writenex/compare/@imjp/writenex-astro@1.6.0...@imjp/writenex-astro@1.6.1) (2026-04-08)
+
+
+### Bug Fixes
+
+* update rootDirectory in vercel.json for correct deployment path ([49fd59a](https://github.com/jaainil/writenex/commit/49fd59a453196f75b3870212a1607b7b200141e0))
+
 # [1.6.0](https://github.com/jaainil/writenex/compare/@imjp/writenex-astro@1.5.0...@imjp/writenex-astro@1.6.0) (2026-04-08)
 
 

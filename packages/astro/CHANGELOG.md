@@ -1,3 +1,10 @@
+## [1.6.3](https://github.com/jaainil/writenex/compare/@imjp/writenex-astro@1.6.2...@imjp/writenex-astro@1.6.3) (2026-04-08)
+
+
+### Bug Fixes
+
+* remove vercel.json configuration file ([19e6cf6](https://github.com/jaainil/writenex/commit/19e6cf66116e76b7a98657124e9b8c6f21193cd5))
+
 ## [1.6.2](https://github.com/jaainil/writenex/compare/@imjp/writenex-astro@1.6.1...@imjp/writenex-astro@1.6.2) (2026-04-08)
 
 

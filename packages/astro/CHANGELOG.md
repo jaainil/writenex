@@ -1,3 +1,10 @@
+## [1.6.4](https://github.com/jaainil/writenex/compare/@imjp/writenex-astro@1.6.3...@imjp/writenex-astro@1.6.4) (2026-04-08)
+
+
+### Bug Fixes
+
+* add outputDirectory to vercel.json configuration ([380eba6](https://github.com/jaainil/writenex/commit/380eba6c9bb385e7bd0219e5f0a9557a68ad930d))
+
 ## [1.6.3](https://github.com/jaainil/writenex/compare/@imjp/writenex-astro@1.6.2...@imjp/writenex-astro@1.6.3) (2026-04-08)
 
 

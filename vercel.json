@@ -4,7 +4,6 @@
   "rootDirectory": ".",
   "installCommand": "pnpm install",
   "buildCommand": "pnpm --filter writenex build",
-  "outputDirectory": "apps/writenex/.next",
   "headers": [
     {
       "source": "/sw.js",

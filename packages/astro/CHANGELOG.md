@@ -1,3 +1,10 @@
+# [1.6.0](https://github.com/jaainil/writenex/compare/@imjp/writenex-astro@1.5.0...@imjp/writenex-astro@1.6.0) (2026-04-08)
+
+
+### Features
+
+* add Fields API documentation for content schema definition in Astro projects ([d72e897](https://github.com/jaainil/writenex/commit/d72e8970260868268e2b94dcd0d157f76f0eb438))
+
 # [1.5.0](https://github.com/jaainil/writenex/compare/@imjp/writenex-astro@1.4.0...@imjp/writenex-astro@1.5.0) (2026-04-02)
 
 

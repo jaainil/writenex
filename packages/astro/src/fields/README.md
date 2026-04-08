@@ -1,180 +1,48 @@
-# @imjp/writenex-astro
+# Fields API Documentation
 
-Visual editor for Astro content collections - WYSIWYG editing for your Astro site.
+A TypeScript-first builder pattern for defining content schema fields in Astro projects.
 
 ## Overview
 
-**@imjp/writenex-astro** is an Astro integration that provides a WYSIWYG editor interface for managing your content collections. It runs alongside your Astro dev server and provides direct filesystem access to your content.
+The Fields API provides a fluent, type-safe way to define the schema for your content collections. Instead of plain JSON objects, you use builder functions like `fields.text()`, `fields.select()`, etc.
 
-### Key Features
+### Why Use the Fields API?
 
-- **Fields API** - TypeScript-first builder pattern with 25+ field types
-- **Zero Config** - Auto-discovers your content collections from `src/content/`
-- **WYSIWYG Editor** - MDXEditor-powered markdown editing with live preview
-- **Smart Schema Detection** - Automatically infers frontmatter schema from existing content
-- **Dynamic Forms** - Auto-generated forms based on detected or configured schema
-- **Image Upload** - Drag-and-drop image upload with colocated or public storage
-- **Version History** - Creates automatic shadow copies on save
-- **Autosave** - Automatic saving with configurable interval
-- **Keyboard Shortcuts** - Familiar shortcuts for common actions
-- **Draft Management** - Toggle draft/published status with visual indicators
-- **Search & Filter** - Find content quickly with search and draft filters
-- **Preview Links** - Quick access to preview your content in the browser
-- **Production Safe** - Disabled by default in production builds
+- **Type Safety** - Full TypeScript inference with autocomplete
+- **IDE Support** - Documented config options with hover tooltips
+- **Validation** - Built-in validation rules for each field type
+- **Composable** - Nest fields within objects, arrays, and blocks
 
 ## Quick Start
 
-### 1. Install the integration
-
-```bash
-npx astro add @imjp/writenex-astro
-```
-
-This will install the package and automatically configure your `astro.config.mjs`.
-
-### 2. Start your dev server
-
-```bash
-astro dev
-```
-
-### 3. Open the editor
-
-Visit `http://localhost:4321/_writenex` in your browser.
-
-That's it! Writenex will auto-discover your content collections and you can start editing.
-
-### Manual Installation
-
-If you prefer to install manually:
-
-```bash
-# npm
-npm install @imjp/writenex-astro
-
-# pnpm
-pnpm add @imjp/writenex-astro
-
-# yarn
-yarn add @imjp/writenex-astro
-```
-
-Then add the integration to your config:
-
-```typescript
-// astro.config.mjs
-import { defineConfig } from "astro/config";
-import writenex from "@imjp/writenex-astro";
-
-export default defineConfig({
-  integrations: [writenex()],
-});
-```
-
-## Configuration
-
-### Zero Config (Recommended)
-
-By default, Writenex auto-discovers your content collections from `src/content/` and infers the frontmatter schema from existing files. No configuration needed for most projects.
-
-### Custom Configuration with Fields API
-
-Create `writenex.config.ts` in your project root for full control:
-
 ```typescript
 // writenex.config.ts
-import { defineConfig, collection, fields } from "@imjp/writenex-astro";
+import { defineConfig, collection, fields } from "@imjp/writenex-astro/config";
 
 export default defineConfig({
   collections: [
     collection({
       name: "blog",
       path: "src/content/blog",
-      filePattern: "{slug}.md",
-      previewUrl: "/blog/{slug}",
       schema: {
         title: fields.text({ label: "Title", validation: { isRequired: true } }),
-        description: fields.text({ label: "Description", multiline: true }),
-        pubDate: fields.date({ label: "Published Date", validation: { isRequired: true } }),
-        updatedDate: fields.datetime({ label: "Last Updated" }),
-        heroImage: fields.image({ label: "Hero Image" }),
-        tags: fields.multiselect({ label: "Tags", options: ["javascript", "typescript", "react", "astro"] }),
+        slug: fields.slug({ name: { label: "Slug" } }),
+        publishedAt: fields.date({ label: "Published Date" }),
         draft: fields.checkbox({ label: "Draft", defaultValue: true }),
-        body: fields.mdx({ label: "Content", validation: { isRequired: true } }),
       },
     }),
-    collection({
-      name: "docs",
-      path: "src/content/docs",
-      filePattern: "{slug}.md",
-      previewUrl: "/docs/{slug}",
-    }),
   ],
-
-  images: {
-    strategy: "colocated",
-    publicPath: "/images",
-    storagePath: "public/images",
-  },
-
-  editor: {
-    autosave: true,
-    autosaveInterval: 3000,
-  },
-
-  versionHistory: {
-    enabled: true,
-    maxVersions: 20,
-  },
 });
 ```
 
-## Integration Options
+## Installation
 
-| Option            | Type      | Default | Description                                    |
-| ----------------- | --------- | ------- | ---------------------------------------------- |
-| `allowProduction` | `boolean` | `false` | Enable in production builds (use with caution) |
+The Fields API is included with `@imjp/writenex-astro`. Import it from:
 
 ```typescript
-// astro.config.mjs
-writenex({
-  allowProduction: false,
-});
-```
-
-The editor is always available at `/_writenex` during development.
-
-## Fields API
-
-The Fields API provides a TypeScript-first builder pattern for defining content schema fields.
-
-### Imports
-
-```typescript
-import { defineConfig, collection, singleton, fields } from "@imjp/writenex-astro/config";
+import { fields, collection, singleton, defineConfig } from "@imjp/writenex-astro/config";
 // or
-import { defineConfig, collection, singleton, fields } from "@writenex/astro/config";
-```
-
-### collection() vs singleton()
-
-- **`collection()`** - For multi-item content (blog posts, docs, products)
-- **`singleton()`** - For single-item content (site settings, about page)
-
-```typescript
-// Multi-item collection
-collection({
-  name: "blog",
-  path: "src/content/blog",
-  schema: { /* field definitions */ }
-})
-
-// Single-item singleton
-singleton({
-  name: "settings",
-  path: "src/content/settings.json",
-  schema: { /* field definitions */ }
-})
+import { fields, collection, singleton, defineConfig } from "@writenex/astro/config";
 ```
 
 ## Field Types
@@ -200,6 +68,7 @@ fields.text({
 })
 ```
 
+**Config:**
 | Option | Type | Description |
 |--------|------|-------------|
 | `label` | `string` | Display label |
@@ -227,6 +96,7 @@ fields.slug({
 })
 ```
 
+**Config:**
 | Option | Type | Description |
 |--------|------|-------------|
 | `label` | `string` | Display label |
@@ -250,6 +120,7 @@ fields.url({
 })
 ```
 
+**Config:**
 | Option | Type | Description |
 |--------|------|-------------|
 | `label` | `string` | Display label |
@@ -273,6 +144,7 @@ fields.number({
 })
 ```
 
+**Config:**
 | Option | Type | Description |
 |--------|------|-------------|
 | `label` | `string` | Display label |
@@ -296,6 +168,7 @@ fields.integer({
 })
 ```
 
+**Config:**
 | Option | Type | Description |
 |--------|------|-------------|
 | `label` | `string` | Display label |
@@ -327,6 +200,7 @@ fields.select({
 })
 ```
 
+**Config:**
 | Option | Type | Description |
 |--------|------|-------------|
 | `label` | `string` | Display label |
@@ -354,6 +228,7 @@ fields.multiselect({
 })
 ```
 
+**Config:**
 | Option | Type | Description |
 |--------|------|-------------|
 | `label` | `string` | Display label |
@@ -375,6 +250,7 @@ fields.checkbox({
 })
 ```
 
+**Config:**
 | Option | Type | Description |
 |--------|------|-------------|
 | `label` | `string` | Display label |
@@ -396,6 +272,7 @@ fields.date({
 })
 ```
 
+**Config:**
 | Option | Type | Description |
 |--------|------|-------------|
 | `label` | `string` | Display label |
@@ -416,6 +293,7 @@ fields.datetime({
 })
 ```
 
+**Config:**
 | Option | Type | Description |
 |--------|------|-------------|
 | `label` | `string` | Display label |
@@ -439,6 +317,7 @@ fields.image({
 })
 ```
 
+**Config:**
 | Option | Type | Description |
 |--------|------|-------------|
 | `label` | `string` | Display label |
@@ -461,6 +340,7 @@ fields.file({
 })
 ```
 
+**Config:**
 | Option | Type | Description |
 |--------|------|-------------|
 | `label` | `string` | Display label |
@@ -487,6 +367,7 @@ fields.object({
 })
 ```
 
+**Config:**
 | Option | Type | Description |
 |--------|------|-------------|
 | `label` | `string` | Display label |
@@ -518,6 +399,7 @@ fields.array({
 })
 ```
 
+**Config:**
 | Option | Type | Description |
 |--------|------|-------------|
 | `label` | `string` | Display label |
@@ -560,6 +442,7 @@ fields.blocks({
 })
 ```
 
+**Config:**
 | Option | Type | Description |
 |--------|------|-------------|
 | `label` | `string` | Display label |
@@ -586,6 +469,7 @@ fields.relationship({
 })
 ```
 
+**Config:**
 | Option | Type | Description |
 |--------|------|-------------|
 | `label` | `string` | Display label |
@@ -606,6 +490,7 @@ fields.pathReference({
 })
 ```
 
+**Config:**
 | Option | Type | Description |
 |--------|------|-------------|
 | `label` | `string` | Display label |
@@ -662,6 +547,7 @@ fields.conditional({
   })
 })
 
+// With checkbox condition
 fields.conditional({
   label: "External Link",
   matchField: "linkType",
@@ -670,6 +556,7 @@ fields.conditional({
 })
 ```
 
+**Config:**
 | Option | Type | Description |
 |--------|------|-------------|
 | `label` | `string` | Display label |
@@ -783,6 +670,42 @@ fields.number({
 | `maxLength` | `number` | `text`, `url` |
 | `pattern` | `string` | `text`, `slug` |
 | `patternDescription` | `string` | `text`, `slug` |
+
+---
+
+## Collections vs Singletons
+
+### `collection()`
+
+For multi-item content (blog posts, docs, products):
+
+```typescript
+collection({
+  name: "blog",
+  path: "src/content/blog",
+  schema: {
+    title: fields.text({ label: "Title", validation: { isRequired: true } }),
+    slug: fields.slug({ name: { label: "Slug" } }),
+    body: fields.mdx({ label: "Content" }),
+  }
+})
+```
+
+### `singleton()`
+
+For single-item content (site settings, about page):
+
+```typescript
+singleton({
+  name: "settings",
+  path: "src/content/settings.json",
+  schema: {
+    siteName: fields.text({ label: "Site Name" }),
+    tagline: fields.text({ label: "Tagline" }),
+    logo: fields.image({ label: "Logo" }),
+  }
+})
+```
 
 ---
 
@@ -982,344 +905,7 @@ export default defineConfig({
 
 ---
 
-## Collection Configuration
-
-| Option        | Type     | Description                                 |
-| ------------- | -------- | ------------------------------------------- |
-| `name`        | `string` | Collection identifier (matches folder name) |
-| `path`        | `string` | Path to collection directory                |
-| `filePattern` | `string` | File naming pattern (e.g., `{slug}.md`)     |
-| `previewUrl`  | `string` | URL pattern for preview links               |
-| `schema`      | `object` | Frontmatter schema definition (Fields API)  |
-| `images`      | `object` | Override image settings for this collection |
-
-## Image Strategies
-
-### Colocated (Default)
-
-Images are stored alongside content files in a folder with the same name:
-
-```
-src/content/blog/
-├── my-post.md
-└── my-post/
-    ├── hero.jpg
-    └── diagram.png
-```
-
-Reference in markdown: `![Alt](./my-post/hero.jpg)`
-
-### Public
-
-Images are stored in the `public/` directory:
-
-```
-public/
-└── images/
-    └── blog/
-        └── my-post-hero.jpg
-```
-
-Reference in markdown: `![Alt](/images/blog/my-post-hero.jpg)`
-
-Configure in `writenex.config.ts`:
-
-```typescript
-images: {
-  strategy: "public",
-  publicPath: "/images",
-  storagePath: "public/images",
-}
-```
-
-## Version History
-
-Writenex automatically creates shadow copies of your content before each save, providing a safety net for content editors.
-
-### How It Works
-
-1. Before saving content, Writenex creates a snapshot of the current file
-2. Snapshots are stored in `.writenex/versions/` (excluded from Git by default)
-3. Old versions are automatically pruned to maintain the configured limit
-4. Labeled versions (manual snapshots) are preserved during pruning
-
-### Storage Structure
-
-```
-.writenex/versions/
-├── .gitignore              # Excludes version files from Git
-└── blog/
-    └── my-post/
-        ├── manifest.json   # Version metadata
-        ├── 2024-12-11T10-30-00-000Z.md
-        └── 2024-12-11T11-45-00-000Z.md
-```
-
-### Configuration
-
-```typescript
-// writenex.config.ts
-import { defineConfig } from "@imjp/writenex-astro";
-
-export default defineConfig({
-  versionHistory: {
-    enabled: true,
-    maxVersions: 20,
-    storagePath: ".writenex/versions",
-  },
-});
-```
-
-| Option        | Type      | Default              | Description                           |
-| ------------- | --------- | -------------------- | ------------------------------------- |
-| `enabled`     | `boolean` | `true`               | Enable/disable version history        |
-| `maxVersions` | `number`  | `20`                 | Maximum unlabeled versions to keep    |
-| `storagePath` | `string`  | `.writenex/versions` | Storage path relative to project root |
-
-### Version History API
-
-| Method | Endpoint                                               | Description           |
-| ------ | ------------------------------------------------------ | --------------------- |
-| GET    | `/_writenex/api/versions/:collection/:id`              | List all versions     |
-| GET    | `/_writenex/api/versions/:collection/:id/:versionId`   | Get specific version  |
-| POST   | `/_writenex/api/versions/:collection/:id`              | Create manual version |
-| POST   | `/_writenex/api/versions/:collection/:id/:vid/restore` | Restore version       |
-| GET    | `/_writenex/api/versions/:collection/:id/:vid/diff`    | Get diff data         |
-| DELETE | `/_writenex/api/versions/:collection/:id/:versionId`   | Delete version        |
-| DELETE | `/_writenex/api/versions/:collection/:id`              | Clear all versions    |
-
-### Example: List Versions
-
-```bash
-curl http://localhost:4321/_writenex/api/versions/blog/my-post
-```
-
-```json
-{
-  "versions": [
-    {
-      "id": "2024-12-11T12-00-00-000Z",
-      "timestamp": "2024-12-11T12:00:00.000Z",
-      "preview": "# My Post\n\nThis is the introduction...",
-      "size": 2048
-    },
-    {
-      "id": "2024-12-11T11-45-00-000Z",
-      "timestamp": "2024-12-11T11:45:00.000Z",
-      "preview": "# My Post\n\nEarlier version...",
-      "size": 1856,
-      "label": "Before major rewrite"
-    }
-  ]
-}
-```
-
-### Example: Restore Version
-
-```bash
-curl -X POST http://localhost:4321/_writenex/api/versions/blog/my-post/2024-12-11T11-45-00-000Z/restore
-```
-
-```json
-{
-  "success": true,
-  "version": {
-    "id": "2024-12-11T11-45-00-000Z",
-    "timestamp": "2024-12-11T11:45:00.000Z",
-    "preview": "# My Post\n\nEarlier version...",
-    "size": 1856
-  },
-  "safetySnapshot": {
-    "id": "2024-12-11T12-05-00-000Z",
-    "timestamp": "2024-12-11T12:05:00.000Z",
-    "preview": "# My Post\n\nThis is the introduction...",
-    "size": 2048,
-    "label": "Before restore"
-  }
-}
-```
-
-### Programmatic Usage
-
-```typescript
-import {
-  saveVersionWithConfig,
-  getVersionsWithConfig,
-  restoreVersionWithConfig,
-} from "@imjp/writenex-astro";
-
-// Save a version with label
-await saveVersionWithConfig(
-  "/project",
-  "blog",
-  "my-post",
-  "---\ntitle: My Post\n---\n\nContent...",
-  { maxVersions: 50 },
-  { label: "Before major changes" }
-);
-
-// List versions
-const versions = await getVersionsWithConfig("/project", "blog", "my-post");
-
-// Restore a version
-const result = await restoreVersionWithConfig(
-  "/project",
-  "blog",
-  "my-post",
-  "2024-12-11T10-30-00-000Z",
-  "/project/src/content/blog/my-post.md"
-);
-```
-
-## File Patterns
-
-Writenex supports various file naming patterns with automatic token resolution:
-
-| Pattern                          | Example Output               | Use Case               |
-| -------------------------------- | ---------------------------- | ---------------------- |
-| `{slug}.md`                      | `my-post.md`                 | Simple (default)       |
-| `{slug}/index.md`                | `my-post/index.md`           | Folder-based           |
-| `{date}-{slug}.md`               | `2024-01-15-my-post.md`      | Date-prefixed          |
-| `{year}/{slug}.md`               | `2024/my-post.md`            | Year folders           |
-| `{year}/{month}/{slug}.md`       | `2024/06/my-post.md`         | Year/month folders     |
-| `{year}/{month}/{day}/{slug}.md` | `2024/06/15/my-post.md`      | Full date folders      |
-| `{lang}/{slug}.md`               | `en/my-post.md`              | i18n/multi-language    |
-| `{lang}/{slug}/index.md`         | `id/my-post/index.md`        | i18n with folder-based |
-| `{category}/{slug}.md`           | `tutorials/my-post.md`       | Category folders       |
-| `{category}/{slug}/index.md`     | `tutorials/my-post/index.md` | Category folder-based  |
-
-Patterns are auto-detected from existing content or can be configured explicitly.
-
-### Supported Tokens
-
-| Token        | Source                                      | Default Value   |
-| ------------ | ------------------------------------------- | --------------- |
-| `{slug}`     | Generated from title                        | Required        |
-| `{date}`     | `pubDate` from frontmatter                  | Current date    |
-| `{year}`     | Year from `pubDate`                         | Current year    |
-| `{month}`    | Month from `pubDate` (zero-padded)          | Current month   |
-| `{day}`      | Day from `pubDate` (zero-padded)            | Current day     |
-| `{lang}`     | `lang`/`language`/`locale` from frontmatter | `en`            |
-| `{category}` | `category`/`categories[0]` from frontmatter | `uncategorized` |
-| `{author}`   | `author` from frontmatter                   | `anonymous`     |
-| `{type}`     | `type`/`contentType` from frontmatter       | `post`          |
-| `{status}`   | `status`/`draft` from frontmatter           | `published`     |
-| `{series}`   | `series` from frontmatter                   | Empty string    |
-
-### Custom Tokens
-
-Any token in your pattern that is not in the supported list will be resolved from frontmatter. For example, if you use `{project}/{slug}.md`, the `{project}` value will be taken from `frontmatter.project`.
-
-```typescript
-// writenex.config.ts
-collections: [
-  collection({
-    name: "docs",
-    path: "src/content/docs",
-    filePattern: "{project}/{slug}.md",
-  }),
-];
-```
-
-## Keyboard Shortcuts
-
-| Shortcut               | Action              |
-| ---------------------- | ------------------- |
-| `Alt + N`              | New Content         |
-| `Ctrl/Cmd + S`         | Save                |
-| `Ctrl/Cmd + P`         | Open preview        |
-| `Ctrl/Cmd + /`         | Show shortcuts help |
-| `Ctrl/Cmd + Shift + R` | Refresh content     |
-| `Escape`               | Close modal         |
-
-Press `Ctrl/Cmd + /` in the editor to see all available shortcuts.
-
-## API Endpoints
-
-The integration provides REST API endpoints for programmatic access:
-
-| Method | Endpoint                                 | Description                |
-| ------ | ---------------------------------------- | -------------------------- |
-| GET    | `/_writenex/api/collections`             | List all collections       |
-| GET    | `/_writenex/api/config`                  | Get current configuration  |
-| GET    | `/_writenex/api/content/:collection`     | List content in collection |
-| GET    | `/_writenex/api/content/:collection/:id` | Get single content item    |
-| POST   | `/_writenex/api/content/:collection`     | Create new content         |
-| PUT    | `/_writenex/api/content/:collection/:id` | Update content             |
-| DELETE | `/_writenex/api/content/:collection/:id` | Delete content             |
-| POST   | `/_writenex/api/images`                  | Upload image               |
-
-### Example: List Collections
-
-```bash
-curl http://localhost:4321/_writenex/api/collections
-```
-
-```json
-{
-  "collections": [
-    {
-      "name": "blog",
-      "path": "src/content/blog",
-      "filePattern": "{slug}.md",
-      "count": 12,
-      "schema": { ... }
-    }
-  ]
-}
-```
-
-### Example: Get Content
-
-```bash
-curl http://localhost:4321/_writenex/api/content/blog/my-post
-```
-
-```json
-{
-  "id": "my-post",
-  "path": "src/content/blog/my-post.md",
-  "frontmatter": {
-    "title": "My Post",
-    "pubDate": "2024-01-15",
-    "draft": false
-  },
-  "body": "# My Post\n\nContent here..."
-}
-```
-
-## Security
-
-### Production Guard
-
-The integration is **disabled by default in production** to prevent accidental exposure. When you run `astro build`, Writenex will not be included.
-
-### Enabling in Production
-
-Only enable for staging/preview environments with proper authentication:
-
-```typescript
-// astro.config.mjs - USE WITH CAUTION
-writenex({
-  allowProduction: true,
-});
-```
-
-**Warning:** Enabling in production exposes filesystem write access. Only use behind authentication or in trusted environments.
-
 ## Troubleshooting
-
-### Editor not loading
-
-1. Ensure you're running `astro dev` (not `astro build`)
-2. Check the console for errors
-3. Verify the integration is added to `astro.config.mjs`
-
-### Collections not discovered
-
-1. Ensure content is in `src/content/` directory
-2. Check that files have `.md` extension
-3. Verify frontmatter is valid YAML
 
 ### Config file not loading
 
@@ -1345,29 +931,55 @@ writenex({
 2. Ensure the referenced collection is also defined in your config
 3. Check that the referenced collection has at least one item
 
-### Images not uploading
+### Auto-generated slug not working
 
-1. Check file permissions on the target directory
-2. Ensure the image strategy is configured correctly
-3. For colocated strategy, the content folder must be writable
+1. Ensure the `slug` field exists and is properly configured
+2. Check if there's a `title` field - slug generation often depends on it
+3. Verify the slug field config has proper name/pathname labels
 
-### Autosave not working
+---
 
-1. Check if autosave is enabled in config
-2. Verify there are actual changes to save
-3. Look for errors in the browser console
+## API Reference
 
-## Requirements
+### Exports
 
-- Astro 4.x, 5.x, or 6.x
-- React 18.x or 19.x
-- Node.js 22.12.0+ (Node 18 and 20 are no longer supported)
+```typescript
+// From @imjp/writenex-astro/config or @writenex/astro/config
+import {
+  fields,           // Field builder object
+  collection,      // Multi-item content helper
+  singleton,       // Single-item content helper
+  defineConfig,    // Config definition function
+} from "@imjp/writenex-astro/config";
+```
 
-## License
+### Field Builder Methods
 
-MIT - see [LICENSE](../../LICENSE) for details.
-
-## Related
-
-- [Writenex](https://writenex.com) - Standalone markdown editor
-- [Writenex Monorepo](../../README.md) - Project overview
+| Method | Description |
+|--------|-------------|
+| `fields.text()` | Single/multi-line text |
+| `fields.slug()` | URL-friendly slug |
+| `fields.url()` | URL input |
+| `fields.number()` | Decimal number |
+| `fields.integer()` | Whole number |
+| `fields.select()` | Dropdown selection |
+| `fields.multiselect()` | Multi-select |
+| `fields.checkbox()` | Boolean toggle |
+| `fields.date()` | Date picker |
+| `fields.datetime()` | Date & time picker |
+| `fields.image()` | Image upload |
+| `fields.file()` | File upload |
+| `fields.object()` | Nested fields group |
+| `fields.array()` | List of items |
+| `fields.blocks()` | Multiple block types |
+| `fields.relationship()` | Reference to other collection |
+| `fields.pathReference()` | File path reference |
+| `fields.markdoc()` | Markdoc content |
+| `fields.mdx()` | MDX content |
+| `fields.conditional()` | Conditional field display |
+| `fields.child()` | Child document |
+| `fields.cloudImage()` | Cloud image (future) |
+| `fields.empty()` | Placeholder field |
+| `fields.emptyContent()` | Empty content placeholder |
+| `fields.emptyDocument()` | Empty document placeholder |
+| `fields.ignored()` | Skip from forms |

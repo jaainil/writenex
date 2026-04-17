@@ -131,7 +131,7 @@ export function VersionHistoryPanel({
     isReadOnly,
     content,
     activeDocumentId,
-    versionHistoryRefreshKey: _versionHistoryRefreshKey,
+    versionHistoryRefreshKey,
   } = useEditorStore();
   const [versions, setVersions] = useState<VersionEntry[]>([]);
   const [selectedVersion, setSelectedVersion] = useState<number | null>(null);
@@ -156,10 +156,16 @@ export function VersionHistoryPanel({
 
   // Load versions when panel opens, document changes, or new version is created
   useEffect(() => {
+    void versionHistoryRefreshKey;
     if (isVersionHistoryOpen && activeDocumentId) {
       loadVersions();
     }
-  }, [isVersionHistoryOpen, activeDocumentId, loadVersions]);
+  }, [
+    isVersionHistoryOpen,
+    activeDocumentId,
+    versionHistoryRefreshKey,
+    loadVersions,
+  ]);
 
   const handleRestore = useCallback(
     (version: VersionEntry) => {

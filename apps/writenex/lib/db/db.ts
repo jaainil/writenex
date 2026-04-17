@@ -16,7 +16,7 @@ import type {
   VersionEntry,
 } from "./types";
 
-export type { DocumentEntry, VersionEntry, ImageEntry, SettingsEntry };
+export type { DocumentEntry, ImageEntry, SettingsEntry, VersionEntry };
 
 /**
  * Dexie database class for the Writenex Markdown editor.
@@ -161,12 +161,11 @@ export async function getDocumentCount(): Promise<number> {
 export async function getLastVersionTimestamp(
   documentId: string
 ): Promise<Date | null> {
-  const lastVersion = await db.versions
+  const versions = await db.versions
     .where("documentId")
     .equals(documentId)
-    .reverse()
-    .sortBy("timestamp")
-    .then((versions) => versions[0]);
+    .sortBy("timestamp");
+  const lastVersion = versions.at(-1);
   return lastVersion?.timestamp ?? null;
 }
 
@@ -203,11 +202,11 @@ export async function saveVersion(
 }
 
 export async function getVersions(documentId: string): Promise<VersionEntry[]> {
-  return db.versions
+  const versions = await db.versions
     .where("documentId")
     .equals(documentId)
-    .reverse()
     .sortBy("timestamp");
+  return versions.reverse();
 }
 
 export async function getVersion(

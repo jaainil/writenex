@@ -21,12 +21,12 @@ import type {
 
 // Re-export types for backward compatibility
 export type {
-  ViewMode,
-  SaveStatus,
-  Theme,
-  SyntaxTheme,
   DocumentMeta,
   EditorState,
+  SaveStatus,
+  SyntaxTheme,
+  Theme,
+  ViewMode,
 };
 
 /**

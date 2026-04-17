@@ -1,3 +1,10 @@
+# [1.7.0](https://github.com/jaainil/writenex/compare/@imjp/writenex-astro@1.6.4...@imjp/writenex-astro@1.7.0) (2026-04-17)
+
+
+### Features
+
+* add support for TypeScript config files using jiti ([eda2c84](https://github.com/jaainil/writenex/commit/eda2c84d3efb2fcf7bec125f546e59b41e0faab0))
+
 ## [1.6.4](https://github.com/jaainil/writenex/compare/@imjp/writenex-astro@1.6.3...@imjp/writenex-astro@1.6.4) (2026-04-08)
 
 

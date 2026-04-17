@@ -15,6 +15,7 @@
 import { existsSync } from "node:fs";
 import { join, resolve } from "node:path";
 import { pathToFileURL } from "node:url";
+import { createJiti } from "jiti";
 import type { WritenexConfig } from "@/types";
 import { applyConfigDefaults } from "./defaults";
 import { validateConfig } from "./schema";
@@ -76,28 +77,48 @@ export function findConfigFile(projectRoot: string): string | null {
 }
 
 /**
- * Load configuration from a file
+ * Load configuration from a file.
  *
- * @param configPath - Path to the configuration file
+ * TypeScript config files (.ts / .mts) are loaded via `jiti` so that Node.js
+ * does not need to understand the `.ts` extension natively.  Plain JS / MJS
+ * files are still loaded with a regular dynamic `import()`.
+ *
+ * @param configPath - Absolute path to the configuration file
  * @returns The loaded configuration object
  * @throws Error if the file cannot be loaded or parsed
  */
 async function loadConfigFile(configPath: string): Promise<WritenexConfig> {
+  const absolutePath = resolve(configPath);
+
   try {
-    // Convert to file URL for dynamic import (required for Windows compatibility)
-    const fileUrl = pathToFileURL(resolve(configPath)).href;
+    let mod: unknown;
 
-    // Dynamic import the configuration file
-    const module = await import(fileUrl);
+    if (/\.[mc]?ts$/.test(absolutePath)) {
+      // Use jiti to transpile and load TypeScript config files at runtime.
+      // `createJiti` accepts the "caller" URL so that relative imports inside
+      // the config file resolve correctly.
+      const jiti = createJiti(pathToFileURL(absolutePath).href, {
+        interopDefault: true,
+      });
+      mod = await jiti.import(absolutePath);
+    } else {
+      // Plain .js / .mjs files can be loaded with a standard dynamic import.
+      const fileUrl = pathToFileURL(absolutePath).href;
+      mod = await import(fileUrl);
+    }
 
-    // Support both default export and named export
-    const config = module.default ?? module.config ?? module;
+    // Support both default export (`export default ...`) and
+    // interop-wrapped objects (`{ default: ... }` from jiti).
+    const config =
+      (mod as { default?: WritenexConfig })?.default ??
+      (mod as { config?: WritenexConfig })?.config ??
+      (mod as WritenexConfig);
 
-    return config as WritenexConfig;
+    return config;
   } catch (error) {
     const message = error instanceof Error ? error.message : String(error);
     throw new Error(
-      `Failed to load configuration from ${configPath}: ${message}`
+      `Failed to load configuration from ${absolutePath}: ${message}`
     );
   }
 }

@@ -24,14 +24,14 @@
     "validate": "biome check ."
   },
   "devDependencies": {
-    "@biomejs/biome": "^2.4.10",
+    "@biomejs/biome": "^2.4.12",
     "@semantic-release/changelog": "^6.0.3",
     "@semantic-release/git": "^10.0.1",
     "@semantic-release/npm": "^13.1.5",
-    "globals": "^17.4.0",
+    "globals": "^17.5.0",
     "semantic-release": "^25.0.3",
-    "turbo": "^2.9.3",
-    "typescript": "^6.0.2"
+    "turbo": "^2.9.6",
+    "typescript": "^6.0.3"
   },
   "dependencies": {
     "pnpm": "^10.33.0",

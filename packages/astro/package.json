@@ -72,11 +72,12 @@
     "access": "public"
   },
   "dependencies": {
-    "@mdxeditor/editor": "^3.53.1",
+    "@mdxeditor/editor": "^3.54.1",
     "chokidar": "^5.0.0",
     "gray-matter": "^4.0.3",
-    "lucide-react": "^1.7.0",
-    "slugify": "^1.6.8",
+    "jiti": "^2.6.1",
+    "lucide-react": "^1.8.0",
+    "slugify": "^1.6.9",
     "zod": "^4.3.6"
   },
   "peerDependencies": {
@@ -85,13 +86,13 @@
     "react-dom": "^18.0.0 || ^19.0.0"
   },
   "devDependencies": {
-    "@types/node": "^25.5.0",
+    "@types/node": "^25.6.0",
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",
     "@writenex/tsconfig": "workspace:*",
-    "astro": "^6.1.2",
+    "astro": "^6.1.7",
     "tsup": "^8.5.1",
-    "typescript": "^6.0.2",
-    "vite": "^8.0.3"
+    "typescript": "^6.0.3",
+    "vite": "^8.0.8"
   }
 }

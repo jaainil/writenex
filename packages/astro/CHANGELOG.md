@@ -1,3 +1,10 @@
+## [1.7.1](https://github.com/jaainil/writenex/compare/@imjp/writenex-astro@1.7.0...@imjp/writenex-astro@1.7.1) (2026-04-21)
+
+
+### Bug Fixes
+
+* trigger build and release ([42e77dd](https://github.com/jaainil/writenex/commit/42e77dd7892d9484d40aa6f5d8676ef42ce5ba24))
+
 # [1.7.0](https://github.com/jaainil/writenex/compare/@imjp/writenex-astro@1.6.4...@imjp/writenex-astro@1.7.0) (2026-04-17)
 
 

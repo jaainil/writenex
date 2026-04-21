@@ -32,6 +32,7 @@ import {
   getAllDocuments,
   getDocument,
   getSetting,
+  getWorkingDraft,
   saveSetting,
 } from "@/lib/db";
 import { useEditorStore } from "@/lib/store";
@@ -136,13 +137,36 @@ export function useDocumentInit(
         }
       }
 
+      // Load user settings
+      const { setAutoSaveInterval, setShowLineNumbers, setConfirmClearEditor } =
+        useEditorStore.getState();
+      const savedAutoSaveInterval = await getSetting("autoSaveInterval");
+      if (savedAutoSaveInterval)
+        setAutoSaveInterval(parseInt(savedAutoSaveInterval, 10));
+
+      const savedShowLineNumbers = await getSetting("showLineNumbers");
+      if (savedShowLineNumbers !== undefined)
+        setShowLineNumbers(savedShowLineNumbers === "true");
+
+      const savedConfirmClearEditor = await getSetting("confirmClearEditor");
+      if (savedConfirmClearEditor !== undefined)
+        setConfirmClearEditor(savedConfirmClearEditor === "true");
+
       // Load the active document
       if (activeDocId) {
         const activeDoc = await getDocument(activeDocId);
         if (activeDoc) {
           setActiveDocumentId(activeDocId);
-          setContent(activeDoc.content);
-          onContentLoaded(activeDoc.content);
+
+          // Crash recovery: prefer a newer working draft over the last saved content
+          const workingDraft = await getWorkingDraft(activeDocId);
+          const restoreContent =
+            workingDraft && workingDraft.timestamp > activeDoc.updatedAt
+              ? workingDraft.content
+              : activeDoc.content;
+
+          setContent(restoreContent);
+          onContentLoaded(restoreContent);
 
           // Save this as the last active document
           await saveSetting("lastActiveDocumentId", activeDocId);

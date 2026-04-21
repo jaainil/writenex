@@ -98,10 +98,12 @@ import { cn, EDITOR_PLACEHOLDER } from "@/lib/utils";
 // Dialog components
 import {
   ClearEditorDialog,
+  CommandPalette,
   DeleteDocumentDialog,
   ImageDialog,
   KeyboardShortcutsModal,
   LinkDialog,
+  SettingsModal,
   WelcomeTourModal,
 } from "./dialogs";
 import { EditorShortcuts } from "./EditorShortcuts";
@@ -841,6 +843,8 @@ export function MarkdownEditor(): React.ReactElement {
       </div>
 
       {/* Modals */}
+      <CommandPalette />
+      <SettingsModal />
       <ClearEditorDialog onClear={handleClear} />
       <KeyboardShortcutsModal />
       <DeleteDocumentDialog onSwitchDocument={handleDocumentLoaded} />

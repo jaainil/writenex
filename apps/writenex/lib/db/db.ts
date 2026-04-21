@@ -14,9 +14,16 @@ import type {
   ImageEntry,
   SettingsEntry,
   VersionEntry,
+  WorkingSaveEntry,
 } from "./types";
 
-export type { DocumentEntry, ImageEntry, SettingsEntry, VersionEntry };
+export type {
+  DocumentEntry,
+  ImageEntry,
+  SettingsEntry,
+  VersionEntry,
+  WorkingSaveEntry,
+};
 
 /**
  * Dexie database class for the Writenex Markdown editor.
@@ -26,6 +33,7 @@ class MarkdownEditorDB extends Dexie {
   versions!: EntityTable<VersionEntry, "id">;
   images!: EntityTable<ImageEntry, "id">;
   settings!: EntityTable<SettingsEntry, "id">;
+  workingSaves!: EntityTable<WorkingSaveEntry, "id">;
 
   constructor() {
     super("MarkdownEditorDB");
@@ -247,4 +255,25 @@ export async function saveSetting(key: string, value: string): Promise<void> {
 export async function getSetting(key: string): Promise<string | undefined> {
   const entry = await db.settings.get(key);
   return entry?.value;
+}
+
+// =============================================================================
+// WORKING DRAFT FUNCTIONS (CRASH RECOVERY)
+// =============================================================================
+
+export async function saveWorkingDraft(
+  id: string,
+  content: string
+): Promise<void> {
+  await db.workingSaves.put({ id, content, timestamp: new Date() });
+}
+
+export async function getWorkingDraft(
+  id: string
+): Promise<WorkingSaveEntry | undefined> {
+  return db.workingSaves.get(id);
+}
+
+export async function clearWorkingDraft(id: string): Promise<void> {
+  await db.workingSaves.delete(id);
 }

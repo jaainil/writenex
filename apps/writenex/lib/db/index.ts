@@ -5,6 +5,7 @@
 
 export {
   clearAllVersions,
+  clearWorkingDraft,
   createDocument,
   db,
   deleteDocument,
@@ -18,9 +19,11 @@ export {
   getSetting,
   getVersion,
   getVersions,
+  getWorkingDraft,
   saveImage,
   saveSetting,
   saveVersion,
+  saveWorkingDraft,
   updateDocument,
 } from "./db";
 export type {
@@ -28,4 +31,5 @@ export type {
   ImageEntry,
   SettingsEntry,
   VersionEntry,
+  WorkingSaveEntry,
 } from "./types";

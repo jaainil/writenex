@@ -8,7 +8,14 @@
  */
 
 import { z } from "zod";
-import type { WritenexConfig } from "@/types";
+import { resolveFieldDefinition } from "@/fields/resolve";
+import type { FieldDefinition } from "@/fields/types";
+import type {
+  CollectionConfig,
+  SchemaField,
+  SingletonConfig,
+  WritenexConfig,
+} from "@/types";
 
 const fieldTypeSchema = z.enum([
   "string",
@@ -182,8 +189,72 @@ export const writenexOptionsSchema = z.object({
   allowProduction: z.boolean().optional(),
 });
 
-export function defineConfig(config: WritenexConfig): WritenexConfig {
-  const result = writenexConfigSchema.safeParse(config);
+// ---------------------------------------------------------------------------
+// Input types — allow schema fields to be either a resolved SchemaField
+// (plain object with `type`) or a raw FieldDefinition from fields.*()
+// (object with `fieldKind`). defineConfig resolves them automatically.
+// ---------------------------------------------------------------------------
+
+type SchemaInput = Record<string, SchemaField | FieldDefinition>;
+
+type CollectionConfigInput = Omit<CollectionConfig, "schema"> & {
+  schema?: SchemaInput;
+};
+
+type SingletonConfigInput = Omit<SingletonConfig, "schema"> & {
+  schema?: SchemaInput;
+};
+
+export type WritenexConfigInput = Omit<
+  WritenexConfig,
+  "collections" | "singletons"
+> & {
+  collections?: CollectionConfigInput[];
+  singletons?: SingletonConfigInput[];
+};
+
+// ---------------------------------------------------------------------------
+// Resolution helpers
+// ---------------------------------------------------------------------------
+
+function isFieldDefinition(value: unknown): value is FieldDefinition {
+  return typeof value === "object" && value !== null && "fieldKind" in value;
+}
+
+function resolveSchemaInput(schema: SchemaInput): Record<string, SchemaField> {
+  const result: Record<string, SchemaField> = {};
+  for (const [key, field] of Object.entries(schema)) {
+    // resolveFieldDefinition handles all nested types (object, array, blocks,
+    // conditional) recursively, so a single call is sufficient per top-level field.
+    result[key] = isFieldDefinition(field)
+      ? resolveFieldDefinition(field)
+      : field;
+  }
+  return result;
+}
+
+function resolveConfigInput(config: WritenexConfigInput): WritenexConfig {
+  return {
+    ...config,
+    collections: config.collections?.map((coll) => ({
+      ...coll,
+      schema: coll.schema ? resolveSchemaInput(coll.schema) : undefined,
+    })),
+    singletons: config.singletons?.map((sing) => ({
+      ...sing,
+      schema: sing.schema ? resolveSchemaInput(sing.schema) : undefined,
+    })),
+  };
+}
+
+// ---------------------------------------------------------------------------
+// Public API
+// ---------------------------------------------------------------------------
+
+export function defineConfig(config: WritenexConfigInput): WritenexConfig {
+  const resolved = resolveConfigInput(config);
+
+  const result = writenexConfigSchema.safeParse(resolved);
 
   if (!result.success) {
     const errors = result.error.issues
@@ -192,7 +263,7 @@ export function defineConfig(config: WritenexConfig): WritenexConfig {
     console.warn(`[writenex] Invalid configuration:\n${errors}`);
   }
 
-  return config;
+  return resolved;
 }
 
 export function validateConfig(

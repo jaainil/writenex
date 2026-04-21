@@ -675,6 +675,8 @@ fields.number({
 
 ## Collections vs Singletons
 
+> **Note:** `fields.*()` functions return `FieldDefinition` objects (with a `fieldKind` property) that are automatically resolved by `defineConfig`. You can pass them either directly in a raw collection object or wrapped in `collection()` / `singleton()` — both patterns work. Using `collection()` is recommended because it also provides better TypeScript type-checking of your schema.
+
 ### `collection()`
 
 For multi-item content (blog posts, docs, products):
@@ -705,6 +707,36 @@ singleton({
     logo: fields.image({ label: "Logo" }),
   }
 })
+```
+
+### Both patterns are valid
+
+```typescript
+// Pattern A — raw object (fields are auto-resolved by defineConfig)
+export default defineConfig({
+  collections: [
+    {
+      name: "blog",
+      path: "src/content/blog",
+      schema: {
+        title: fields.text({ label: "Title" }), // ✅ auto-resolved
+      },
+    },
+  ],
+});
+
+// Pattern B — collection() helper (recommended for better TypeScript inference)
+export default defineConfig({
+  collections: [
+    collection({
+      name: "blog",
+      path: "src/content/blog",
+      schema: {
+        title: fields.text({ label: "Title" }), // ✅ resolved by collection()
+      },
+    }),
+  ],
+});
 ```
 
 ---
@@ -906,6 +938,17 @@ export default defineConfig({
 ---
 
 ## Troubleshooting
+
+### `Invalid configuration: type: Invalid option`
+
+If you see this on an older version of `@imjp/writenex-astro`:
+
+```
+[writenex] Invalid configuration:
+  - collections.0.schema.title.type: Invalid option: expected one of "string"|"number"|...
+```
+
+Upgrade to the latest version — `defineConfig` now auto-resolves `fields.*()` objects in both raw collection objects and `collection()` wrappers.
 
 ### Config file not loading
 

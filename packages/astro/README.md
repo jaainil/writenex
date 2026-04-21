@@ -166,15 +166,45 @@ import { defineConfig, collection, singleton, fields } from "@imjp/writenex-astr
 collection({
   name: "blog",
   path: "src/content/blog",
-  schema: { /* field definitions */ }
+  schema: { /* field definitions using fields.*() */ }
 })
 
 // Single-item singleton
 singleton({
   name: "settings",
   path: "src/content/settings.json",
-  schema: { /* field definitions */ }
+  schema: { /* field definitions using fields.*() */ }
 })
+```
+
+`defineConfig` automatically resolves `fields.*()` objects whether you use the `collection()` helper or a plain object — both patterns are valid:
+
+```typescript
+// Pattern A — raw object (fields auto-resolved by defineConfig)
+export default defineConfig({
+  collections: [
+    {
+      name: "blog",
+      path: "src/content/blog",
+      schema: {
+        title: fields.text({ label: "Title" }), // ✅
+      },
+    },
+  ],
+});
+
+// Pattern B — collection() helper (recommended: better TypeScript inference)
+export default defineConfig({
+  collections: [
+    collection({
+      name: "blog",
+      path: "src/content/blog",
+      schema: {
+        title: fields.text({ label: "Title" }), // ✅
+      },
+    }),
+  ],
+});
 ```
 
 ## Field Types
@@ -1326,6 +1356,15 @@ writenex({
 1. Ensure `writenex.config.ts` is in your project root
 2. Check the file has proper exports: `export default defineConfig({ ... })`
 3. Restart the dev server after making changes
+
+### `Invalid configuration: type: Invalid option`
+
+```
+[writenex] Invalid configuration:
+  - collections.0.schema.title.type: Invalid option: expected one of "string"|"number"|...
+```
+
+This error appears on older versions of `@imjp/writenex-astro`. Upgrade to the latest version — `defineConfig` now auto-resolves `fields.*()` objects in both raw collection objects and `collection()` wrappers.
 
 ### Field types not rendering correctly
 

@@ -25,6 +25,7 @@ export type { LoadConfigResult } from "./loader";
 // Config loader
 export { contentDirectoryExists, findConfigFile, loadConfig } from "./loader";
 // Schema and validation
+export type { WritenexConfigInput } from "./schema";
 export {
   defineConfig,
   validateConfig,

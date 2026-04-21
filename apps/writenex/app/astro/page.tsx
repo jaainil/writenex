@@ -475,9 +475,26 @@ function CollectionVsSingletonSection(): React.ReactElement {
   return (
     <section className="px-4 py-16 sm:px-6 lg:px-8">
       <div className="mx-auto max-w-4xl">
-        <h3 className="mb-6 text-2xl font-bold text-zinc-900 dark:text-zinc-100">
+        <h3 className="mb-4 text-2xl font-bold text-zinc-900 dark:text-zinc-100">
           collection() vs singleton()
         </h3>
+
+        <p className="mb-6 text-sm text-zinc-600 dark:text-zinc-400">
+          Both patterns below work —{" "}
+          <code className="rounded bg-zinc-100 px-1 font-mono dark:bg-zinc-800">
+            defineConfig
+          </code>{" "}
+          auto-resolves{" "}
+          <code className="rounded bg-zinc-100 px-1 font-mono dark:bg-zinc-800">
+            fields.*()
+          </code>{" "}
+          objects in either case. Using{" "}
+          <code className="rounded bg-zinc-100 px-1 font-mono dark:bg-zinc-800">
+            collection()
+          </code>{" "}
+          is recommended for better TypeScript inference.
+        </p>
+
         <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
           <div className="rounded-xl border border-zinc-200 bg-white p-6 dark:border-zinc-700 dark:bg-zinc-900">
             <div className="mb-3 flex items-center gap-2">
@@ -523,6 +540,64 @@ function CollectionVsSingletonSection(): React.ReactElement {
               &nbsp;&nbsp;schema: {"{ /* fields */ }"}
               <br />
               {"}"})
+            </div>
+          </div>
+        </div>
+
+        {/* Both patterns block */}
+        <div className="mt-6 rounded-xl border border-zinc-200 bg-white p-6 dark:border-zinc-700 dark:bg-zinc-900">
+          <h4 className="mb-4 text-base font-semibold text-zinc-900 dark:text-zinc-100">
+            Both patterns are valid
+          </h4>
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+            <div>
+              <p className="mb-2 text-xs font-medium uppercase tracking-wide text-zinc-500">
+                Pattern A — raw object
+              </p>
+              <div className="rounded-lg bg-zinc-100 p-3 font-mono text-xs text-zinc-700 dark:bg-zinc-800 dark:text-zinc-300">
+                defineConfig({"{"}
+                <br />
+                &nbsp;&nbsp;collections: [{"{"}
+                <br />
+                &nbsp;&nbsp;&nbsp;&nbsp;name: "blog",
+                <br />
+                &nbsp;&nbsp;&nbsp;&nbsp;schema: {"{"}
+                <br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;title: fields.text(...),{" "}
+                <span className="text-green-400">{"// ✅"}</span>
+                <br />
+                &nbsp;&nbsp;&nbsp;&nbsp;{"}"},<br />
+                &nbsp;&nbsp;{"}"}],
+                <br />
+                {"}"})
+              </div>
+            </div>
+            <div>
+              <p className="mb-2 text-xs font-medium uppercase tracking-wide text-brand-500">
+                Pattern B — collection() (recommended)
+              </p>
+              <div className="rounded-lg bg-zinc-100 p-3 font-mono text-xs text-zinc-700 dark:bg-zinc-800 dark:text-zinc-300">
+                defineConfig({"{"}
+                <br />
+                &nbsp;&nbsp;collections: [<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;collection({"{"}
+                <br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;name: "blog",
+                <br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;schema: {"{"}
+                <br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;title:
+                fields.text(...),{" "}
+                <span className="text-green-400">{"// ✅"}</span>
+                <br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{"}"}
+                <br />
+                &nbsp;&nbsp;&nbsp;&nbsp;{"}"}),
+                <br />
+                &nbsp;&nbsp;],
+                <br />
+                {"}"})
+              </div>
             </div>
           </div>
         </div>

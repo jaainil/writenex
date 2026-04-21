@@ -174,9 +174,7 @@ export async function loadConfig(
 
       if (!validationResult.success) {
         const errors = validationResult.error.issues
-          .map(
-            (e: import("zod").ZodIssue) => `${e.path.join(".")}: ${e.message}`
-          )
+          .map((e) => `${e.path.join(".")}: ${e.message}`)
           .join(", ");
         warnings.push(`Configuration validation warnings: ${errors}`);
       }

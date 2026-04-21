@@ -258,7 +258,7 @@ export function defineConfig(config: WritenexConfigInput): WritenexConfig {
 
   if (!result.success) {
     const errors = result.error.issues
-      .map((e: z.ZodIssue) => `  - ${e.path.join(".")}: ${e.message}`)
+      .map((e) => `  - ${e.path.join(".")}: ${e.message}`)
       .join("\n");
     console.warn(`[writenex] Invalid configuration:\n${errors}`);
   }
@@ -270,8 +270,8 @@ export function validateConfig(
   config: unknown
 ):
   | { success: true; data: WritenexConfig }
-  | { success: false; error: z.ZodError } {
+  | { success: false; error: z.ZodError<unknown> } {
   return writenexConfigSchema.safeParse(config) as
     | { success: true; data: WritenexConfig }
-    | { success: false; error: z.ZodError };
+    | { success: false; error: z.ZodError<unknown> };
 }

@@ -291,6 +291,44 @@
   color: var(--wn-error-400);
 }
 
+/* Array structured items */
+.wn-frontmatter-array-item {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--wn-space-2);
+  padding: var(--wn-space-2) 0;
+  border-bottom: 1px solid var(--wn-overlay-10);
+}
+
+.wn-frontmatter-array-item > :first-child {
+  flex: 1;
+  min-width: 0;
+}
+
+.wn-frontmatter-add-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--wn-space-1);
+  margin-top: var(--wn-space-2);
+  padding: var(--wn-space-1) var(--wn-space-3);
+  background: var(--wn-brand-alpha-10);
+  border: 1px dashed var(--wn-brand-500);
+  border-radius: var(--wn-radius-sm);
+  font-size: var(--wn-font-xs);
+  color: var(--wn-brand-400);
+  cursor: pointer;
+  transition: all var(--wn-transition-fast) ease;
+}
+
+.wn-frontmatter-add-btn:hover:not(:disabled) {
+  background: var(--wn-brand-alpha-20);
+}
+
+.wn-frontmatter-add-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
 /* Image Field */
 .wn-frontmatter-image-field {
   display: flex;

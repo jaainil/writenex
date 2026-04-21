@@ -1016,7 +1016,14 @@ function ArrayField({
         <button
           type="button"
           onClick={() =>
-            onChange([...items, itemField.type === "object" ? {} : ""])
+            onChange([
+              ...items,
+              itemField.type === "object"
+                ? {}
+                : itemField.type === "boolean" || itemField.type === "checkbox"
+                  ? false
+                  : undefined,
+            ])
           }
           disabled={disabled}
           className="wn-frontmatter-add-btn"

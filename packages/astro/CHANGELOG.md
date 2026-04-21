@@ -1,3 +1,10 @@
+# [1.8.0](https://github.com/jaainil/writenex/compare/@imjp/writenex-astro@1.7.1...@imjp/writenex-astro@1.8.0) (2026-04-21)
+
+
+### Features
+
+* add auto-resolution of fields.*() in defineConfig ([aad8c36](https://github.com/jaainil/writenex/commit/aad8c36d9fd757ae3131e046f9dcd569f0a96d0a))
+
 ## [1.7.1](https://github.com/jaainil/writenex/compare/@imjp/writenex-astro@1.7.0...@imjp/writenex-astro@1.7.1) (2026-04-21)
 
 

@@ -1,3 +1,10 @@
+# [1.9.0](https://github.com/jaainil/writenex/compare/@imjp/writenex-astro@1.8.0...@imjp/writenex-astro@1.9.0) (2026-04-21)
+
+
+### Features
+
+* extend frontmatter form with new field types and styling ([5f6ede3](https://github.com/jaainil/writenex/commit/5f6ede30e207017907974e68a2e703c952b9b86d))
+
 # [1.8.0](https://github.com/jaainil/writenex/compare/@imjp/writenex-astro@1.7.1...@imjp/writenex-astro@1.8.0) (2026-04-21)
 
 

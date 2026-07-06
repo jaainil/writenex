@@ -4,7 +4,7 @@
  * This is the main entry point for the React-based editor UI.
  * It bootstraps the application and mounts it to the DOM.
  *
- * @module @writenex/astro/client
+ * @module @imjp/writenex-core/client
  */
 
 import { StrictMode } from "react";
@@ -13,9 +13,6 @@ import { App } from "./App";
 import { ApiProvider } from "./context/ApiContext";
 import { ThemeProvider } from "./context/ThemeContext";
 
-/**
- * Configuration injected by the server
- */
 declare global {
   interface Window {
     __WRITENEX_CONFIG__?: {
@@ -25,9 +22,6 @@ declare global {
   }
 }
 
-/**
- * Get the configuration from the window object
- */
 function getConfig() {
   return (
     window.__WRITENEX_CONFIG__ ?? {
@@ -37,20 +31,14 @@ function getConfig() {
   );
 }
 
-/**
- * Initialize and mount the application
- */
 function mount() {
   const container = document.getElementById("root");
-
   if (!container) {
     console.error("[writenex] Root element not found");
     return;
   }
-
   const config = getConfig();
   const root = createRoot(container);
-
   root.render(
     <StrictMode>
       <ThemeProvider>
@@ -62,7 +50,6 @@ function mount() {
   );
 }
 
-// Mount when DOM is ready
 if (document.readyState === "loading") {
   document.addEventListener("DOMContentLoaded", mount);
 } else {

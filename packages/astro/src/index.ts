@@ -1,42 +1,13 @@
 /**
- * @fileoverview Main entry point for @writenex/astro
+ * @fileoverview Main entry point for @imjp/writenex-astro
  *
- * This file exports the minimal public API for the Astro integration.
- * For advanced usage, import from sub-modules:
- * - @writenex/astro/config
- * - @writenex/astro/discovery
- * - @writenex/astro/filesystem
- * - @writenex/astro/server
- *
- * @module @writenex/astro
- * @example
- * ```typescript
- * // astro.config.mjs
- * import { defineConfig } from 'astro/config';
- * import writenex from '@writenex/astro';
- *
- * export default defineConfig({
- *   integrations: [writenex()],
- * });
- * ```
+ * Thin Astro-specific wrapper around @imjp/writenex-core.
  */
-
-// =============================================================================
-// Main Integration
-// =============================================================================
 
 export { default, default as writenex } from "./integration";
 
-// =============================================================================
-// Configuration Utilities (most commonly used)
-// =============================================================================
-
-export { defineConfig, loadConfig, validateConfig } from "@/config";
-export { collection, fields, singleton } from "@/fields";
-
-// =============================================================================
-// Core Types (essential for consumers)
-// =============================================================================
+export { defineConfig, loadConfig, validateConfig } from "@imjp/writenex-core";
+export { collection, fields, singleton } from "@imjp/writenex-core";
 
 export type {
   CollectionConfig,
@@ -55,10 +26,6 @@ export type {
   VersionHistoryConfig,
   WritenexConfig,
   WritenexOptions,
-} from "@/types";
+} from "@imjp/writenex-core";
 
-// =============================================================================
-// Error Handling (commonly needed)
-// =============================================================================
-
-export { isWritenexError, WritenexError, WritenexErrorCode } from "@/core";
+export { isWritenexError, WritenexError, WritenexErrorCode } from "@imjp/writenex-core";

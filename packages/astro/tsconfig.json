@@ -5,19 +5,7 @@
     "baseUrl": "./src",
     "ignoreDeprecations": "6.0",
     "paths": {
-      "@/*": ["./*"],
-      "@/types": ["./types/index.ts"],
-      "@/types/*": ["./types/*"],
-      "@/core": ["./core/index.ts"],
-      "@/core/*": ["./core/*"],
-      "@/config": ["./config/index.ts"],
-      "@/config/*": ["./config/*"],
-      "@/discovery": ["./discovery/index.ts"],
-      "@/discovery/*": ["./discovery/*"],
-      "@/filesystem": ["./filesystem/index.ts"],
-      "@/filesystem/*": ["./filesystem/*"],
-      "@/server": ["./server/index.ts"],
-      "@/server/*": ["./server/*"]
+      "@/*": ["./*"]
     }
   },
   "include": ["src/**/*"],

@@ -6,6 +6,7 @@
     "module": "esnext",
     "target": "esnext",
     "jsx": "react-jsx",
-    "noEmit": true
+    "noEmit": true,
+    "types": ["node"]
   }
 }

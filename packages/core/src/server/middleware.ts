@@ -1,93 +1,61 @@
 /**
- * @fileoverview Vite middleware for Writenex routes
+ * @fileoverview Generic framework-agnostic middleware for Writenex
  *
- * This module provides the main middleware handler that intercepts requests
- * to Writenex routes (/_writenex/*) and delegates to appropriate handlers.
- *
- * ## Route Structure:
- * - `/_writenex` - Editor UI (HTML page with React app)
- * - `/_writenex/api/*` - API endpoints for CRUD operations
- * - `/_writenex/assets/*` - Static assets (JS, CSS)
- *
- * @module @writenex/astro/server/middleware
+ * This module provides middleware that can be adapted to any framework:
+ * Express, Vite (Astro), Next.js, Fastify, etc.
  */
 
 import type { IncomingMessage, ServerResponse } from "node:http";
-import type { Connect } from "vite";
 import type { WritenexError } from "@/core/errors";
 import { isWritenexError, WritenexErrorCode, wrapError } from "@/core/errors";
 import type { WritenexConfig } from "@/types";
 import { serveAsset, serveEditorHtml } from "./assets";
 import { createApiRouter } from "./routes";
 
-/**
- * Middleware context passed to handlers
- */
 export interface MiddlewareContext {
-  /** Base path for Writenex routes */
   basePath: string;
-  /** Project root directory */
   projectRoot: string;
-  /** Resolved Writenex configuration */
   config: Required<WritenexConfig>;
-  /** Astro trailingSlash setting for preview URLs */
   trailingSlash: "always" | "never" | "ignore";
 }
 
-/**
- * Create the Writenex middleware handler
- *
- * @param context - Middleware context with configuration
- * @returns Connect middleware function
- *
- * @example
- * ```typescript
- * const middleware = createMiddleware({
- *   basePath: '/_writenex',
- *   projectRoot: '/path/to/project',
- *   config: resolvedConfig,
- * });
- *
- * server.middlewares.use(middleware);
- * ```
- */
-export function createMiddleware(
+export type MiddlewareHandler = (
+  req: IncomingMessage,
+  res: ServerResponse,
+  next: () => void | Promise<void>
+) => Promise<void> | void;
+
+export function createGenericMiddleware(
   context: MiddlewareContext
-): Connect.NextHandleFunction {
+): MiddlewareHandler {
   const { basePath } = context;
   const apiRouter = createApiRouter(context);
 
   return async (
     req: IncomingMessage,
     res: ServerResponse,
-    next: Connect.NextFunction
+    next: () => void | Promise<void>
   ) => {
     const url = req.url ?? "";
     const pathname = url.split("?", 1)[0] ?? "";
 
-    // Only handle requests to our base path
     if (!pathname.startsWith(basePath)) {
       return next();
     }
 
-    // Extract the path after base path
     const path = pathname.slice(basePath.length) || "/";
 
     try {
-      // Handle API routes
       if (path.startsWith("/api/")) {
-        return await apiRouter(req, res, path.slice(4)); // Remove '/api' prefix
+        return await apiRouter(req, res, path.slice(4));
       }
 
-      // Handle static assets
       if (path.startsWith("/assets/")) {
-        return await serveAsset(req, res, path.slice(8), context); // Remove '/assets' prefix
+        return await serveAsset(req, res, path.slice(8), context);
       }
 
-      // Handle editor UI (root and any sub-routes for client-side routing)
       return await serveEditorHtml(req, res, context);
     } catch (error) {
-      // Handle errors gracefully using WritenexError
       const writenexError = isWritenexError(error)
         ? error
         : wrapError(error, WritenexErrorCode.API_INTERNAL_ERROR);
@@ -103,12 +71,6 @@ export function createMiddleware(
   };
 }
 
-/**
- * Parse URL query parameters
- *
- * @param url - The URL string to parse
- * @returns Object with query parameters
- */
 export function parseQueryParams(url: string): Record<string, string> {
   const queryIndex = url.indexOf("?");
   if (queryIndex === -1) return {};
@@ -126,12 +88,6 @@ export function parseQueryParams(url: string): Record<string, string> {
   return params;
 }
 
-/**
- * Parse request body as JSON
- *
- * @param req - The incoming request
- * @returns Parsed JSON body or null
- */
 export async function parseJsonBody(
   req: IncomingMessage
 ): Promise<unknown | null> {
@@ -147,7 +103,6 @@ export async function parseJsonBody(
         resolve(null);
         return;
       }
-
       try {
         resolve(JSON.parse(body));
       } catch {
@@ -161,13 +116,6 @@ export async function parseJsonBody(
   });
 }
 
-/**
- * Send JSON response
- *
- * @param res - The server response
- * @param data - Data to send as JSON
- * @param statusCode - HTTP status code (default: 200)
- */
 export function sendJson(
   res: ServerResponse,
   data: unknown,
@@ -178,13 +126,6 @@ export function sendJson(
   res.end(JSON.stringify(data));
 }
 
-/**
- * Send error response
- *
- * @param res - The server response
- * @param message - Error message
- * @param statusCode - HTTP status code (default: 400)
- */
 export function sendError(
   res: ServerResponse,
   message: string,
@@ -193,15 +134,6 @@ export function sendError(
   sendJson(res, { error: message }, statusCode);
 }
 
-/**
- * Send WritenexError response
- *
- * Automatically uses the error's HTTP status code and formats
- * the response using the error's toJSON method.
- *
- * @param res - The server response
- * @param error - WritenexError instance
- */
 export function sendWritenexError(
   res: ServerResponse,
   error: WritenexError

@@ -1,0 +1,90 @@
+{
+  "name": "@imjp/writenex-core",
+  "version": "1.9.1",
+  "description": "Core framework-agnostic modules for Writenex - types, config, fields, discovery, filesystem, and shared editor components.",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./client": {
+      "types": "./dist/client/index.d.ts",
+      "import": "./dist/client/index.js"
+    },
+    "./server": {
+      "types": "./dist/server/index.d.ts",
+      "import": "./dist/server/index.js"
+    },
+    "./config": {
+      "types": "./dist/config/index.d.ts",
+      "import": "./dist/config/index.js"
+    },
+    "./discovery": {
+      "types": "./dist/discovery/index.d.ts",
+      "import": "./dist/discovery/index.js"
+    },
+    "./filesystem": {
+      "types": "./dist/filesystem/index.d.ts",
+      "import": "./dist/filesystem/index.js"
+    },
+    "./fields": {
+      "types": "./dist/fields/index.d.ts",
+      "import": "./dist/fields/index.js"
+    }
+  },
+  "files": [
+    "dist",
+    "src",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "tsup",
+    "prepublishOnly": "pnpm build",
+    "type-check": "tsc --noEmit",
+    "lint": "biome lint src/"
+  },
+  "keywords": [
+    "writenex",
+    "markdown",
+    "editor",
+    "wysiwyg",
+    "content",
+    "mdx",
+    "visual-editor",
+    "headless-cms"
+  ],
+  "author": "Jainil <jaainil@users.noreply.github.com>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jaainil/writenex.git",
+    "directory": "packages/core"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "dependencies": {
+    "@mdxeditor/editor": "^4.0.4",
+    "chokidar": "^5.0.0",
+    "gray-matter": "^4.0.3",
+    "jiti": "^2.7.0",
+    "lucide-react": "^1.23.0",
+    "slugify": "^1.6.9",
+    "zod": "^4.4.3"
+  },
+  "peerDependencies": {
+    "react": "^18.0.0 || ^19.0.0",
+    "react-dom": "^18.0.0 || ^19.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^26.1.0",
+    "@types/react": "^19.2.17",
+    "@types/react-dom": "^19.2.3",
+    "@writenex/tsconfig": "workspace:*",
+    "tsup": "^8.5.1",
+    "typescript": "^6.0.3"
+  }
+}

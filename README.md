@@ -66,7 +66,7 @@ vp run type-check
 # Run persistence, search, and filesystem regression tests
 vp test run
 
-# Run desktop and mobile browser tests (starts the editor automatically)
+# Run desktop and mobile browser tests (builds and starts the production editor automatically)
 pnpm exec playwright install chromium
 vp run test:e2e
 

@@ -9,15 +9,15 @@ export default defineConfig({
     ? undefined
     : {
         command:
-          "npm --prefix apps/writenex run dev -- --hostname 127.0.0.1 --port 3000",
-        url: "http://127.0.0.1:3000/editor",
-        reuseExistingServer: !process.env.CI,
-        timeout: 120000,
+          "npm --prefix apps/writenex run build && npm --prefix apps/writenex run start -- --hostname 127.0.0.1 --port 3180",
+        url: "http://127.0.0.1:3180/editor",
+        reuseExistingServer: false,
+        timeout: 180000,
       },
   use: {
     // Exercise service-worker lifecycle separately from editor interactions.
     serviceWorkers: "block",
-    baseURL: process.env.PLAYWRIGHT_BASE_URL || "http://127.0.0.1:3000",
+    baseURL: process.env.PLAYWRIGHT_BASE_URL || "http://127.0.0.1:3180",
     launchOptions: {
       executablePath: process.env.PLAYWRIGHT_CHROMIUM_EXECUTABLE,
     },

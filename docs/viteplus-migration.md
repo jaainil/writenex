@@ -39,8 +39,8 @@ The first passing migrated baseline retained every generated compatibility setti
 | `vite.config.ts` Astro inline project | `extends: false` | Removed; inherits root | `vp test run`: 14 passed |
 | `vite.config.ts` Astro inline project | `clearMocks: false` | Removed; default `true` | `vp test run`: 14 passed |
 | `packages/astro/vite.config.ts` test | `clearMocks: false` | Removed; default `true` | `vp -C packages/astro test run`: 3 passed |
-| `packages/astro/vite.config.ts` server pack | `deps.resolveDepSubpath: true` | See final validation below | `vp -C packages/astro pack` and `vp run test:consumer` |
-| `packages/astro/vite.config.ts` client pack | `deps.resolveDepSubpath: true` | See final validation below | `vp -C packages/astro pack` and `vp run test:consumer` |
+| `packages/astro/vite.config.ts` server pack | `deps.resolveDepSubpath: true` | Removed; default `false` | `vp -C packages/astro pack` and `vp run test:consumer` |
+| `packages/astro/vite.config.ts` client pack | `deps.resolveDepSubpath: true` | Removed; default `false` | `vp -C packages/astro pack` and `vp run test:consumer` |
 
 There are no mock-history-dependent tests or setup hooks. The inline projects retain distinct aliases and test patterns; they have no root setup files or plugins to duplicate. Enabling inheritance and default sharing still executes exactly the same 14 tests. No fake timer, Temporal, browser locator, or coverage-threshold compatibility setting was generated. ATTW was not previously enabled and no `attw.profile` setting was inserted; no declaration checks were removed.
 

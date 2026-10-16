@@ -1,0 +1,634 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-10-16T11:57:17.609991+00:00",
+  "title": "Design System: Writenex",
+  "extensions": {
+    "colorMeta": {
+      "brand-400": {
+        "role": "primary",
+        "displayName": "Light Writing Blue",
+        "tonalRamp": [
+          "oklch(15% 0.19727 269.64)",
+          "oklch(26% 0.19727 269.64)",
+          "oklch(38% 0.19727 269.64)",
+          "oklch(49% 0.19727 269.64)",
+          "oklch(61% 0.19727 269.64)",
+          "oklch(72% 0.19727 269.64)",
+          "oklch(84% 0.19727 269.64)",
+          "oklch(95% 0.19727 269.64)"
+        ]
+      },
+      "brand-500": {
+        "role": "primary",
+        "displayName": "Writing Blue",
+        "tonalRamp": [
+          "oklch(15% 0.24378 266.55)",
+          "oklch(26% 0.24378 266.55)",
+          "oklch(38% 0.24378 266.55)",
+          "oklch(49% 0.24378 266.55)",
+          "oklch(61% 0.24378 266.55)",
+          "oklch(72% 0.24378 266.55)",
+          "oklch(84% 0.24378 266.55)",
+          "oklch(95% 0.24378 266.55)"
+        ]
+      },
+      "brand-600": {
+        "role": "primary",
+        "displayName": "Deep Writing Blue",
+        "tonalRamp": [
+          "oklch(15% 0.19912 266.35)",
+          "oklch(26% 0.19912 266.35)",
+          "oklch(38% 0.19912 266.35)",
+          "oklch(49% 0.19912 266.35)",
+          "oklch(61% 0.19912 266.35)",
+          "oklch(72% 0.19912 266.35)",
+          "oklch(84% 0.19912 266.35)",
+          "oklch(95% 0.19912 266.35)"
+        ]
+      },
+      "zinc-50": {
+        "role": "neutral",
+        "displayName": "Zinc 50",
+        "tonalRamp": [
+          "oklch(15% 0.00000 89.88)",
+          "oklch(26% 0.00000 89.88)",
+          "oklch(38% 0.00000 89.88)",
+          "oklch(49% 0.00000 89.88)",
+          "oklch(61% 0.00000 89.88)",
+          "oklch(72% 0.00000 89.88)",
+          "oklch(84% 0.00000 89.88)",
+          "oklch(95% 0.00000 89.88)"
+        ]
+      },
+      "zinc-100": {
+        "role": "neutral",
+        "displayName": "Zinc 100",
+        "tonalRamp": [
+          "oklch(15% 0.00133 286.38)",
+          "oklch(26% 0.00133 286.38)",
+          "oklch(38% 0.00133 286.38)",
+          "oklch(49% 0.00133 286.38)",
+          "oklch(61% 0.00133 286.38)",
+          "oklch(72% 0.00133 286.38)",
+          "oklch(84% 0.00133 286.38)",
+          "oklch(95% 0.00133 286.38)"
+        ]
+      },
+      "zinc-150": {
+        "role": "neutral",
+        "displayName": "Zinc 150",
+        "tonalRamp": [
+          "oklch(15% 0.00401 286.32)",
+          "oklch(26% 0.00401 286.32)",
+          "oklch(38% 0.00401 286.32)",
+          "oklch(49% 0.00401 286.32)",
+          "oklch(61% 0.00401 286.32)",
+          "oklch(72% 0.00401 286.32)",
+          "oklch(84% 0.00401 286.32)",
+          "oklch(95% 0.00401 286.32)"
+        ]
+      },
+      "zinc-200": {
+        "role": "neutral",
+        "displayName": "Zinc 200",
+        "tonalRamp": [
+          "oklch(15% 0.00403 286.32)",
+          "oklch(26% 0.00403 286.32)",
+          "oklch(38% 0.00403 286.32)",
+          "oklch(49% 0.00403 286.32)",
+          "oklch(61% 0.00403 286.32)",
+          "oklch(72% 0.00403 286.32)",
+          "oklch(84% 0.00403 286.32)",
+          "oklch(95% 0.00403 286.32)"
+        ]
+      },
+      "zinc-300": {
+        "role": "neutral",
+        "displayName": "Zinc 300",
+        "tonalRamp": [
+          "oklch(15% 0.00545 286.29)",
+          "oklch(26% 0.00545 286.29)",
+          "oklch(38% 0.00545 286.29)",
+          "oklch(49% 0.00545 286.29)",
+          "oklch(61% 0.00545 286.29)",
+          "oklch(72% 0.00545 286.29)",
+          "oklch(84% 0.00545 286.29)",
+          "oklch(95% 0.00545 286.29)"
+        ]
+      },
+      "zinc-400": {
+        "role": "neutral",
+        "displayName": "Zinc 400",
+        "tonalRamp": [
+          "oklch(15% 0.01294 286.07)",
+          "oklch(26% 0.01294 286.07)",
+          "oklch(38% 0.01294 286.07)",
+          "oklch(49% 0.01294 286.07)",
+          "oklch(61% 0.01294 286.07)",
+          "oklch(72% 0.01294 286.07)",
+          "oklch(84% 0.01294 286.07)",
+          "oklch(95% 0.01294 286.07)"
+        ]
+      },
+      "zinc-500": {
+        "role": "neutral",
+        "displayName": "Zinc 500",
+        "tonalRamp": [
+          "oklch(15% 0.01381 285.94)",
+          "oklch(26% 0.01381 285.94)",
+          "oklch(38% 0.01381 285.94)",
+          "oklch(49% 0.01381 285.94)",
+          "oklch(61% 0.01381 285.94)",
+          "oklch(72% 0.01381 285.94)",
+          "oklch(84% 0.01381 285.94)",
+          "oklch(95% 0.01381 285.94)"
+        ]
+      },
+      "zinc-600": {
+        "role": "neutral",
+        "displayName": "Zinc 600",
+        "tonalRamp": [
+          "oklch(15% 0.01462 285.79)",
+          "oklch(26% 0.01462 285.79)",
+          "oklch(38% 0.01462 285.79)",
+          "oklch(49% 0.01462 285.79)",
+          "oklch(61% 0.01462 285.79)",
+          "oklch(72% 0.01462 285.79)",
+          "oklch(84% 0.01462 285.79)",
+          "oklch(95% 0.01462 285.79)"
+        ]
+      },
+      "zinc-700": {
+        "role": "neutral",
+        "displayName": "Zinc 700",
+        "tonalRamp": [
+          "oklch(15% 0.01188 285.81)",
+          "oklch(26% 0.01188 285.81)",
+          "oklch(38% 0.01188 285.81)",
+          "oklch(49% 0.01188 285.81)",
+          "oklch(61% 0.01188 285.81)",
+          "oklch(72% 0.01188 285.81)",
+          "oklch(84% 0.01188 285.81)",
+          "oklch(95% 0.01188 285.81)"
+        ]
+      },
+      "zinc-800": {
+        "role": "neutral",
+        "displayName": "Zinc 800",
+        "tonalRamp": [
+          "oklch(15% 0.00548 286.03)",
+          "oklch(26% 0.00548 286.03)",
+          "oklch(38% 0.00548 286.03)",
+          "oklch(49% 0.00548 286.03)",
+          "oklch(61% 0.00548 286.03)",
+          "oklch(72% 0.00548 286.03)",
+          "oklch(84% 0.00548 286.03)",
+          "oklch(95% 0.00548 286.03)"
+        ]
+      },
+      "zinc-850": {
+        "role": "neutral",
+        "displayName": "Zinc 850",
+        "tonalRamp": [
+          "oklch(15% 0.00756 285.82)",
+          "oklch(26% 0.00756 285.82)",
+          "oklch(38% 0.00756 285.82)",
+          "oklch(49% 0.00756 285.82)",
+          "oklch(61% 0.00756 285.82)",
+          "oklch(72% 0.00756 285.82)",
+          "oklch(84% 0.00756 285.82)",
+          "oklch(95% 0.00756 285.82)"
+        ]
+      },
+      "zinc-900": {
+        "role": "neutral",
+        "displayName": "Zinc 900",
+        "tonalRamp": [
+          "oklch(15% 0.00586 285.89)",
+          "oklch(26% 0.00586 285.89)",
+          "oklch(38% 0.00586 285.89)",
+          "oklch(49% 0.00586 285.89)",
+          "oklch(61% 0.00586 285.89)",
+          "oklch(72% 0.00586 285.89)",
+          "oklch(84% 0.00586 285.89)",
+          "oklch(95% 0.00586 285.89)"
+        ]
+      },
+      "zinc-950": {
+        "role": "neutral",
+        "displayName": "Zinc 950",
+        "tonalRamp": [
+          "oklch(15% 0.00439 285.82)",
+          "oklch(26% 0.00439 285.82)",
+          "oklch(38% 0.00439 285.82)",
+          "oklch(49% 0.00439 285.82)",
+          "oklch(61% 0.00439 285.82)",
+          "oklch(72% 0.00439 285.82)",
+          "oklch(84% 0.00439 285.82)",
+          "oklch(95% 0.00439 285.82)"
+        ]
+      },
+      "success-400": {
+        "role": "semantic",
+        "displayName": "Success 400",
+        "tonalRamp": [
+          "oklch(15% 0.15349 163.22)",
+          "oklch(26% 0.15349 163.22)",
+          "oklch(38% 0.15349 163.22)",
+          "oklch(49% 0.15349 163.22)",
+          "oklch(61% 0.15349 163.22)",
+          "oklch(72% 0.15349 163.22)",
+          "oklch(84% 0.15349 163.22)",
+          "oklch(95% 0.15349 163.22)"
+        ]
+      },
+      "success-500": {
+        "role": "semantic",
+        "displayName": "Success 500",
+        "tonalRamp": [
+          "oklch(15% 0.14907 162.48)",
+          "oklch(26% 0.14907 162.48)",
+          "oklch(38% 0.14907 162.48)",
+          "oklch(49% 0.14907 162.48)",
+          "oklch(61% 0.14907 162.48)",
+          "oklch(72% 0.14907 162.48)",
+          "oklch(84% 0.14907 162.48)",
+          "oklch(95% 0.14907 162.48)"
+        ]
+      },
+      "warning-400": {
+        "role": "semantic",
+        "displayName": "Warning 400",
+        "tonalRamp": [
+          "oklch(15% 0.16442 84.43)",
+          "oklch(26% 0.16442 84.43)",
+          "oklch(38% 0.16442 84.43)",
+          "oklch(49% 0.16442 84.43)",
+          "oklch(61% 0.16442 84.43)",
+          "oklch(72% 0.16442 84.43)",
+          "oklch(84% 0.16442 84.43)",
+          "oklch(95% 0.16442 84.43)"
+        ]
+      },
+      "warning-500": {
+        "role": "semantic",
+        "displayName": "Warning 500",
+        "tonalRamp": [
+          "oklch(15% 0.16466 70.08)",
+          "oklch(26% 0.16466 70.08)",
+          "oklch(38% 0.16466 70.08)",
+          "oklch(49% 0.16466 70.08)",
+          "oklch(61% 0.16466 70.08)",
+          "oklch(72% 0.16466 70.08)",
+          "oklch(84% 0.16466 70.08)",
+          "oklch(95% 0.16466 70.08)"
+        ]
+      },
+      "error-400": {
+        "role": "semantic",
+        "displayName": "Error 400",
+        "tonalRamp": [
+          "oklch(15% 0.16615 22.22)",
+          "oklch(26% 0.16615 22.22)",
+          "oklch(38% 0.16615 22.22)",
+          "oklch(49% 0.16615 22.22)",
+          "oklch(61% 0.16615 22.22)",
+          "oklch(72% 0.16615 22.22)",
+          "oklch(84% 0.16615 22.22)",
+          "oklch(95% 0.16615 22.22)"
+        ]
+      },
+      "error-500": {
+        "role": "semantic",
+        "displayName": "Error 500",
+        "tonalRamp": [
+          "oklch(15% 0.20785 25.33)",
+          "oklch(26% 0.20785 25.33)",
+          "oklch(38% 0.20785 25.33)",
+          "oklch(49% 0.20785 25.33)",
+          "oklch(61% 0.20785 25.33)",
+          "oklch(72% 0.20785 25.33)",
+          "oklch(84% 0.20785 25.33)",
+          "oklch(95% 0.20785 25.33)"
+        ]
+      },
+      "error-600": {
+        "role": "semantic",
+        "displayName": "Error 600",
+        "tonalRamp": [
+          "oklch(15% 0.21516 27.33)",
+          "oklch(26% 0.21516 27.33)",
+          "oklch(38% 0.21516 27.33)",
+          "oklch(49% 0.21516 27.33)",
+          "oklch(61% 0.21516 27.33)",
+          "oklch(72% 0.21516 27.33)",
+          "oklch(84% 0.21516 27.33)",
+          "oklch(95% 0.21516 27.33)"
+        ]
+      },
+      "info-400": {
+        "role": "semantic",
+        "displayName": "Info 400",
+        "tonalRamp": [
+          "oklch(15% 0.15917 293.54)",
+          "oklch(26% 0.15917 293.54)",
+          "oklch(38% 0.15917 293.54)",
+          "oklch(49% 0.15917 293.54)",
+          "oklch(61% 0.15917 293.54)",
+          "oklch(72% 0.15917 293.54)",
+          "oklch(84% 0.15917 293.54)",
+          "oklch(95% 0.15917 293.54)"
+        ]
+      },
+      "info-500": {
+        "role": "semantic",
+        "displayName": "Info 500",
+        "tonalRamp": [
+          "oklch(15% 0.21892 292.72)",
+          "oklch(26% 0.21892 292.72)",
+          "oklch(38% 0.21892 292.72)",
+          "oklch(49% 0.21892 292.72)",
+          "oklch(61% 0.21892 292.72)",
+          "oklch(72% 0.21892 292.72)",
+          "oklch(84% 0.21892 292.72)",
+          "oklch(95% 0.21892 292.72)"
+        ]
+      },
+      "info-600": {
+        "role": "semantic",
+        "displayName": "Info 600",
+        "tonalRamp": [
+          "oklch(15% 0.24659 293.01)",
+          "oklch(26% 0.24659 293.01)",
+          "oklch(38% 0.24659 293.01)",
+          "oklch(49% 0.24659 293.01)",
+          "oklch(61% 0.24659 293.01)",
+          "oklch(72% 0.24659 293.01)",
+          "oklch(84% 0.24659 293.01)",
+          "oklch(95% 0.24659 293.01)"
+        ]
+      },
+      "white": {
+        "role": "neutral",
+        "displayName": "White",
+        "tonalRamp": [
+          "oklch(15% 0.00000 89.88)",
+          "oklch(26% 0.00000 89.88)",
+          "oklch(38% 0.00000 89.88)",
+          "oklch(49% 0.00000 89.88)",
+          "oklch(61% 0.00000 89.88)",
+          "oklch(72% 0.00000 89.88)",
+          "oklch(84% 0.00000 89.88)",
+          "oklch(95% 0.00000 89.88)"
+        ]
+      },
+      "prose-body": {
+        "role": "neutral",
+        "displayName": "Prose Body",
+        "tonalRamp": [
+          "oklch(15% 0.03916 257.29)",
+          "oklch(26% 0.03916 257.29)",
+          "oklch(38% 0.03916 257.29)",
+          "oklch(49% 0.03916 257.29)",
+          "oklch(61% 0.03916 257.29)",
+          "oklch(72% 0.03916 257.29)",
+          "oklch(84% 0.03916 257.29)",
+          "oklch(95% 0.03916 257.29)"
+        ]
+      },
+      "prose-heading": {
+        "role": "neutral",
+        "displayName": "Prose Heading",
+        "tonalRamp": [
+          "oklch(15% 0.03685 260.03)",
+          "oklch(26% 0.03685 260.03)",
+          "oklch(38% 0.03685 260.03)",
+          "oklch(49% 0.03685 260.03)",
+          "oklch(61% 0.03685 260.03)",
+          "oklch(72% 0.03685 260.03)",
+          "oklch(84% 0.03685 260.03)",
+          "oklch(95% 0.03685 260.03)"
+        ]
+      },
+      "prose-divider": {
+        "role": "neutral",
+        "displayName": "Prose Divider",
+        "tonalRamp": [
+          "oklch(15% 0.01262 255.51)",
+          "oklch(26% 0.01262 255.51)",
+          "oklch(38% 0.01262 255.51)",
+          "oklch(49% 0.01262 255.51)",
+          "oklch(61% 0.01262 255.51)",
+          "oklch(72% 0.01262 255.51)",
+          "oklch(84% 0.01262 255.51)",
+          "oklch(95% 0.01262 255.51)"
+        ]
+      },
+      "quote-surface": {
+        "role": "neutral",
+        "displayName": "Quote Surface",
+        "tonalRamp": [
+          "oklch(15% 0.00341 247.86)",
+          "oklch(26% 0.00341 247.86)",
+          "oklch(38% 0.00341 247.86)",
+          "oklch(49% 0.00341 247.86)",
+          "oklch(61% 0.00341 247.86)",
+          "oklch(72% 0.00341 247.86)",
+          "oklch(84% 0.00341 247.86)",
+          "oklch(95% 0.00341 247.86)"
+        ]
+      },
+      "dialog-dark": {
+        "role": "neutral",
+        "displayName": "Dialog Dark",
+        "tonalRamp": [
+          "oklch(15% 0.01570 256.82)",
+          "oklch(26% 0.01570 256.82)",
+          "oklch(38% 0.01570 256.82)",
+          "oklch(49% 0.01570 256.82)",
+          "oklch(61% 0.01570 256.82)",
+          "oklch(72% 0.01570 256.82)",
+          "oklch(84% 0.01570 256.82)",
+          "oklch(95% 0.01570 256.82)"
+        ]
+      },
+      "highlight": {
+        "role": "semantic",
+        "displayName": "Highlight",
+        "tonalRamp": [
+          "oklch(15% 0.16568 98.11)",
+          "oklch(26% 0.16568 98.11)",
+          "oklch(38% 0.16568 98.11)",
+          "oklch(49% 0.16568 98.11)",
+          "oklch(61% 0.16568 98.11)",
+          "oklch(72% 0.16568 98.11)",
+          "oklch(84% 0.16568 98.11)",
+          "oklch(95% 0.16568 98.11)"
+        ]
+      }
+    },
+    "typographyMeta": {
+      "body": {
+        "displayName": "Body",
+        "purpose": "Observed body typography."
+      },
+      "label": {
+        "displayName": "Label",
+        "purpose": "Observed label typography."
+      },
+      "code": {
+        "displayName": "Code",
+        "purpose": "Observed code typography."
+      },
+      "display": {
+        "displayName": "Display",
+        "purpose": "Observed display typography."
+      },
+      "headline": {
+        "displayName": "Headline",
+        "purpose": "Observed headline typography."
+      },
+      "title": {
+        "displayName": "Title",
+        "purpose": "Observed title typography."
+      },
+      "control": {
+        "displayName": "Control",
+        "purpose": "Observed control typography."
+      }
+    },
+    "shadows": [
+      {
+        "name": "card",
+        "value": "0 1px 2px rgba(0,0,0,0.05)",
+        "purpose": "Marketing cards and shared input shadow-sm."
+      }
+    ],
+    "motion": [
+      {
+        "name": "fast",
+        "value": "150ms",
+        "purpose": "Control state transitions."
+      },
+      {
+        "name": "normal",
+        "value": "200ms",
+        "purpose": "Dialog transitions."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "sm",
+        "value": "640px"
+      },
+      {
+        "name": "md",
+        "value": "768px"
+      },
+      {
+        "name": "lg",
+        "value": "1024px"
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "Default button",
+      "kind": "button",
+      "refersTo": "button-default",
+      "description": "Canonical default button; light theme specimen.",
+      "html": "<button class=\"ds-button\">Continue</button>",
+      "css": ".ds-button{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:0;border-radius:6px;cursor:pointer;font-family:Plus Jakarta Sans, system-ui, -apple-system, Segoe UI, Roboto, Helvetica Neue, Arial, sans-serif;font-size:14px;font-weight:500;padding:8px 16px;min-height:36px;transition:background-color 150ms,color 150ms}.ds-button:disabled{opacity:.5;pointer-events:none}.ds-button{background:var(--wn-zinc-900, #18181b);color:var(--wn-zinc-50,#fafafa);}.ds-button:hover{background:rgba(24,24,27,.9);}.ds-button:focus-visible{outline:2px solid currentColor;outline-offset:2px}"
+    },
+    {
+      "name": "Destructive button",
+      "kind": "button",
+      "refersTo": "button-destructive",
+      "description": "Canonical destructive button; light theme specimen.",
+      "html": "<button class=\"ds-button\">Continue</button>",
+      "css": ".ds-button{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:0;border-radius:6px;cursor:pointer;font-family:Plus Jakarta Sans, system-ui, -apple-system, Segoe UI, Roboto, Helvetica Neue, Arial, sans-serif;font-size:14px;font-weight:500;padding:8px 16px;min-height:36px;transition:background-color 150ms,color 150ms}.ds-button:disabled{opacity:.5;pointer-events:none}.ds-button{background:var(--wn-error-500, #ef4444);color:var(--wn-zinc-50,#fafafa);}.ds-button:hover{background:rgba(239,68,68,.9);}.ds-button:focus-visible{outline:2px solid currentColor;outline-offset:2px}"
+    },
+    {
+      "name": "Outline button",
+      "kind": "button",
+      "refersTo": "button-outline",
+      "description": "Canonical outline button; light theme specimen.",
+      "html": "<button class=\"ds-button\">Continue</button>",
+      "css": ".ds-button{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:0;border-radius:6px;cursor:pointer;font-family:Plus Jakarta Sans, system-ui, -apple-system, Segoe UI, Roboto, Helvetica Neue, Arial, sans-serif;font-size:14px;font-weight:500;padding:8px 16px;min-height:36px;transition:background-color 150ms,color 150ms}.ds-button:disabled{opacity:.5;pointer-events:none}.ds-button{background:var(--wn-white, #ffffff);color:var(--wn-zinc-900,#18181b);border:1px solid #e4e4e7;}.ds-button:hover{background:rgba(0,0,0,.1);}.ds-button:focus-visible{outline:2px solid currentColor;outline-offset:2px}"
+    },
+    {
+      "name": "Secondary button",
+      "kind": "button",
+      "refersTo": "button-secondary",
+      "description": "Canonical secondary button; light theme specimen.",
+      "html": "<button class=\"ds-button\">Continue</button>",
+      "css": ".ds-button{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:0;border-radius:6px;cursor:pointer;font-family:Plus Jakarta Sans, system-ui, -apple-system, Segoe UI, Roboto, Helvetica Neue, Arial, sans-serif;font-size:14px;font-weight:500;padding:8px 16px;min-height:36px;transition:background-color 150ms,color 150ms}.ds-button:disabled{opacity:.5;pointer-events:none}.ds-button{background:var(--wn-zinc-100, #f4f4f5);color:var(--wn-zinc-900,#18181b);}.ds-button:hover{background:rgba(0,0,0,.1);}.ds-button:focus-visible{outline:2px solid currentColor;outline-offset:2px}"
+    },
+    {
+      "name": "Ghost button",
+      "kind": "button",
+      "refersTo": "button-ghost",
+      "description": "Canonical ghost button; light theme specimen.",
+      "html": "<button class=\"ds-button\">Continue</button>",
+      "css": ".ds-button{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:0;border-radius:6px;cursor:pointer;font-family:Plus Jakarta Sans, system-ui, -apple-system, Segoe UI, Roboto, Helvetica Neue, Arial, sans-serif;font-size:14px;font-weight:500;padding:8px 16px;min-height:36px;transition:background-color 150ms,color 150ms}.ds-button:disabled{opacity:.5;pointer-events:none}.ds-button{background:transparent;color:var(--wn-zinc-900,#18181b);}.ds-button:hover{background:rgba(0,0,0,.1);}.ds-button:focus-visible{outline:2px solid currentColor;outline-offset:2px}"
+    },
+    {
+      "name": "Link button",
+      "kind": "button",
+      "refersTo": "button-link",
+      "description": "Canonical link button; light theme specimen.",
+      "html": "<button class=\"ds-button\">Continue</button>",
+      "css": ".ds-button{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:0;border-radius:6px;cursor:pointer;font-family:Plus Jakarta Sans, system-ui, -apple-system, Segoe UI, Roboto, Helvetica Neue, Arial, sans-serif;font-size:14px;font-weight:500;padding:8px 16px;min-height:36px;transition:background-color 150ms,color 150ms}.ds-button:disabled{opacity:.5;pointer-events:none}.ds-button{background:transparent;color:var(--wn-zinc-900,#18181b);}.ds-button:hover{background:rgba(0,0,0,.1);text-decoration:underline;}.ds-button:focus-visible{outline:2px solid currentColor;outline-offset:2px}"
+    },
+    {
+      "name": "Text field",
+      "kind": "input",
+      "refersTo": "input",
+      "description": "Shared Input primitive.",
+      "html": "<input class=\"ds-input\" aria-label=\"Document title\" placeholder=\"Document title\">",
+      "css": ".ds-input{height:36px;padding:4px 12px;border:1px solid #e4e4e7;border-radius:6px;background:transparent;color:#18181b;font-family:Plus Jakarta Sans, system-ui, -apple-system, Segoe UI, Roboto, Helvetica Neue, Arial, sans-serif;font-size:14px;box-shadow:0 1px 2px rgba(0,0,0,.05);transition:color 150ms}.ds-input:focus-visible{outline:1px solid #09090b}.ds-input::placeholder{color:#71717a}.ds-input:disabled{opacity:.5;cursor:not-allowed}"
+    },
+    {
+      "name": "Feature card",
+      "kind": "card",
+      "refersTo": "feature-card",
+      "description": "Recurring marketing feature card.",
+      "html": "<article class=\"ds-card\"><h3>WYSIWYG Editing</h3><p>Write visually.</p></article>",
+      "css": ".ds-card{padding:24px;border:1px solid #e4e4e7;border-radius:12px;background:#fff;font-family:Plus Jakarta Sans, system-ui, -apple-system, Segoe UI, Roboto, Helvetica Neue, Arial, sans-serif;box-shadow:0 1px 2px rgba(0,0,0,.05)}.ds-card h3{margin:0 0 8px;font-size:18px;font-weight:600;color:#18181b}.ds-card p{margin:0;color:#52525b;line-height:1.625;letter-spacing:.025em}"
+    },
+    {
+      "name": "Document navigation",
+      "kind": "nav",
+      "refersTo": "document-tab",
+      "description": "Active document tab; overflow and keyboard selection stay in React.",
+      "html": "<nav class=\"ds-tabs\" aria-label=\"Documents\"><button class=\"ds-tab\" aria-current=\"page\">Untitled</button></nav>",
+      "css": ".ds-tabs{display:flex;padding:8px 8px 0;background:#fafafa;border-bottom:1px solid #e4e4e7;font-family:Plus Jakarta Sans, system-ui, -apple-system, Segoe UI, Roboto, Helvetica Neue, Arial, sans-serif}.ds-tab{min-width:120px;max-width:240px;padding:8px 12px;border:1px solid #e4e4e7;border-bottom:0;border-radius:8px 8px 0 0;background:#fff;color:#18181b;font:inherit;font-size:14px;cursor:pointer}.ds-tab:hover{color:#09090b}.ds-tab:focus-visible{outline:2px solid #3b82f6;outline-offset:-2px}"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Quiet Writing Desk",
+    "overview": "A calm, practical writing workspace with compact controls, rounded boundaries, blue accents, and generous room for content. The writing canvas leads; navigation and document tools form a restrained frame around it.\n\nThe browser editor pairs a light/dark writing workspace with more spacious marketing pages. Marketing calls to action use blue; shared editor buttons default to neutral contrast. This is a code-derived record of the incumbent interface. The metaphor and descriptive language are provisional defaults pending user feedback, rather than newly established brand commitments.",
+    "keyCharacteristics": [
+      "Blue brand accents with zinc interface neutrals.",
+      "Compact rounded controls around an expansive writing surface.",
+      "Explicit hover, focus, disabled, and document-status treatments."
+    ],
+    "rules": [
+      {
+        "name": "The Semantic Color Rule",
+        "body": "Keep status meaning consistent across indicators and destructive actions.",
+        "section": "colors"
+      }
+    ],
+    "dos": [
+      "Do preserve the shared brand palette while respecting this target\u2019s theme implementation.",
+      "Do keep prose and code typography distinct.",
+      "Do retain keyboard focus and disabled states when extending controls."
+    ],
+    "donts": [
+      "Don\u2019t replace semantic status colors with decorative accents.",
+      "Don\u2019t copy theme selectors or spacing-token names across targets without checking their definitions.",
+      "Don\u2019t treat archival screenshots as authority over current component source."
+    ]
+  }
+}

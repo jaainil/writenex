@@ -4,7 +4,20 @@
 
 On a push to `main`, `.github/workflows/release.yml` installs the frozen lockfile, runs the test suite and both package type checks, builds both packages, and invokes semantic-release. Conventional commits determine the next shared version. Both package manifests and changelogs are prepared before one release commit; both packages then publish with that version. Release runs are serialized.
 
-The existing repository `NPM_TOKEN` secret must grant publish access to **both** packages in the `@imjp` scope. `GITHUB_TOKEN` uses the workflow's existing write permissions. npm publication must permit automation with that token; interactive login on a developer machine does not authenticate GitHub Actions. Alternatively, configure npm trusted publishing for both packages with this repository and `release.yml`.
+Publication uses npm trusted publishing (OIDC), not the repository `NPM_TOKEN` secret. The workflow grants `id-token: write` and installs npm 11.19.1 (trusted publishing requires npm >= 11.5.1). `GITHUB_TOKEN` remains necessary for the shared GitHub release and release commit.
+
+Configure **both** npm packages under Settings → Trusted Publisher:
+
+- Provider: GitHub Actions
+- Organization or user: `jaainil`
+- Repository: `writenex`
+- Workflow filename: `release.yml` (no directory prefix)
+- Environment: leave blank; this workflow does not use a GitHub environment
+- Allow direct `npm publish`
+
+“Pending validation” is expected before the first successful workflow publication. Publish before the deadline shown by npm to validate each configuration. A local `npm publish` does not validate GitHub's trusted publisher.
+
+After pushing the workflow change to `main`, start a **new** Release run (push trigger or Actions → Release → Run workflow on `main`). Re-running the previous failed run uses its original workflow revision, including the rejected token configuration. The old `NPM_TOKEN` secret is no longer referenced by this workflow.
 
 ## Initial alignment
 

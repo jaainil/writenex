@@ -1,6 +1,7 @@
 name: Release
 
 on:
+  workflow_dispatch:
   push:
     branches: [main]
 
@@ -30,6 +31,10 @@ jobs:
           node-version-file: .node-version
           registry-url: "https://registry.npmjs.org"
 
+      # npm trusted publishing requires npm >= 11.5.1.
+      - name: Set up npm for trusted publishing
+        run: npm install --global npm@11.19.1
+
       - run: pnpm install --frozen-lockfile
 
       - name: Verify packages
@@ -46,5 +51,4 @@ jobs:
       - name: Create shared release and publish both packages
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: npx semantic-release

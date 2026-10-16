@@ -1,3 +1,10 @@
+# [1.13.0](https://github.com/jaainil/writenex/compare/@imjp/writenex-astro@1.12.0...@imjp/writenex-astro@1.13.0) (2026-10-16)
+
+
+### Features
+
+* **next:** add and publish Next.js editor integration ([a56314a](https://github.com/jaainil/writenex/commit/a56314a44242c1d66808431f02e55c36b2643730))
+
 # [1.12.0](https://github.com/jaainil/writenex/compare/@imjp/writenex-astro@1.11.2...@imjp/writenex-astro@1.12.0) (2026-10-16)
 
 

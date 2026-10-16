@@ -2,7 +2,7 @@
 
 ## Publication
 
-npm accepted public publication of `@imjp/writenex-next@0.1.0` under account `imjp`, with the `latest` tag, after browser-based publish verification. The CLI returned success and reported that the new package was processing; public registry visibility is pending verification.
+Published public `@imjp/writenex-next@0.1.0` under account `imjp`, with the `latest` tag, after browser-based publish verification. The public registry exposes version `0.1.0` and `latest: 0.1.0`; its integrity matches the tested tarball below. The reviewed implementation was merged into local `main`, and all 37 tests passed again on the merged branch.
 
 Package page: https://www.npmjs.com/package/@imjp/writenex-next
 

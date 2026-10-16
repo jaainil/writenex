@@ -1,3 +1,16 @@
+# [1.12.0](https://github.com/jaainil/writenex/compare/@imjp/writenex-astro@1.11.2...@imjp/writenex-astro@1.12.0) (2026-10-16)
+
+
+### Bug Fixes
+
+* update Playwright configuration to build and start production editor with new port ([1dc5b29](https://github.com/jaainil/writenex/commit/1dc5b299b1897df43b5e29b9ff60842ac9f1262b))
+
+
+### Features
+
+* add design system documentation and tokens ([3624681](https://github.com/jaainil/writenex/commit/36246817a4efd946f1830cd14740f9ee651e287c))
+* update pnpm workspace configuration and add Vite support ([f34d69a](https://github.com/jaainil/writenex/commit/f34d69aa079fca51afab48a4fe0aaf1b13f762c1))
+
 ## [1.11.2](https://github.com/jaainil/writenex/compare/@imjp/writenex-astro@1.11.1...@imjp/writenex-astro@1.11.2) (2026-08-31)
 
 

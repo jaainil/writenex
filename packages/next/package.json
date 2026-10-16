@@ -1,6 +1,6 @@
 {
   "name": "@imjp/writenex-next",
-  "version": "1.12.0",
+  "version": "1.14.0",
   "description": "Writenex visual Markdown and MDX editor for Next.js projects.",
   "keywords": [
     "cms",
@@ -17,7 +17,10 @@
     "url": "https://github.com/jaainil/writenex.git",
     "directory": "packages/next"
   },
-  "files": ["dist", "README.md"],
+  "files": [
+    "dist",
+    "README.md"
+  ],
   "type": "module",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",

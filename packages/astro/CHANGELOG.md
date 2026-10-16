@@ -1,3 +1,11 @@
+# [1.14.0](https://github.com/jaainil/writenex/compare/@imjp/writenex-astro@1.13.0...@imjp/writenex-astro@1.14.0) (2026-10-16)
+
+
+### Features
+
+* align Astro and Next.js packages to share versioning and release process; enhance documentation and update configurations ([c64536c](https://github.com/jaainil/writenex/commit/c64536ce766f162a0114e3298430bcf2f3d4da86))
+* update release workflow for npm trusted publishing and enhance documentation ([5795b77](https://github.com/jaainil/writenex/commit/5795b77b12bf1713e8c11d81734cb9608183c995))
+
 # [1.13.0](https://github.com/jaainil/writenex/compare/@imjp/writenex-astro@1.12.0...@imjp/writenex-astro@1.13.0) (2026-10-16)
 
 

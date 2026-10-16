@@ -42,7 +42,19 @@ export function LandingFooter(): React.ReactElement {
         >
           Copyright © {new Date().getFullYear()} Writenex
         </p>
-        <div className="flex items-center gap-6">
+        <div className="flex flex-wrap justify-center items-center gap-6">
+          <Link
+            href="/astro"
+            className="text-sm text-zinc-500 hover:text-zinc-700 dark:text-zinc-400 dark:hover:text-zinc-200"
+          >
+            Astro
+          </Link>
+          <Link
+            href="/nextjs"
+            className="text-sm text-zinc-500 hover:text-zinc-700 dark:text-zinc-400 dark:hover:text-zinc-200"
+          >
+            Next.js
+          </Link>
           <Link
             href="/privacy"
             className="text-sm text-zinc-500 transition-colors hover:text-zinc-700 dark:text-zinc-400 dark:hover:text-zinc-200"

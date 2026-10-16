@@ -62,7 +62,7 @@ export default function PrivacyPolicyPage(): React.ReactElement {
       <LandingHeader />
 
       {/* Main Content */}
-      <main className="mx-auto max-w-4xl px-4 pt-24 pb-12 sm:px-6 lg:px-8">
+      <main className="mx-auto max-w-4xl px-4 pt-44 pb-12 sm:pt-36 sm:px-6 lg:px-8">
         <article className="prose prose-zinc dark:prose-invert max-w-none">
           <h1>Privacy Policy</h1>
 

@@ -24,6 +24,16 @@
     },
     "clean": {
       "cache": false
+    },
+    "writenex#build": {
+      "dependsOn": ["^build"],
+      "inputs": [
+        "$TURBO_DEFAULT$",
+        ".env*",
+        "$TURBO_ROOT$/packages/astro/package.json",
+        "$TURBO_ROOT$/packages/next/package.json"
+      ],
+      "outputs": [".next/**", "!.next/cache/**"]
     }
   }
 }

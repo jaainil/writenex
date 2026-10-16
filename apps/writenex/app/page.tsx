@@ -221,7 +221,7 @@ const faqs = [
  */
 function HeroSection(): React.ReactElement {
   return (
-    <section className="px-4 pt-32 pb-20 sm:px-6 lg:px-8">
+    <section className="px-4 pt-48 pb-20 sm:pt-40 sm:px-6 lg:px-8">
       <div className="mx-auto max-w-4xl text-center">
         {/* Badge */}
         <div className="bg-brand-500/10 text-brand-600 dark:bg-brand-500/20 dark:text-brand-400 mb-6 inline-flex items-center gap-2 rounded-full px-3 py-1 text-sm font-medium">
@@ -444,19 +444,26 @@ function RelatedSection(): React.ReactElement {
           <div className="flex flex-col items-start gap-6 sm:flex-row sm:items-center sm:justify-between">
             <div>
               <h3 className="mb-2 text-xl font-bold text-zinc-900 dark:text-zinc-100">
-                Building with Astro?
+                Building with Astro or Next.js?
               </h3>
               <p className="text-zinc-600 dark:text-zinc-400">
-                @writenex/astro brings visual editing to your content
-                collections. Zero config, auto-discovery, and version history.
+                Bring visual editing to your content collections with our Astro
+                and Next.js packages. Browse files, edit frontmatter, and
+                restore previous versions.
               </p>
             </div>
             <Link
               href="/astro"
               className="bg-brand-500 hover:bg-brand-600 inline-flex shrink-0 items-center gap-2 rounded-lg px-4 py-2 font-normal text-white transition-colors"
             >
-              Learn More
+              Astro docs
               <ArrowRight className="h-4 w-4" />
+            </Link>
+            <Link
+              href="/nextjs"
+              className="text-brand-600 dark:text-brand-400 inline-flex shrink-0 items-center gap-2 rounded-lg border border-zinc-300 px-4 py-2 dark:border-zinc-700"
+            >
+              Next.js docs <ArrowRight className="h-4 w-4" />
             </Link>
           </div>
         </div>

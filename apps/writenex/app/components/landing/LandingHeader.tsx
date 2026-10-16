@@ -38,6 +38,10 @@ import Link from "next/link";
 export function LandingHeader(): React.ReactElement {
   return (
     <header className="fixed top-0 right-0 left-0 z-50 border-b border-zinc-200 bg-white/80 backdrop-blur-sm dark:border-zinc-800 dark:bg-zinc-900/80">
+      <div className="bg-brand-500/10 text-brand-600 dark:bg-brand-500/20 dark:text-zinc-100 px-4 py-2 text-center text-xs leading-5 sm:text-sm">
+        Writenex is part of{" "}
+        <span className="font-semibold">Juhenza Technologies</span>
+      </div>
       <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
         <div className="flex h-16 items-center justify-between">
           {/* Logo - clickable, navigates to home */}
@@ -57,13 +61,19 @@ export function LandingHeader(): React.ReactElement {
           </Link>
 
           {/* Navigation and CTA */}
-          <div className="flex items-center gap-6">
+          <div className="flex items-center gap-3 sm:gap-6">
             {/* Nav link */}
             <Link
               href="/astro"
               className="hidden text-sm text-zinc-600 transition-colors hover:text-zinc-900 sm:block dark:text-zinc-400 dark:hover:text-zinc-100"
             >
-              @imjp/writenex-astro
+              Astro
+            </Link>
+            <Link
+              href="/nextjs"
+              className="hidden text-sm text-zinc-600 transition-colors hover:text-zinc-900 sm:block dark:text-zinc-400 dark:hover:text-zinc-100"
+            >
+              Next.js
             </Link>
 
             {/* CTA */}
@@ -77,6 +87,17 @@ export function LandingHeader(): React.ReactElement {
           </div>
         </div>
       </div>
+      <nav
+        aria-label="Package documentation"
+        className="flex justify-center gap-6 border-t border-zinc-200 py-2 text-sm sm:hidden dark:border-zinc-800"
+      >
+        <Link href="/astro" className="text-zinc-600 dark:text-zinc-300">
+          Astro
+        </Link>
+        <Link href="/nextjs" className="text-zinc-600 dark:text-zinc-300">
+          Next.js
+        </Link>
+      </nav>
     </header>
   );
 }

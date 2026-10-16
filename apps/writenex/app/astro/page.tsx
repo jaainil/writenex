@@ -38,6 +38,7 @@ import Link from "next/link";
 import { codeToHtml } from "shiki";
 import { LandingFooter, LandingHeader } from "@/app/components/landing";
 import { createBreadcrumbSchema } from "@/app/lib/jsonld";
+import packageInfo from "../../../../packages/astro/package.json";
 
 export const metadata: Metadata = {
   title: "@imjp/writenex-astro - Visual Editor for Astro Content Collections",
@@ -218,7 +219,7 @@ const imageStrategies = [
 
 function HeroSection(): React.ReactElement {
   return (
-    <section className="px-4 pt-32 pb-20 sm:px-6 lg:px-8">
+    <section className="px-4 pt-48 pb-20 sm:pt-40 sm:px-6 lg:px-8">
       <div className="mx-auto max-w-4xl text-center">
         <div className="bg-brand-500/10 text-brand-600 dark:bg-brand-500/20 dark:text-brand-400 mb-6 inline-flex items-center gap-2 rounded-full px-3 py-1 text-sm font-medium">
           <Terminal className="h-4 w-4" />
@@ -238,6 +239,9 @@ function HeroSection(): React.ReactElement {
           auto-discovery, WYSIWYG editing, and version history.
         </p>
 
+        <p className="mb-8 text-sm text-zinc-600 dark:text-zinc-400">
+          @imjp/writenex-astro · v{packageInfo.version}
+        </p>
         <div className="flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
           <a
             href="https://www.npmjs.com/package/@imjp/writenex-astro"

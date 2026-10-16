@@ -4,6 +4,10 @@ on:
   push:
     branches: [main]
 
+concurrency:
+  group: writenex-release
+  cancel-in-progress: false
+
 permissions:
   contents: write
   issues: write
@@ -28,7 +32,18 @@ jobs:
 
       - run: pnpm install --frozen-lockfile
 
-      - name: Create Release and Publish
+      - name: Verify packages
+        run: |
+          pnpm test
+          pnpm --filter @imjp/writenex-astro type-check
+          pnpm --filter @imjp/writenex-next type-check
+
+      - name: Build both integrations
+        run: |
+          pnpm build:astro
+          pnpm build:next
+
+      - name: Create shared release and publish both packages
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}

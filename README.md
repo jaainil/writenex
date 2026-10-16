@@ -123,3 +123,11 @@ See [the migration report](docs/viteplus-migration.md) for validation and compat
 ## License
 
 MIT - see [LICENSE](./LICENSE) for details.
+
+## Package guides and releases
+
+- [Astro setup and Fields API](https://writenex.com/astro)
+- [Next.js setup and configuration](https://writenex.com/nextjs)
+- [Shared package release process](./docs/releases/package-release-process.md)
+
+The Astro and Next.js packages share a version starting at 1.12.0. GitHub Actions verifies and publishes both integrations together from `main`.

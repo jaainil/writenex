@@ -1,0 +1,14 @@
+{
+  "detector": {
+    "ignoreRules": [],
+    "ignoreFiles": [],
+    "ignoreValues": [
+      {
+        "rule": "overused-font",
+        "value": "plus jakarta sans",
+        "createdAt": "2026-10-16T15:28:51.982Z",
+        "reason": "Approved Next.js package design inherits the existing Writenex/Astro typography; packages/next/DESIGN.md and the approved integration spec explicitly preserve Plus Jakarta Sans."
+      }
+    ]
+  }
+}

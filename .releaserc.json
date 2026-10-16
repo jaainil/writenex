@@ -11,6 +11,12 @@
       }
     ],
     [
+      "@semantic-release/changelog",
+      {
+        "changelogFile": "packages/next/CHANGELOG.md"
+      }
+    ],
+    [
       "@semantic-release/npm",
       {
         "npmPublish": true,
@@ -18,13 +24,22 @@
       }
     ],
     [
+      "@semantic-release/npm",
+      {
+        "npmPublish": true,
+        "pkgRoot": "./packages/next"
+      }
+    ],
+    [
       "@semantic-release/git",
       {
         "assets": [
           "packages/astro/package.json",
-          "packages/astro/CHANGELOG.md"
+          "packages/astro/CHANGELOG.md",
+          "packages/next/package.json",
+          "packages/next/CHANGELOG.md"
         ],
-        "message": "chore(release): @imjp/writenex-astro@${nextRelease.version} [skip ci]\n\n${nextRelease.notes}"
+        "message": "chore(release): Writenex packages ${nextRelease.version} [skip ci]\n\n${nextRelease.notes}"
       }
     ],
     "@semantic-release/github"

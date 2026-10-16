@@ -12,6 +12,7 @@
  * @module @writenex/astro/filesystem/images
  */
 
+import { assertSafePath } from "./safe-path";
 import { existsSync } from "node:fs";
 import { mkdir, readdir, stat, writeFile } from "node:fs/promises";
 import {
@@ -91,6 +92,8 @@ export interface ImageUploadOptions {
   projectRoot: string;
   /** Image configuration */
   config?: ImageConfig;
+  /** Resolved collection directory supplied by a framework adapter. */
+  collectionPath?: string;
 }
 
 /**
@@ -144,12 +147,14 @@ function getColocatedPath(
   projectRoot: string,
   collection: string,
   contentId: string,
-  filename: string
+  filename: string,
+  resolvedCollectionPath?: string
 ): { storagePath: string; markdownPath: string } {
   const contentRoot = resolve(projectRoot, "src/content");
-  const collectionPath = resolve(contentRoot, collection);
+  const collectionPath =
+    resolvedCollectionPath ?? resolve(contentRoot, collection);
 
-  if (!isPathInside(contentRoot, collectionPath)) {
+  if (!isPathInside(projectRoot, collectionPath)) {
     throw new Error("Invalid collection path for image upload");
   }
 
@@ -170,7 +175,7 @@ function getColocatedPath(
   // For flat file: image is in sibling folder, so path is ./contentId/filename
   const markdownPath = isFolderBased
     ? `./${filename}`
-    : `./${toMarkdownPath(`${contentId}/${filename}`)}`;
+    : `./${toMarkdownPath(`${basename(contentId)}/${filename}`)}`;
 
   return { storagePath, markdownPath };
 }
@@ -277,7 +282,8 @@ export async function uploadImage(
           projectRoot,
           collection,
           contentId,
-          uniqueFilename
+          uniqueFilename,
+          options.collectionPath
         );
         storagePath = paths.storagePath;
         markdownPath = paths.markdownPath;
@@ -285,6 +291,7 @@ export async function uploadImage(
       }
     }
 
+    assertSafePath(projectRoot, storagePath);
     // Ensure directory exists
     const dir = dirname(storagePath);
     if (!existsSync(dir)) {

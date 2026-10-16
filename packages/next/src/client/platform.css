@@ -1,0 +1,102 @@
+/* Next.js-only layout adaptations; the incumbent desktop world stays intact. */
+@media (max-width: 767px) {
+  .wn-app--next {
+    height: 100dvh;
+  }
+
+  .wn-app--next .wn-header {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 8px;
+    min-height: 0;
+    padding: 8px 12px;
+  }
+
+  .wn-app--next .wn-header-brand > svg {
+    width: 40px;
+    height: 40px;
+  }
+
+  .wn-app--next .wn-header-tagline {
+    font-size: 12px;
+  }
+
+  .wn-app--next .wn-toolbar {
+    flex-wrap: wrap;
+    gap: 2px;
+    padding: 4px;
+  }
+
+  .wn-app--next .wn-toolbar-btn {
+    width: 44px;
+    height: 44px;
+    flex-shrink: 0;
+  }
+
+  .wn-app--next .wn-toolbar-separator {
+    display: none;
+  }
+
+  .wn-app--next .wn-content-bar {
+    flex-wrap: wrap;
+    gap: 8px;
+    padding: 8px 12px;
+  }
+
+  .wn-app--next .wn-content-bar-left {
+    flex-basis: 100%;
+  }
+
+  .wn-app--next .wn-content-bar-right {
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  .wn-app--next .wn-main-layout {
+    position: relative;
+    min-height: 0;
+  }
+
+  .wn-app--next .wn-main-content {
+    min-width: 0;
+    width: 100%;
+  }
+
+  .wn-app--next .wn-sidebar,
+  .wn-app--next .wn-frontmatter-panel {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    z-index: 40;
+    max-width: 90vw;
+  }
+
+  .wn-app--next .wn-sidebar {
+    left: 0;
+  }
+
+  .wn-app--next .wn-frontmatter-panel {
+    right: 0;
+  }
+
+  .wn-app--next .wn-sidebar--closed,
+  .wn-app--next .wn-frontmatter-panel--closed {
+    visibility: hidden;
+    pointer-events: none;
+  }
+
+  .wn-app--next .wn-sidebar-close,
+  .wn-app--next .wn-frontmatter-close {
+    width: 44px;
+    height: 44px;
+  }
+
+  .wn-app--next .wn-editor-content {
+    padding: 8px;
+  }
+
+  .wn-app--next .mdxeditor [role="toolbar"] {
+    max-width: 100%;
+    flex-wrap: wrap;
+  }
+}

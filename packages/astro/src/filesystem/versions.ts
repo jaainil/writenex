@@ -21,6 +21,7 @@
  * @see {@link VersionManifest} - Manifest structure type
  */
 
+import { assertSafePath } from "./safe-path";
 import { existsSync } from "node:fs";
 import {
   mkdir,
@@ -250,7 +251,9 @@ export function getVersionStoragePath(
   contentId: string,
   config: Required<VersionHistoryConfig>
 ): string {
-  return join(projectRoot, config.storagePath, collection, contentId);
+  const path = join(projectRoot, config.storagePath, collection, contentId);
+  assertSafePath(projectRoot, path);
+  return path;
 }
 
 /**
@@ -264,7 +267,9 @@ export function getVersionFilePath(
   storagePath: string,
   versionId: string
 ): string {
-  return join(storagePath, `${versionId}.md`);
+  const path = join(storagePath, `${versionId}.md`);
+  assertSafePath(storagePath, path);
+  return path;
 }
 
 /**
@@ -274,7 +279,9 @@ export function getVersionFilePath(
  * @returns Absolute path to manifest file
  */
 export function getManifestPath(storagePath: string): string {
-  return join(storagePath, "manifest.json");
+  const path = join(storagePath, "manifest.json");
+  assertSafePath(storagePath, path);
+  return path;
 }
 
 /**
@@ -566,9 +573,8 @@ export async function recoverManifest(
 
     for (const file of versionFiles) {
       const versionId = basename(file, ".md");
-      const filePath = join(storagePath, file);
-
       try {
+        const filePath = getVersionFilePath(storagePath, versionId);
         const content = await readFile(filePath, "utf-8");
         const stats = await stat(filePath);
         const timestamp = parseVersionId(versionId);

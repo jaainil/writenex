@@ -43,6 +43,20 @@ export default defineConfig({
       {
         resolve: {
           alias: {
+            "@": fileURLToPath(
+              new URL("./packages/astro/src/", import.meta.url)
+            ),
+          },
+        },
+        test: {
+          name: "next",
+          include: ["packages/next/tests/**/*.test.ts"],
+          environment: "node",
+        },
+      },
+      {
+        resolve: {
+          alias: {
             "@": fileURLToPath(new URL("./apps/writenex/", import.meta.url)),
           },
         },

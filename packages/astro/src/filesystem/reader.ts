@@ -24,6 +24,7 @@ import {
   resolve,
 } from "node:path";
 import matter from "gray-matter";
+import { assertSafePath } from "./safe-path";
 import type { ContentItem, ContentSummary } from "@/types";
 
 /**
@@ -88,19 +89,12 @@ export function extractSlug(filePath: string, collectionPath: string): string {
   const filename = basename(relativePath);
   const ext = extname(filename);
 
-  // Handle index files (folder-based content)
-  // On Windows, path.relative() uses backslashes — normalise to forward slashes
-  // so the split works on both platforms.
+  const normalized = relativePath.replace(/\\/g, "/");
   if (filename === "index.md" || filename === "index.mdx") {
-    const parts = relativePath.replace(/\\/g, "/").split("/");
-    if (parts.length >= 2) {
-      const slug = parts[parts.length - 2];
-      if (slug) return slug;
-    }
+    const directory = normalized.slice(0, -(filename.length + 1));
+    if (directory) return directory;
   }
-
-  // Remove extension to get slug
-  return filename.slice(0, -ext.length);
+  return normalized.slice(0, -ext.length);
 }
 
 /**
@@ -184,6 +178,8 @@ export async function readContentFile(
         error: `File not found: ${filePath}`,
       };
     }
+
+    assertSafePath(collectionPath, filePath);
 
     // Read file content and stats in parallel
     const [raw, stats] = await Promise.all([
@@ -445,6 +441,11 @@ export function getContentFilePath(
       return null;
     }
 
+    try {
+      assertSafePath(resolvedCollectionPath, resolvedFilePath);
+    } catch {
+      return null;
+    }
     return existsSync(resolvedFilePath) ? resolvedFilePath : null;
   };
 

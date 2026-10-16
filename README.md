@@ -12,6 +12,7 @@ This major release includes significant improvements and breaking changes for be
 | ------------------------------------ | -------------------------------------------------------------------- |
 | [Writenex Editor](./apps/writenex/)  | WYSIWYG Markdown editor that works offline and keeps your data local |
 | [@imjp/writenex-astro](./packages/astro/) | WYSIWYG Markdown editor for Astro Content Collections — includes an optional [Remote CMS](./packages/astro/docs/remote-cms.md) for editing content on your live site |
+| [@imjp/writenex-next](./packages/next/) | Visual Markdown/MDX editor for Next.js App Router projects, with filesystem saves, images, and version history |
 
 ## Project Structure
 
@@ -23,6 +24,7 @@ writenex/
 │
 ├── packages/
 │   ├── astro/                 # @imjp/writenex-astro - Astro integration
+│   ├── next/                  # @imjp/writenex-next - Next.js integration
 │   └── config/                # Shared configurations
 │       ├── typescript/        # @writenex/tsconfig
 │       └── eslint/            # @writenex/eslint-config
@@ -86,6 +88,10 @@ vp run build:writenex
 
 # @imjp/writenex-astro
 vp -C packages/astro pack
+
+# @imjp/writenex-next
+vp run build:next
+vp run test:next-consumer
 ```
 
 `vp dev` and `vp build` are built-in Vite commands. This workspace preserves Next.js through `vp run dev` and `vp run build`. Run `vp check` for formatting, lint, and type checks, and `vp run test:consumer` to check the library exports and declarations. Biome remains available through `vp run lint:biome` for the existing project rules.

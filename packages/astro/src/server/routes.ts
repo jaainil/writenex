@@ -45,7 +45,10 @@ import {
   WritenexErrorCode,
   wrapError,
 } from "@/core/errors";
-import { discoverCollections, mergeCollections } from "@/discovery/collections";
+import {
+  discoverProjectCollections,
+  mergeCollections,
+} from "@/discovery/collections";
 import {
   discoverContentImages,
   isValidImageFile,
@@ -69,6 +72,7 @@ import {
 } from "@/filesystem/writer";
 import type { VersionHistoryConfig } from "@/types";
 import { getCache } from "./cache";
+import { assertSafePath } from "@/filesystem/safe-path";
 import type { MiddlewareContext } from "./middleware";
 import {
   parseJsonBody,
@@ -77,6 +81,38 @@ import {
   sendJson,
   sendWritenexError,
 } from "./middleware";
+
+/** Resolve the actual configured/discovered directory, not a framework convention. */
+async function resolveCollectionPath(
+  context: MiddlewareContext,
+  name: string
+): Promise<string> {
+  const configured = context.config.collections.find(
+    (collection) => collection.name === name
+  );
+  if (configured) {
+    const path = resolve(context.projectRoot, configured.path);
+    assertSafePath(context.projectRoot, path);
+    return path;
+  }
+  const cache = context.cache ?? getCache();
+  let collections = cache.getCollections();
+  if (!collections) {
+    collections = mergeCollections(
+      await discoverProjectCollections(
+        context.projectRoot,
+        context.contentDirs ?? ["src/content"]
+      ),
+      context.config.collections
+    );
+    cache.setCollections(collections);
+  }
+  const collection = collections.find((collection) => collection.name === name);
+  if (!collection) throw new CollectionNotFoundError(name);
+  const path = resolve(context.projectRoot, collection.path);
+  assertSafePath(context.projectRoot, path);
+  return path;
+}
 
 /**
  * API route handler function type
@@ -115,7 +151,10 @@ export function createApiRouter(
     const pathWithoutQuery = path.split("?")[0] ?? path;
 
     // Parse route segments
-    const segments = pathWithoutQuery.split("/").filter(Boolean);
+    const segments = pathWithoutQuery
+      .split("/")
+      .filter(Boolean)
+      .map((segment) => decodeURIComponent(segment));
     const params: RouteParams = { query };
 
     // Route: /auth/login | /auth/logout | /auth/session
@@ -434,7 +473,7 @@ const handleGetCollections: RouteHandler = async (
   context
 ) => {
   const { config, projectRoot } = context;
-  const cache = getCache();
+  const cache = context.cache ?? getCache();
 
   try {
     // Try to get from cache first
@@ -442,7 +481,10 @@ const handleGetCollections: RouteHandler = async (
 
     if (!collections) {
       // Cache miss - discover and merge collections
-      const discovered = await discoverCollections(projectRoot);
+      const discovered = await discoverProjectCollections(
+        projectRoot,
+        context.contentDirs ?? ["src/content"]
+      );
       collections = mergeCollections(discovered, config.collections);
 
       // Store in cache
@@ -482,10 +524,10 @@ const handleListContent: RouteHandler = async (_req, res, params, context) => {
     );
   }
 
-  const cache = getCache();
+  const cache = context.cache ?? getCache();
 
   try {
-    const collectionPath = join(projectRoot, "src/content", collection);
+    const collectionPath = await resolveCollectionPath(context, collection);
 
     // Check if collection exists
     if (!existsSync(collectionPath)) {
@@ -545,7 +587,7 @@ const handleGetContent: RouteHandler = async (_req, res, params, context) => {
   }
 
   try {
-    const collectionPath = join(projectRoot, "src/content", collection);
+    const collectionPath = await resolveCollectionPath(context, collection);
     const filePath = getContentFilePath(collectionPath, id);
 
     if (!filePath) {
@@ -602,8 +644,8 @@ const handleCreateContent: RouteHandler = async (req, res, params, context) => {
       return sendError(res, "Frontmatter is required", 400);
     }
 
-    const collectionPath = join(projectRoot, "src/content", collection);
-    const cache = getCache();
+    const collectionPath = await resolveCollectionPath(context, collection);
+    const cache = context.cache ?? getCache();
 
     // Get the file pattern for this collection
     let filePattern: string | undefined;
@@ -618,7 +660,10 @@ const handleCreateContent: RouteHandler = async (req, res, params, context) => {
       // Otherwise, get the detected pattern from discovered collections
       let collections = cache.getCollections();
       if (!collections) {
-        const discovered = await discoverCollections(projectRoot);
+        const discovered = await discoverProjectCollections(
+          projectRoot,
+          context.contentDirs ?? ["src/content"]
+        );
         collections = mergeCollections(discovered, config.collections);
         cache.setCollections(collections);
       }
@@ -716,7 +761,7 @@ const handleUpdateContent: RouteHandler = async (req, res, params, context) => {
       forceOverwrite?: boolean;
     };
 
-    const collectionPath = join(projectRoot, "src/content", collection);
+    const collectionPath = await resolveCollectionPath(context, collection);
     const filePath = getContentFilePath(collectionPath, id);
 
     if (!filePath) {
@@ -748,7 +793,7 @@ const handleUpdateContent: RouteHandler = async (req, res, params, context) => {
     }
 
     // Invalidate cache for this collection (content modified)
-    const cache = getCache();
+    const cache = context.cache ?? getCache();
     cache.handleFileChange("change", collection);
 
     sendJson(res, {
@@ -782,7 +827,7 @@ const handleDeleteContent: RouteHandler = async (
   }
 
   try {
-    const collectionPath = join(projectRoot, "src/content", collection);
+    const collectionPath = await resolveCollectionPath(context, collection);
     const filePath = getContentFilePath(collectionPath, id);
 
     if (!filePath) {
@@ -800,7 +845,7 @@ const handleDeleteContent: RouteHandler = async (
     }
 
     // Invalidate cache for this collection (content removed)
-    const cache = getCache();
+    const cache = context.cache ?? getCache();
     cache.handleFileChange("unlink", collection);
 
     sendJson(res, {
@@ -878,7 +923,10 @@ const handleImageUpload: RouteHandler = async (req, res, _params, context) => {
       collection: fields.collection,
       contentId: fields.contentId,
       projectRoot,
-      config: config.images,
+      collectionPath: await resolveCollectionPath(context, fields.collection),
+      config:
+        config.collections.find((c) => c.name === fields.collection)?.images ??
+        config.images,
     });
 
     if (!result.success) {
@@ -924,16 +972,22 @@ const handleImageDiscovery: RouteHandler = async (
     return sendError(res, "Collection and content ID required", 400);
   }
 
-  const cache = getCache();
+  const cache = context.cache ?? getCache();
 
   try {
-    const collectionPath = join(projectRoot, "src/content", collection);
+    const collectionPath = await resolveCollectionPath(context, collection);
 
     // Check if collection exists by discovering collections
     let collections = cache.getCollections();
     if (!collections) {
       // Cache miss - discover collections
-      collections = await discoverCollections(projectRoot);
+      collections = mergeCollections(
+        await discoverProjectCollections(
+          projectRoot,
+          context.contentDirs ?? ["src/content"]
+        ),
+        context.config.collections
+      );
       cache.setCollections(collections);
     }
 
@@ -1016,7 +1070,7 @@ const handleServeImage = async (
   }
 
   try {
-    const collectionPath = join(projectRoot, "src/content", collection);
+    const collectionPath = await resolveCollectionPath(context, collection);
 
     // Check if content exists
     const contentFilePath = getContentFilePath(collectionPath, contentId);
@@ -1061,6 +1115,7 @@ const handleServeImage = async (
     }
 
     // Get file stats
+    assertSafePath(collectionPath, normalizedPath);
     const stats = statSync(normalizedPath);
     if (!stats.isFile()) {
       return sendWritenexError(
@@ -1242,7 +1297,7 @@ const handleCreateVersion: RouteHandler = async (req, res, params, context) => {
         : undefined;
 
     // Get current content
-    const collectionPath = join(projectRoot, "src/content", collection);
+    const collectionPath = await resolveCollectionPath(context, collection);
     const filePath = getContentFilePath(collectionPath, id);
 
     if (!filePath) {
@@ -1319,7 +1374,7 @@ const handleRestoreVersion: RouteHandler = async (
     const versionConfig = getResolvedVersionConfig(config.versionHistory);
 
     // Get content file path
-    const collectionPath = join(projectRoot, "src/content", collection);
+    const collectionPath = await resolveCollectionPath(context, collection);
     const filePath = getContentFilePath(collectionPath, id);
 
     if (!filePath) {
@@ -1349,7 +1404,7 @@ const handleRestoreVersion: RouteHandler = async (
     }
 
     // Invalidate cache for this collection (content modified)
-    const cache = getCache();
+    const cache = context.cache ?? getCache();
     cache.handleFileChange("change", collection);
 
     sendJson(res, {
@@ -1414,7 +1469,7 @@ const handleGetVersionDiff: RouteHandler = async (
     }
 
     // Get current content
-    const collectionPath = join(projectRoot, "src/content", collection);
+    const collectionPath = await resolveCollectionPath(context, collection);
     const filePath = getContentFilePath(collectionPath, id);
 
     if (!filePath) {

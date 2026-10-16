@@ -8,6 +8,7 @@
  * @module @writenex/astro/client/hooks/useApi
  */
 
+import { apiRequest } from "../utils/apiRequest";
 import { useCallback, useMemo, useState } from "react";
 
 /**
@@ -128,7 +129,7 @@ export function createApiClient(config: ApiConfig) {
      * Fetch configuration
      */
     async getConfig(): Promise<WritenexClientConfig> {
-      const response = await fetch(`${apiBase}/config`);
+      const response = await apiRequest(`${apiBase}/config`);
       await ensureAuthorized(response, basePath);
       if (!response.ok) {
         throw new Error("Failed to fetch config");
@@ -140,7 +141,7 @@ export function createApiClient(config: ApiConfig) {
      * Fetch config file path for opening in editor
      */
     async getConfigPath(): Promise<ConfigPathResponse> {
-      const response = await fetch(`${apiBase}/config/path`);
+      const response = await apiRequest(`${apiBase}/config/path`);
       await ensureAuthorized(response, basePath);
       if (!response.ok) {
         throw new Error("Failed to fetch config path");
@@ -152,7 +153,7 @@ export function createApiClient(config: ApiConfig) {
      * Fetch all collections
      */
     async getCollections(): Promise<Collection[]> {
-      const response = await fetch(`${apiBase}/collections`);
+      const response = await apiRequest(`${apiBase}/collections`);
       await ensureAuthorized(response, basePath);
       if (!response.ok) {
         throw new Error("Failed to fetch collections");
@@ -177,8 +178,8 @@ export function createApiClient(config: ApiConfig) {
       if (options?.sort) params.set("sort", options.sort);
       if (options?.order) params.set("order", options.order);
 
-      const url = `${apiBase}/content/${collection}${params.toString() ? `?${params}` : ""}`;
-      const response = await fetch(url);
+      const url = `${apiBase}/content/${encodeURIComponent(collection)}${params.toString() ? `?${params}` : ""}`;
+      const response = await apiRequest(url);
       await ensureAuthorized(response, basePath);
       if (!response.ok) {
         throw new Error("Failed to fetch content list");
@@ -191,7 +192,9 @@ export function createApiClient(config: ApiConfig) {
      * Fetch single content item
      */
     async getContent(collection: string, id: string): Promise<ContentItem> {
-      const response = await fetch(`${apiBase}/content/${collection}/${id}`);
+      const response = await apiRequest(
+        `${apiBase}/content/${encodeURIComponent(collection)}/${encodeURIComponent(id)}`
+      );
       await ensureAuthorized(response, basePath);
       if (!response.ok) {
         throw new Error("Failed to fetch content");
@@ -215,11 +218,14 @@ export function createApiClient(config: ApiConfig) {
       path?: string;
       error?: string;
     }> {
-      const response = await fetch(`${apiBase}/content/${collection}`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data),
-      });
+      const response = await apiRequest(
+        `${apiBase}/content/${encodeURIComponent(collection)}`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(data),
+        }
+      );
       await ensureAuthorized(response, basePath);
       return response.json();
     },
@@ -232,11 +238,14 @@ export function createApiClient(config: ApiConfig) {
       id: string,
       data: { frontmatter?: Record<string, unknown>; body?: string }
     ): Promise<{ success: boolean; error?: string }> {
-      const response = await fetch(`${apiBase}/content/${collection}/${id}`, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data),
-      });
+      const response = await apiRequest(
+        `${apiBase}/content/${encodeURIComponent(collection)}/${encodeURIComponent(id)}`,
+        {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(data),
+        }
+      );
       await ensureAuthorized(response, basePath);
       return response.json();
     },
@@ -248,9 +257,12 @@ export function createApiClient(config: ApiConfig) {
       collection: string,
       id: string
     ): Promise<{ success: boolean; error?: string }> {
-      const response = await fetch(`${apiBase}/content/${collection}/${id}`, {
-        method: "DELETE",
-      });
+      const response = await apiRequest(
+        `${apiBase}/content/${encodeURIComponent(collection)}/${encodeURIComponent(id)}`,
+        {
+          method: "DELETE",
+        }
+      );
       await ensureAuthorized(response, basePath);
       return response.json();
     },
@@ -273,7 +285,7 @@ export function createApiClient(config: ApiConfig) {
       formData.append("collection", collection);
       formData.append("contentId", contentId);
 
-      const response = await fetch(`${apiBase}/images`, {
+      const response = await apiRequest(`${apiBase}/images`, {
         method: "POST",
         body: formData,
       });
@@ -285,7 +297,7 @@ export function createApiClient(config: ApiConfig) {
      * Check the current remote CMS session
      */
     async getSession(): Promise<SessionResponse> {
-      const response = await fetch(`${apiBase}/auth/session`);
+      const response = await apiRequest(`${apiBase}/auth/session`);
       if (!response.ok) {
         return { authenticated: false };
       }
@@ -299,7 +311,7 @@ export function createApiClient(config: ApiConfig) {
       username: string,
       password: string
     ): Promise<{ success: boolean; error?: string }> {
-      const response = await fetch(`${apiBase}/auth/login`, {
+      const response = await apiRequest(`${apiBase}/auth/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         credentials: "same-origin",
@@ -319,7 +331,7 @@ export function createApiClient(config: ApiConfig) {
      * Sign out of the remote CMS
      */
     async logout(): Promise<void> {
-      await fetch(`${apiBase}/auth/logout`, {
+      await apiRequest(`${apiBase}/auth/logout`, {
         method: "POST",
         credentials: "same-origin",
       });

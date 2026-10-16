@@ -144,7 +144,9 @@ export async function serveAsset(
 ): Promise<void> {
   // Determine asset location
   // Assets are always in dist/client (pre-bundled by tsup)
-  const clientDistRoot = resolve(PACKAGE_ROOT, "dist", "client");
+  const clientDistRoot = resolve(
+    _context.clientDistPath ?? join(PACKAGE_ROOT, "dist", "client")
+  );
   const filePath = resolve(clientDistRoot, assetPath);
 
   if (!isPathInside(clientDistRoot, filePath)) {
@@ -192,7 +194,11 @@ export async function serveAsset(
  * @param basePath - Base path for the editor
  * @returns HTML string
  */
-export function generateEditorHtml(basePath: string): string {
+export function generateEditorHtml(
+  basePath: string,
+  platform: "astro" | "next" = "astro",
+  trailingSlash = false
+): string {
   return `<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -204,6 +210,7 @@ export function generateEditorHtml(basePath: string): string {
   <!-- Editor styles -->
   <link rel="stylesheet" href="${basePath}/assets/index.css">
   <link rel="stylesheet" href="${basePath}/assets/styles.css">
+  ${platform === "next" ? `<link rel="stylesheet" href="${basePath}/assets/platform.css">` : ""}
   
   <style>
     /* Critical CSS for initial load */
@@ -265,6 +272,8 @@ export function generateEditorHtml(basePath: string): string {
   <!-- Configuration for the client app -->
   <script>
     window.__WRITENEX_CONFIG__ = {
+      platform: "${platform}",
+      trailingSlash: ${trailingSlash},
       basePath: "${basePath}",
       apiBase: "${basePath}/api",
     };

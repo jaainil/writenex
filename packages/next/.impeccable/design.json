@@ -1,0 +1,547 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-10-16T14:49:05.502516+00:00",
+  "title": "Design System: Writenex Next.js",
+  "extensions": {
+    "colorMeta": {
+      "brand-400": {
+        "role": "primary",
+        "displayName": "Light Writing Blue",
+        "tonalRamp": [
+          "oklch(15% 0.19727 269.64)",
+          "oklch(26% 0.19727 269.64)",
+          "oklch(38% 0.19727 269.64)",
+          "oklch(49% 0.19727 269.64)",
+          "oklch(61% 0.19727 269.64)",
+          "oklch(72% 0.19727 269.64)",
+          "oklch(84% 0.19727 269.64)",
+          "oklch(95% 0.19727 269.64)"
+        ]
+      },
+      "brand-500": {
+        "role": "primary",
+        "displayName": "Writing Blue",
+        "tonalRamp": [
+          "oklch(15% 0.24378 266.55)",
+          "oklch(26% 0.24378 266.55)",
+          "oklch(38% 0.24378 266.55)",
+          "oklch(49% 0.24378 266.55)",
+          "oklch(61% 0.24378 266.55)",
+          "oklch(72% 0.24378 266.55)",
+          "oklch(84% 0.24378 266.55)",
+          "oklch(95% 0.24378 266.55)"
+        ]
+      },
+      "brand-600": {
+        "role": "primary",
+        "displayName": "Deep Writing Blue",
+        "tonalRamp": [
+          "oklch(15% 0.19912 266.35)",
+          "oklch(26% 0.19912 266.35)",
+          "oklch(38% 0.19912 266.35)",
+          "oklch(49% 0.19912 266.35)",
+          "oklch(61% 0.19912 266.35)",
+          "oklch(72% 0.19912 266.35)",
+          "oklch(84% 0.19912 266.35)",
+          "oklch(95% 0.19912 266.35)"
+        ]
+      },
+      "zinc-50": {
+        "role": "neutral",
+        "displayName": "Zinc 50",
+        "tonalRamp": [
+          "oklch(15% 0.00000 89.88)",
+          "oklch(26% 0.00000 89.88)",
+          "oklch(38% 0.00000 89.88)",
+          "oklch(49% 0.00000 89.88)",
+          "oklch(61% 0.00000 89.88)",
+          "oklch(72% 0.00000 89.88)",
+          "oklch(84% 0.00000 89.88)",
+          "oklch(95% 0.00000 89.88)"
+        ]
+      },
+      "zinc-100": {
+        "role": "neutral",
+        "displayName": "Zinc 100",
+        "tonalRamp": [
+          "oklch(15% 0.00133 286.38)",
+          "oklch(26% 0.00133 286.38)",
+          "oklch(38% 0.00133 286.38)",
+          "oklch(49% 0.00133 286.38)",
+          "oklch(61% 0.00133 286.38)",
+          "oklch(72% 0.00133 286.38)",
+          "oklch(84% 0.00133 286.38)",
+          "oklch(95% 0.00133 286.38)"
+        ]
+      },
+      "zinc-150": {
+        "role": "neutral",
+        "displayName": "Zinc 150",
+        "tonalRamp": [
+          "oklch(15% 0.00401 286.32)",
+          "oklch(26% 0.00401 286.32)",
+          "oklch(38% 0.00401 286.32)",
+          "oklch(49% 0.00401 286.32)",
+          "oklch(61% 0.00401 286.32)",
+          "oklch(72% 0.00401 286.32)",
+          "oklch(84% 0.00401 286.32)",
+          "oklch(95% 0.00401 286.32)"
+        ]
+      },
+      "zinc-200": {
+        "role": "neutral",
+        "displayName": "Zinc 200",
+        "tonalRamp": [
+          "oklch(15% 0.00403 286.32)",
+          "oklch(26% 0.00403 286.32)",
+          "oklch(38% 0.00403 286.32)",
+          "oklch(49% 0.00403 286.32)",
+          "oklch(61% 0.00403 286.32)",
+          "oklch(72% 0.00403 286.32)",
+          "oklch(84% 0.00403 286.32)",
+          "oklch(95% 0.00403 286.32)"
+        ]
+      },
+      "zinc-300": {
+        "role": "neutral",
+        "displayName": "Zinc 300",
+        "tonalRamp": [
+          "oklch(15% 0.00545 286.29)",
+          "oklch(26% 0.00545 286.29)",
+          "oklch(38% 0.00545 286.29)",
+          "oklch(49% 0.00545 286.29)",
+          "oklch(61% 0.00545 286.29)",
+          "oklch(72% 0.00545 286.29)",
+          "oklch(84% 0.00545 286.29)",
+          "oklch(95% 0.00545 286.29)"
+        ]
+      },
+      "zinc-400": {
+        "role": "neutral",
+        "displayName": "Zinc 400",
+        "tonalRamp": [
+          "oklch(15% 0.01294 286.07)",
+          "oklch(26% 0.01294 286.07)",
+          "oklch(38% 0.01294 286.07)",
+          "oklch(49% 0.01294 286.07)",
+          "oklch(61% 0.01294 286.07)",
+          "oklch(72% 0.01294 286.07)",
+          "oklch(84% 0.01294 286.07)",
+          "oklch(95% 0.01294 286.07)"
+        ]
+      },
+      "zinc-500": {
+        "role": "neutral",
+        "displayName": "Zinc 500",
+        "tonalRamp": [
+          "oklch(15% 0.01381 285.94)",
+          "oklch(26% 0.01381 285.94)",
+          "oklch(38% 0.01381 285.94)",
+          "oklch(49% 0.01381 285.94)",
+          "oklch(61% 0.01381 285.94)",
+          "oklch(72% 0.01381 285.94)",
+          "oklch(84% 0.01381 285.94)",
+          "oklch(95% 0.01381 285.94)"
+        ]
+      },
+      "zinc-600": {
+        "role": "neutral",
+        "displayName": "Zinc 600",
+        "tonalRamp": [
+          "oklch(15% 0.01462 285.79)",
+          "oklch(26% 0.01462 285.79)",
+          "oklch(38% 0.01462 285.79)",
+          "oklch(49% 0.01462 285.79)",
+          "oklch(61% 0.01462 285.79)",
+          "oklch(72% 0.01462 285.79)",
+          "oklch(84% 0.01462 285.79)",
+          "oklch(95% 0.01462 285.79)"
+        ]
+      },
+      "zinc-700": {
+        "role": "neutral",
+        "displayName": "Zinc 700",
+        "tonalRamp": [
+          "oklch(15% 0.01188 285.81)",
+          "oklch(26% 0.01188 285.81)",
+          "oklch(38% 0.01188 285.81)",
+          "oklch(49% 0.01188 285.81)",
+          "oklch(61% 0.01188 285.81)",
+          "oklch(72% 0.01188 285.81)",
+          "oklch(84% 0.01188 285.81)",
+          "oklch(95% 0.01188 285.81)"
+        ]
+      },
+      "zinc-800": {
+        "role": "neutral",
+        "displayName": "Zinc 800",
+        "tonalRamp": [
+          "oklch(15% 0.00548 286.03)",
+          "oklch(26% 0.00548 286.03)",
+          "oklch(38% 0.00548 286.03)",
+          "oklch(49% 0.00548 286.03)",
+          "oklch(61% 0.00548 286.03)",
+          "oklch(72% 0.00548 286.03)",
+          "oklch(84% 0.00548 286.03)",
+          "oklch(95% 0.00548 286.03)"
+        ]
+      },
+      "zinc-850": {
+        "role": "neutral",
+        "displayName": "Zinc 850",
+        "tonalRamp": [
+          "oklch(15% 0.00756 285.82)",
+          "oklch(26% 0.00756 285.82)",
+          "oklch(38% 0.00756 285.82)",
+          "oklch(49% 0.00756 285.82)",
+          "oklch(61% 0.00756 285.82)",
+          "oklch(72% 0.00756 285.82)",
+          "oklch(84% 0.00756 285.82)",
+          "oklch(95% 0.00756 285.82)"
+        ]
+      },
+      "zinc-900": {
+        "role": "neutral",
+        "displayName": "Zinc 900",
+        "tonalRamp": [
+          "oklch(15% 0.00586 285.89)",
+          "oklch(26% 0.00586 285.89)",
+          "oklch(38% 0.00586 285.89)",
+          "oklch(49% 0.00586 285.89)",
+          "oklch(61% 0.00586 285.89)",
+          "oklch(72% 0.00586 285.89)",
+          "oklch(84% 0.00586 285.89)",
+          "oklch(95% 0.00586 285.89)"
+        ]
+      },
+      "zinc-950": {
+        "role": "neutral",
+        "displayName": "Zinc 950",
+        "tonalRamp": [
+          "oklch(15% 0.00439 285.82)",
+          "oklch(26% 0.00439 285.82)",
+          "oklch(38% 0.00439 285.82)",
+          "oklch(49% 0.00439 285.82)",
+          "oklch(61% 0.00439 285.82)",
+          "oklch(72% 0.00439 285.82)",
+          "oklch(84% 0.00439 285.82)",
+          "oklch(95% 0.00439 285.82)"
+        ]
+      },
+      "success-400": {
+        "role": "semantic",
+        "displayName": "Success 400",
+        "tonalRamp": [
+          "oklch(15% 0.15349 163.22)",
+          "oklch(26% 0.15349 163.22)",
+          "oklch(38% 0.15349 163.22)",
+          "oklch(49% 0.15349 163.22)",
+          "oklch(61% 0.15349 163.22)",
+          "oklch(72% 0.15349 163.22)",
+          "oklch(84% 0.15349 163.22)",
+          "oklch(95% 0.15349 163.22)"
+        ]
+      },
+      "success-500": {
+        "role": "semantic",
+        "displayName": "Success 500",
+        "tonalRamp": [
+          "oklch(15% 0.14907 162.48)",
+          "oklch(26% 0.14907 162.48)",
+          "oklch(38% 0.14907 162.48)",
+          "oklch(49% 0.14907 162.48)",
+          "oklch(61% 0.14907 162.48)",
+          "oklch(72% 0.14907 162.48)",
+          "oklch(84% 0.14907 162.48)",
+          "oklch(95% 0.14907 162.48)"
+        ]
+      },
+      "warning-400": {
+        "role": "semantic",
+        "displayName": "Warning 400",
+        "tonalRamp": [
+          "oklch(15% 0.16442 84.43)",
+          "oklch(26% 0.16442 84.43)",
+          "oklch(38% 0.16442 84.43)",
+          "oklch(49% 0.16442 84.43)",
+          "oklch(61% 0.16442 84.43)",
+          "oklch(72% 0.16442 84.43)",
+          "oklch(84% 0.16442 84.43)",
+          "oklch(95% 0.16442 84.43)"
+        ]
+      },
+      "warning-500": {
+        "role": "semantic",
+        "displayName": "Warning 500",
+        "tonalRamp": [
+          "oklch(15% 0.16466 70.08)",
+          "oklch(26% 0.16466 70.08)",
+          "oklch(38% 0.16466 70.08)",
+          "oklch(49% 0.16466 70.08)",
+          "oklch(61% 0.16466 70.08)",
+          "oklch(72% 0.16466 70.08)",
+          "oklch(84% 0.16466 70.08)",
+          "oklch(95% 0.16466 70.08)"
+        ]
+      },
+      "error-400": {
+        "role": "semantic",
+        "displayName": "Error 400",
+        "tonalRamp": [
+          "oklch(15% 0.16615 22.22)",
+          "oklch(26% 0.16615 22.22)",
+          "oklch(38% 0.16615 22.22)",
+          "oklch(49% 0.16615 22.22)",
+          "oklch(61% 0.16615 22.22)",
+          "oklch(72% 0.16615 22.22)",
+          "oklch(84% 0.16615 22.22)",
+          "oklch(95% 0.16615 22.22)"
+        ]
+      },
+      "error-500": {
+        "role": "semantic",
+        "displayName": "Error 500",
+        "tonalRamp": [
+          "oklch(15% 0.20785 25.33)",
+          "oklch(26% 0.20785 25.33)",
+          "oklch(38% 0.20785 25.33)",
+          "oklch(49% 0.20785 25.33)",
+          "oklch(61% 0.20785 25.33)",
+          "oklch(72% 0.20785 25.33)",
+          "oklch(84% 0.20785 25.33)",
+          "oklch(95% 0.20785 25.33)"
+        ]
+      },
+      "error-600": {
+        "role": "semantic",
+        "displayName": "Error 600",
+        "tonalRamp": [
+          "oklch(15% 0.21516 27.33)",
+          "oklch(26% 0.21516 27.33)",
+          "oklch(38% 0.21516 27.33)",
+          "oklch(49% 0.21516 27.33)",
+          "oklch(61% 0.21516 27.33)",
+          "oklch(72% 0.21516 27.33)",
+          "oklch(84% 0.21516 27.33)",
+          "oklch(95% 0.21516 27.33)"
+        ]
+      },
+      "info-400": {
+        "role": "semantic",
+        "displayName": "Info 400",
+        "tonalRamp": [
+          "oklch(15% 0.15917 293.54)",
+          "oklch(26% 0.15917 293.54)",
+          "oklch(38% 0.15917 293.54)",
+          "oklch(49% 0.15917 293.54)",
+          "oklch(61% 0.15917 293.54)",
+          "oklch(72% 0.15917 293.54)",
+          "oklch(84% 0.15917 293.54)",
+          "oklch(95% 0.15917 293.54)"
+        ]
+      },
+      "info-500": {
+        "role": "semantic",
+        "displayName": "Info 500",
+        "tonalRamp": [
+          "oklch(15% 0.21892 292.72)",
+          "oklch(26% 0.21892 292.72)",
+          "oklch(38% 0.21892 292.72)",
+          "oklch(49% 0.21892 292.72)",
+          "oklch(61% 0.21892 292.72)",
+          "oklch(72% 0.21892 292.72)",
+          "oklch(84% 0.21892 292.72)",
+          "oklch(95% 0.21892 292.72)"
+        ]
+      },
+      "white": {
+        "role": "neutral",
+        "displayName": "White",
+        "tonalRamp": [
+          "oklch(15% 0.00000 89.88)",
+          "oklch(26% 0.00000 89.88)",
+          "oklch(38% 0.00000 89.88)",
+          "oklch(49% 0.00000 89.88)",
+          "oklch(61% 0.00000 89.88)",
+          "oklch(72% 0.00000 89.88)",
+          "oklch(84% 0.00000 89.88)",
+          "oklch(95% 0.00000 89.88)"
+        ]
+      },
+      "highlight": {
+        "role": "semantic",
+        "displayName": "Highlight",
+        "tonalRamp": [
+          "oklch(15% 0.16568 98.11)",
+          "oklch(26% 0.16568 98.11)",
+          "oklch(38% 0.16568 98.11)",
+          "oklch(49% 0.16568 98.11)",
+          "oklch(61% 0.16568 98.11)",
+          "oklch(72% 0.16568 98.11)",
+          "oklch(84% 0.16568 98.11)",
+          "oklch(95% 0.16568 98.11)"
+        ]
+      }
+    },
+    "typographyMeta": {
+      "body": {
+        "displayName": "Body",
+        "purpose": "Observed body typography."
+      },
+      "label": {
+        "displayName": "Label",
+        "purpose": "Observed label typography."
+      },
+      "code": {
+        "displayName": "Code",
+        "purpose": "Observed code typography."
+      },
+      "headline": {
+        "displayName": "Headline",
+        "purpose": "Observed headline typography."
+      },
+      "prose": {
+        "displayName": "Prose",
+        "purpose": "Observed prose typography."
+      },
+      "title": {
+        "displayName": "Title",
+        "purpose": "Observed title typography."
+      },
+      "field": {
+        "displayName": "Field",
+        "purpose": "Observed field typography."
+      }
+    },
+    "shadows": [
+      {
+        "name": "sm",
+        "value": "0 1px 2px var(--wn-overlay-light-10)",
+        "purpose": "Small shadow, dark default."
+      },
+      {
+        "name": "md",
+        "value": "0 4px 12px rgba(0, 0, 0, 0.3)",
+        "purpose": "Menus and floating controls."
+      },
+      {
+        "name": "lg",
+        "value": "0 25px 50px -12px rgba(0, 0, 0, 0.5)",
+        "purpose": "Large overlay elevation."
+      },
+      {
+        "name": "panel",
+        "value": "-4px 0 16px rgba(0, 0, 0, 0.3)",
+        "purpose": "Side-panel elevation."
+      }
+    ],
+    "motion": [
+      {
+        "name": "fast",
+        "value": "150ms",
+        "purpose": "Control state transitions."
+      },
+      {
+        "name": "normal",
+        "value": "200ms",
+        "purpose": "Dialog transitions."
+      },
+      {
+        "name": "slow",
+        "value": "300ms",
+        "purpose": "Collapsible panel widths."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "next-narrow",
+        "value": "767px",
+        "purpose": "Next-only max-width query; below 768px. Shared client primitives are unchanged."
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "Canonical primary button; dark theme specimen.",
+      "html": "<button class=\"ds-button\">Save</button>",
+      "css": ".ds-button{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:0;border-radius:6px;cursor:pointer;font-family:Plus Jakarta Sans, system-ui, -apple-system, Segoe UI, Roboto, Helvetica Neue, Arial, sans-serif;font-size:14px;font-weight:500;line-height:1.25rem;padding:6px 12px;transition:background-color 150ms,color 150ms}.ds-button:disabled{opacity:.5;pointer-events:none}.ds-button{background:var(--wn-brand-500, #335dff);color:var(--wn-white,#ffffff);}.ds-button:hover{background:var(--wn-brand-600,#2a4ecc);}.ds-button:focus-visible{outline:2px solid var(--wn-brand-500,#335dff);outline-offset:2px}"
+    },
+    {
+      "name": "Secondary button",
+      "kind": "button",
+      "refersTo": "button-secondary",
+      "description": "Canonical secondary button; dark theme specimen.",
+      "html": "<button class=\"ds-button\">Save</button>",
+      "css": ".ds-button{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:0;border-radius:6px;cursor:pointer;font-family:Plus Jakarta Sans, system-ui, -apple-system, Segoe UI, Roboto, Helvetica Neue, Arial, sans-serif;font-size:14px;font-weight:500;line-height:1.25rem;padding:6px 12px;transition:background-color 150ms,color 150ms}.ds-button:disabled{opacity:.5;pointer-events:none}.ds-button{background:transparent;color:var(--wn-zinc-300,#d4d4d8);border:1px solid var(--wn-zinc-700,#3f3f46);}.ds-button:hover{background:var(--wn-zinc-800,#27272a);color:var(--wn-zinc-100,#f4f4f5);}.ds-button:focus-visible{outline:2px solid var(--wn-brand-500,#335dff);outline-offset:2px}"
+    },
+    {
+      "name": "Ghost button",
+      "kind": "button",
+      "refersTo": "button-ghost",
+      "description": "Canonical ghost button; dark theme specimen.",
+      "html": "<button class=\"ds-button\">Save</button>",
+      "css": ".ds-button{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:0;border-radius:6px;cursor:pointer;font-family:Plus Jakarta Sans, system-ui, -apple-system, Segoe UI, Roboto, Helvetica Neue, Arial, sans-serif;font-size:14px;font-weight:500;padding:6px 12px;transition:background-color 150ms,color 150ms}.ds-button:disabled{opacity:.5;pointer-events:none}.ds-button{background:transparent;color:var(--wn-zinc-400,#a1a1aa);}.ds-button:hover{background:var(--wn-zinc-800,#27272a);color:var(--wn-zinc-100,#f4f4f5);}.ds-button:focus-visible{outline:2px solid var(--wn-brand-500,#335dff);outline-offset:2px}"
+    },
+    {
+      "name": "Text field",
+      "kind": "input",
+      "refersTo": "input",
+      "description": "Frontmatter field.",
+      "html": "<input class=\"ds-input\" aria-label=\"Document title\" placeholder=\"Document title\">",
+      "css": ".ds-input{padding:8px;border:1px solid rgba(255,255,255,.1);border-radius:6px;background:var(--wn-zinc-950,#09090b);color:var(--wn-zinc-50,#fafafa);font-family:Plus Jakarta Sans, system-ui, -apple-system, Segoe UI, Roboto, Helvetica Neue, Arial, sans-serif;font-size:13px;transition:border-color 150ms}.ds-input:focus{outline:none;border-color:var(--wn-brand-500,#335dff)}.ds-input:disabled{opacity:.5;cursor:not-allowed}"
+    },
+    {
+      "name": "Metadata badge",
+      "kind": "chip",
+      "refersTo": "badge",
+      "description": "Next.js platform metadata, noninteractive; uppercase rendering is inherited.",
+      "html": "<span class=\"ds-badge\">Next.js</span>",
+      "css": ".ds-badge{display:inline-block;font-family:Plus Jakarta Sans, system-ui, -apple-system, Segoe UI, Roboto, Helvetica Neue, Arial, sans-serif;font-size:12px;font-weight:500;letter-spacing:.05em;text-transform:uppercase;padding:4px 8px;border-radius:4px;background:rgba(255,255,255,.1);color:rgba(255,255,255,.5)}"
+    },
+    {
+      "name": "Sidebar navigation",
+      "kind": "nav",
+      "refersTo": "navigation",
+      "description": "Shared collection section specimen. Next narrow explorer is a left overlay, max-width 90vw; selection closes it. React behavior is not simulated.",
+      "html": "<nav class=\"ds-nav\" aria-label=\"Collections\"><strong>Collections</strong><button>Posts</button></nav>",
+      "css": ".ds-nav{width:280px;padding:12px;background:var(--wn-zinc-900,#18181b);color:var(--wn-zinc-50,#fafafa);font-family:Plus Jakarta Sans, system-ui, -apple-system, Segoe UI, Roboto, Helvetica Neue, Arial, sans-serif;font-size:14px;border-right:1px solid rgba(255,255,255,.1)}.ds-nav button{display:block;margin-top:8px;padding:8px 12px;border:0;border-radius:6px;background:transparent;color:rgba(255,255,255,.6);font-size:13px;text-align:left;width:100%;cursor:pointer;transition:all 150ms ease}.ds-nav button:hover{background:rgba(255,255,255,.05);color:var(--wn-zinc-50,#fafafa)}.ds-nav button:focus-visible{outline:2px solid #335dff;outline-offset:2px}.ds-nav strong{font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:.05em;color:rgba(255,255,255,.5)}@media(max-width:767px){.ds-nav{max-width:90vw}}"
+    },
+    {
+      "name": "Panel surface",
+      "kind": "custom",
+      "refersTo": "panel",
+      "description": "Shared frontmatter shell. Next narrow frontmatter starts closed and opens as a right overlay, max-width 90vw. React behavior is not simulated.",
+      "html": "<section class=\"ds-panel\"><strong>Frontmatter</strong><p>Document properties</p></section>",
+      "css": ".ds-panel{width:320px;background:var(--wn-zinc-900,#18181b);color:var(--wn-zinc-50,#fafafa);font-family:Plus Jakarta Sans, system-ui, -apple-system, Segoe UI, Roboto, Helvetica Neue, Arial, sans-serif;font-size:14px;border-left:1px solid rgba(255,255,255,.1)}.ds-panel strong{display:block;padding:8px 12px;border-bottom:1px solid rgba(255,255,255,.1)}.ds-panel p{padding:12px;color:var(--wn-zinc-500,#71717a)}@media(max-width:767px){.ds-panel{max-width:90vw}}"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Quiet Writing Desk",
+    "overview": "A calm, practical writing workspace with compact controls, rounded boundaries, blue accents, and generous room for content. The writing canvas leads; navigation and document tools form a restrained frame around it.\n\nThe Next.js integration inherits the Astro editor\u2019s dark-first shell, collection navigation, frontmatter panel, fluid prose typography, and scoped light-mode overrides. Shared client source is reused through build aliases, while this package ships its own assets and identifies the platform as Next.js. This Operate extension preserves the incumbent visual world; the inherited metaphor and descriptive language remain provisional defaults pending user feedback, rather than newly established brand commitments.",
+    "keyCharacteristics": [
+      "Blue brand accents with zinc interface neutrals.",
+      "Compact rounded controls around an expansive writing surface.",
+      "Explicit hover, focus, disabled, and document-status treatments."
+    ],
+    "rules": [
+      {
+        "name": "The Semantic Color Rule",
+        "body": "Keep status meaning consistent across indicators and destructive actions.",
+        "section": "colors"
+      }
+    ],
+    "dos": [
+      "Do preserve the shared brand palette while respecting this target\u2019s theme implementation.",
+      "Do keep prose and code typography distinct.",
+      "Do retain keyboard focus and disabled states when extending controls."
+    ],
+    "donts": [
+      "Don\u2019t replace semantic status colors with decorative accents.",
+      "Don\u2019t copy theme selectors or spacing-token names across targets without checking their definitions.",
+      "Don\u2019t treat archival screenshots as authority over current component source."
+    ]
+  }
+}

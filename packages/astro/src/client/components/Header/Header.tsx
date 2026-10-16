@@ -240,10 +240,18 @@ export function Header({
           <div className="wn-header-title">
             <div className="wn-header-title-row">
               <span className="wn-header-logo-text">Writenex</span>
-              <span className="wn-header-badge">Astro</span>
+              <span className="wn-header-badge">
+                {window.__WRITENEX_CONFIG__?.platform === "next"
+                  ? "Next.js"
+                  : "Astro"}
+              </span>
             </div>
             <span className="wn-header-tagline">
-              Edit your Astro content visually.
+              Edit your{" "}
+              {window.__WRITENEX_CONFIG__?.platform === "next"
+                ? "Next.js"
+                : "Astro"}{" "}
+              content visually.
             </span>
           </div>
         </div>

@@ -8,6 +8,7 @@
  * @module @writenex/astro/client/components/Editor
  */
 
+import { imageApiUrl } from "../../utils/apiRequest";
 import {
   addComposerChild$,
   BlockTypeSelect,
@@ -316,21 +317,9 @@ export function Editor({
 
                   // Convert relative path to API URL for preview
                   if (collection && contentId && src.startsWith("./")) {
-                    // Remove ./ prefix
-                    const imagePath = src.slice(2);
-
-                    // Check if imagePath already starts with contentId (flat file structure)
-                    // e.g., "./post-example/image.webp" -> "post-example/image.webp"
-                    // In this case, don't add contentId again to avoid double slug
-                    if (imagePath.startsWith(`${contentId}/`)) {
-                      const apiUrl = `${basePath}/api/images/${collection}/${imagePath}`;
-                      return Promise.resolve(apiUrl);
-                    }
-
-                    // For folder-based structure, imagePath is just the filename
-                    // e.g., "./image.webp" -> "image.webp"
-                    const apiUrl = `${basePath}/api/images/${collection}/${contentId}/${imagePath}`;
-                    return Promise.resolve(apiUrl);
+                    return Promise.resolve(
+                      imageApiUrl(basePath, collection, contentId, src)
+                    );
                   }
 
                   // Fallback: return original src

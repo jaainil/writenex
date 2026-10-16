@@ -1,0 +1,8 @@
+{
+  "extends": "@writenex/tsconfig/react-library.json",
+  "compilerOptions": {
+    "paths": { "@/*": ["../astro/src/*"] }
+  },
+  "include": ["src/**/*.ts"],
+  "exclude": ["dist", "node_modules"]
+}

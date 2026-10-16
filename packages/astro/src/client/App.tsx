@@ -7,6 +7,7 @@
  * @module @writenex/astro/client/App
  */
 
+import { isNextEditor, isNarrowNextEditor } from "./utils/platform";
 import { CheckCircle, ExternalLink, FileEdit, Save } from "lucide-react";
 import { useCallback, useEffect, useRef, useState } from "react";
 import type { CollectionSchema } from "../types";
@@ -197,7 +198,9 @@ export function App(): React.ReactElement {
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [isCreatingContent, setIsCreatingContent] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
-  const [isFrontmatterOpen, setIsFrontmatterOpen] = useState(true);
+  const [isFrontmatterOpen, setIsFrontmatterOpen] = useState(
+    () => !isNarrowNextEditor()
+  );
   const [isVersionHistoryOpen, setIsVersionHistoryOpen] = useState(false);
 
   // Remote CMS session state
@@ -313,6 +316,7 @@ export function App(): React.ReactElement {
         return;
       }
       setSelectedContentId(id);
+      if (isNarrowNextEditor()) setIsSidebarOpen(false);
     },
     [hasUnsavedChanges]
   );
@@ -327,6 +331,7 @@ export function App(): React.ReactElement {
     setHasUnsavedChanges(false);
     if (pendingContentId) {
       setSelectedContentId(pendingContentId);
+      if (isNarrowNextEditor()) setIsSidebarOpen(false);
       setPendingContentId(null);
     }
   }, [pendingContentId]);
@@ -442,6 +447,7 @@ export function App(): React.ReactElement {
       setShowUnsavedModal(false);
       if (pendingContentId) {
         setSelectedContentId(pendingContentId);
+        if (isNarrowNextEditor()) setIsSidebarOpen(false);
         setPendingContentId(null);
       }
     } finally {
@@ -699,7 +705,7 @@ export function App(): React.ReactElement {
   );
 
   return (
-    <div className="wn-app">
+    <div className={`wn-app${isNextEditor() ? " wn-app--next" : ""}`}>
       {/* Skip link for keyboard navigation - must be first focusable element */}
       <SkipLink targetId={MAIN_CONTENT_ID}>Skip to main content</SkipLink>
 
@@ -744,9 +750,15 @@ export function App(): React.ReactElement {
       {/* Main Header with Logo and Toolbar */}
       <Header
         isSidebarOpen={isSidebarOpen}
-        onToggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)}
+        onToggleSidebar={() => {
+          setIsSidebarOpen(!isSidebarOpen);
+          if (isNarrowNextEditor()) setIsFrontmatterOpen(false);
+        }}
         isFrontmatterOpen={isFrontmatterOpen}
-        onToggleFrontmatter={() => setIsFrontmatterOpen(!isFrontmatterOpen)}
+        onToggleFrontmatter={() => {
+          setIsFrontmatterOpen(!isFrontmatterOpen);
+          if (isNarrowNextEditor()) setIsSidebarOpen(false);
+        }}
         isSearchOpen={isSearchOpen}
         onToggleSearch={toggleSearch}
         isVersionHistoryOpen={isVersionHistoryOpen}

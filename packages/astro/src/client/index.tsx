@@ -21,6 +21,8 @@ declare global {
     __WRITENEX_CONFIG__?: {
       basePath: string;
       apiBase: string;
+      platform?: "astro" | "next";
+      trailingSlash?: boolean;
     };
   }
 }

@@ -1,0 +1,77 @@
+{
+  "name": "@imjp/writenex-next",
+  "version": "0.1.0",
+  "description": "Writenex visual Markdown and MDX editor for Next.js projects.",
+  "keywords": [
+    "cms",
+    "markdown",
+    "mdx",
+    "next",
+    "nextjs",
+    "writenex",
+    "wysiwyg"
+  ],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jaainil/writenex.git",
+    "directory": "packages/next"
+  },
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./config": {
+      "types": "./dist/config.d.ts",
+      "import": "./dist/config.js"
+    },
+    "./server": {
+      "types": "./dist/server/index.d.ts",
+      "import": "./dist/server/index.js"
+    }
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "build": "vp pack",
+    "prepublishOnly": "pnpm build",
+    "type-check": "tsc --noEmit",
+    "lint": "biome lint src/",
+    "test:consumer": "node tests/consumer/check.mjs"
+  },
+  "dependencies": {
+    "gray-matter": "^4.0.3",
+    "jiti": "^2.7.0",
+    "slugify": "^1.6.9",
+    "zod": "^4.5.4"
+  },
+  "devDependencies": {
+    "@mdxeditor/editor": "^4.2.3",
+    "@types/node": "^26.4.0",
+    "@types/react": "^19.2.18",
+    "@types/react-dom": "^19.2.5",
+    "@writenex/tsconfig": "workspace:*",
+    "lucide-react": "^1.38.0",
+    "next": "^16.1.6",
+    "typescript": "^5.9.3",
+    "vite": "catalog:",
+    "vite-plus": "catalog:"
+  },
+  "peerDependencies": {
+    "next": "^15.0.0 || ^16.0.0",
+    "react": "^18.0.0 || ^19.0.0",
+    "react-dom": "^18.0.0 || ^19.0.0"
+  },
+  "engines": {
+    "node": ">=20.9.0"
+  }
+}

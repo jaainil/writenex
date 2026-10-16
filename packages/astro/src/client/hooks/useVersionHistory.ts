@@ -7,6 +7,7 @@
  * @module @writenex/astro/client/hooks/useVersionHistory
  */
 
+import { apiRequest } from "../utils/apiRequest";
 import { useCallback, useMemo, useState } from "react";
 import type { Version, VersionEntry } from "../../types";
 
@@ -46,8 +47,8 @@ export function createVersionApiClient(config: VersionApiConfig) {
       collection: string,
       contentId: string
     ): Promise<VersionEntry[]> {
-      const response = await fetch(
-        `${apiBase}/versions/${collection}/${contentId}`
+      const response = await apiRequest(
+        `${apiBase}/versions/${encodeURIComponent(collection)}/${encodeURIComponent(contentId)}`
       );
       if (!response.ok) {
         throw new Error("Failed to fetch versions");
@@ -64,8 +65,8 @@ export function createVersionApiClient(config: VersionApiConfig) {
       contentId: string,
       versionId: string
     ): Promise<Version> {
-      const response = await fetch(
-        `${apiBase}/versions/${collection}/${contentId}/${versionId}`
+      const response = await apiRequest(
+        `${apiBase}/versions/${encodeURIComponent(collection)}/${encodeURIComponent(contentId)}/${encodeURIComponent(versionId)}`
       );
       if (!response.ok) {
         if (response.status === 404) {
@@ -85,8 +86,8 @@ export function createVersionApiClient(config: VersionApiConfig) {
       contentId: string,
       label?: string
     ): Promise<{ success: boolean; version?: VersionEntry; error?: string }> {
-      const response = await fetch(
-        `${apiBase}/versions/${collection}/${contentId}`,
+      const response = await apiRequest(
+        `${apiBase}/versions/${encodeURIComponent(collection)}/${encodeURIComponent(contentId)}`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -109,8 +110,8 @@ export function createVersionApiClient(config: VersionApiConfig) {
       safetySnapshot?: VersionEntry;
       error?: string;
     }> {
-      const response = await fetch(
-        `${apiBase}/versions/${collection}/${contentId}/${versionId}/restore`,
+      const response = await apiRequest(
+        `${apiBase}/versions/${encodeURIComponent(collection)}/${encodeURIComponent(contentId)}/${encodeURIComponent(versionId)}/restore`,
         { method: "POST" }
       );
       return response.json();
@@ -124,8 +125,8 @@ export function createVersionApiClient(config: VersionApiConfig) {
       contentId: string,
       versionId: string
     ): Promise<DiffData> {
-      const response = await fetch(
-        `${apiBase}/versions/${collection}/${contentId}/${versionId}/diff`
+      const response = await apiRequest(
+        `${apiBase}/versions/${encodeURIComponent(collection)}/${encodeURIComponent(contentId)}/${encodeURIComponent(versionId)}/diff`
       );
       if (!response.ok) {
         if (response.status === 404) {
@@ -145,8 +146,8 @@ export function createVersionApiClient(config: VersionApiConfig) {
       contentId: string,
       versionId: string
     ): Promise<{ success: boolean; error?: string }> {
-      const response = await fetch(
-        `${apiBase}/versions/${collection}/${contentId}/${versionId}`,
+      const response = await apiRequest(
+        `${apiBase}/versions/${encodeURIComponent(collection)}/${encodeURIComponent(contentId)}/${encodeURIComponent(versionId)}`,
         { method: "DELETE" }
       );
       return response.json();
@@ -159,8 +160,8 @@ export function createVersionApiClient(config: VersionApiConfig) {
       collection: string,
       contentId: string
     ): Promise<{ success: boolean; error?: string }> {
-      const response = await fetch(
-        `${apiBase}/versions/${collection}/${contentId}`,
+      const response = await apiRequest(
+        `${apiBase}/versions/${encodeURIComponent(collection)}/${encodeURIComponent(contentId)}`,
         { method: "DELETE" }
       );
       return response.json();

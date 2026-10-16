@@ -8,6 +8,7 @@
  * @module @writenex/astro/client/components/FrontmatterForm
  */
 
+import { imageApiUrl } from "../../utils/apiRequest";
 import { AlertCircle, Info, X } from "lucide-react";
 import { useCallback, useEffect, useState } from "react";
 import type { CollectionSchema, SchemaField } from "../../../types";
@@ -1130,8 +1131,8 @@ function ImageField({
     if (!value || !collection || !contentId) return null;
 
     // Remove leading ./ from path if present
-    const imagePath = value.replace(/^\.\//, "");
-    return `/_writenex/api/images/${collection}/${contentId}/${imagePath}`;
+    const basePath = window.__WRITENEX_CONFIG__?.basePath ?? "/_writenex";
+    return imageApiUrl(basePath, collection, contentId, value);
   };
 
   const previewUrl = getPreviewUrl();

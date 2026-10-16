@@ -25,6 +25,7 @@ import type { WritenexConfig } from "@/types";
 import { serveAsset, serveEditorHtml, serveLoginHtml } from "./assets";
 import type { SessionManager } from "./auth";
 import { createApiRouter } from "./routes";
+import type { ServerCache } from "./cache";
 
 /**
  * Middleware context passed to handlers
@@ -40,6 +41,11 @@ export interface MiddlewareContext {
   trailingSlash: "always" | "never" | "ignore";
   /** Remote CMS session manager (present when the auth gate is enabled) */
   auth?: SessionManager;
+  /** Optional framework adapters keep their runtime and assets independent. */
+  contentDirs?: string[];
+  clientDistPath?: string;
+  platform?: "astro" | "next";
+  cache?: ServerCache;
 }
 
 /**

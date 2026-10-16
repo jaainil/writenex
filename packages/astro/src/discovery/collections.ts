@@ -124,6 +124,24 @@ export async function discoverCollections(
   return collections;
 }
 
+/** Discover ordered content roots, keeping the first collection of each name. */
+export async function discoverProjectCollections(
+  projectRoot: string,
+  contentDirs: string[]
+): Promise<DiscoveredCollection[]> {
+  const collections = new Map<string, DiscoveredCollection>();
+  for (const directory of contentDirs) {
+    for (const collection of await discoverCollections(
+      projectRoot,
+      directory
+    )) {
+      if (!collections.has(collection.name))
+        collections.set(collection.name, collection);
+    }
+  }
+  return [...collections.values()];
+}
+
 /**
  * Merge discovered collections with configured collections
  *

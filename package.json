@@ -26,7 +26,9 @@
     "lint:biome": "turbo lint",
     "check": "vp check",
     "pack": "vp -C packages/astro pack",
-    "test:consumer": "node packages/astro/tests/consumer/check.mjs"
+    "test:consumer": "node packages/astro/tests/consumer/check.mjs",
+    "build:next": "turbo build --filter @imjp/writenex-next",
+    "test:next-consumer": "node packages/next/tests/consumer/check.mjs"
   },
   "dependencies": {
     "pnpm": "^11.24.0",

@@ -17,14 +17,7 @@
 
 import { existsSync } from "node:fs";
 import { mkdir, readFile, stat, unlink, writeFile } from "node:fs/promises";
-import {
-  basename,
-  dirname,
-  isAbsolute,
-  join,
-  relative,
-  resolve,
-} from "node:path";
+import { dirname, isAbsolute, join, relative, resolve } from "node:path";
 import matter from "gray-matter";
 import slugify from "slugify";
 import { ContentConflictError } from "@/core/errors";
@@ -34,8 +27,9 @@ import {
   resolvePatternTokens,
 } from "@/discovery/patterns";
 import type { VersionHistoryConfig } from "@/types";
-import { readContentFile } from "./reader";
+import { readContentFile, extractSlug } from "./reader";
 import { saveVersion } from "./versions";
+import { assertSafePath } from "./safe-path";
 
 /**
  * Options for creating content
@@ -284,13 +278,18 @@ export async function createContent(
         };
       }
 
+      assertSafePath(collectionPath, filePath);
       await mkdir(dirname(filePath), { recursive: true });
       try {
         await writeFile(filePath, createFileContent(frontmatter, body), {
           encoding: "utf-8",
           flag: "wx",
         });
-        return { success: true, id: slug, path: filePath };
+        return {
+          success: true,
+          id: extractSlug(filePath, collectionPath),
+          path: filePath,
+        };
       } catch (error) {
         if ((error as NodeJS.ErrnoException).code !== "EEXIST") throw error;
         counter++;
@@ -410,19 +409,12 @@ export async function updateContent(
       currentContent
     ) {
       try {
-        // Extract content ID from file path
-        const fileName = basename(filePath);
-        const contentId =
-          fileName === "index.md" || fileName === "index.mdx"
-            ? basename(dirname(filePath))
-            : fileName.replace(/\.(md|mdx)$/, "");
-
         // Save version of the current content before overwriting
         // skipIfIdentical compares with last version in history
         const versionResult = await saveVersion(
           projectRoot,
           collection,
-          contentId,
+          existing.content.id,
           currentContent,
           versionHistoryConfig,
           { skipIfIdentical: true }

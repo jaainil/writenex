@@ -162,6 +162,7 @@ export function SearchReplacePanel({
   const [caseSensitive, setCaseSensitive] = useState(false);
   const [wholeWord, setWholeWord] = useState(false);
   const [regex, setRegex] = useState(false);
+  const panelRef = useRef<HTMLDivElement>(null);
   const searchInputRef = useRef<HTMLInputElement>(null);
 
   // Focus search input when panel opens
@@ -174,7 +175,8 @@ export function SearchReplacePanel({
   // Handle keyboard shortcuts
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (!isSearchOpen) return;
+      if (!isSearchOpen || !panelRef.current?.contains(e.target as Node))
+        return;
 
       if (e.key === "Escape") {
         setSearchOpen(false);
@@ -253,6 +255,7 @@ export function SearchReplacePanel({
 
   return (
     <div
+      ref={panelRef}
       className="absolute top-0 right-0 left-0 z-40 max-w-full border border-zinc-200 bg-white p-2 text-zinc-900 shadow-lg sm:right-0 sm:left-auto sm:max-w-none sm:rounded-bl-lg sm:p-3 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-100"
       role="search"
       aria-label="Search and replace"

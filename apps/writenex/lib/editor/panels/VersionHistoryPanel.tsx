@@ -259,6 +259,7 @@ export function VersionHistoryPanel({
         role="dialog"
         aria-label="Version history"
         aria-hidden={!isVersionHistoryOpen}
+        inert={!isVersionHistoryOpen}
       >
         <div className="flex h-full w-full flex-col sm:w-80">
           {/* Header */}

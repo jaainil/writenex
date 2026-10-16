@@ -26,6 +26,7 @@
 
 "use client";
 
+import { useSaveBeforeSwitch } from "@/lib/hooks/useAutoSave";
 import {
   Clipboard,
   Code,
@@ -180,6 +181,7 @@ function HeaderSeparator(): React.ReactElement {
  * @see {@link VersionHistoryPanel} - History panel toggled by history button
  */
 export function Header(): React.ReactElement {
+  const saveBeforeSwitch = useSaveBeforeSwitch();
   const store = useEditorStore();
   const {
     content,
@@ -264,6 +266,7 @@ export function Header(): React.ReactElement {
     if (!files || files.length === 0) return;
 
     if (asNew) {
+      await saveBeforeSwitch();
       for (let i = 0; i < files.length; i++) {
         const file = files[i];
         if (!file.name.match(/\.(md|markdown|txt)$/i)) continue;
@@ -312,14 +315,21 @@ export function Header(): React.ReactElement {
   };
 
   const handleRestoreWorkspace = (): void => {
+    if (isReadOnly) return;
     const input = document.createElement("input");
     input.type = "file";
     input.accept = ".zip";
     input.onchange = async (e) => {
       const file = (e.target as HTMLInputElement).files?.[0];
       if (file) {
-        await importWorkspace(file);
-        window.location.reload();
+        try {
+          await importWorkspace(file);
+          window.location.reload();
+        } catch (error) {
+          window.alert(
+            `Workspace could not be restored. Your existing documents are unchanged. ${error instanceof Error ? error.message : "Please choose a valid backup."}`
+          );
+        }
       }
     };
     input.click();
@@ -355,7 +365,11 @@ export function Header(): React.ReactElement {
     <header className="flex items-center justify-between border-b border-zinc-200 bg-white px-4 py-3 dark:border-zinc-700 dark:bg-zinc-900">
       {/* Logo */}
       <div className="flex min-w-fit items-center gap-2">
-        <Link href="/" className="flex items-center gap-2">
+        <Link
+          href="/"
+          aria-label="Writenex home"
+          className="flex items-center gap-2"
+        >
           <svg
             className="h-14 w-14 shrink-0"
             viewBox="0 0 24 24"
@@ -377,7 +391,7 @@ export function Header(): React.ReactElement {
       </div>
 
       {/* Right side: Custom Toolbar (all tools unified) */}
-      <div className="no-scrollbar flex max-w-[60vw] items-center gap-0.5 overflow-x-auto rounded-lg border border-zinc-200 bg-zinc-50 px-2 py-1 sm:max-w-none dark:border-zinc-700 dark:bg-zinc-800/50">
+      <div className="no-scrollbar flex max-w-[60vw] items-center [&_button]:min-h-11 [&_button]:min-w-11 sm:[&_button]:min-h-8 sm:[&_button]:min-w-8 gap-0.5 overflow-x-auto rounded-lg border border-zinc-200 bg-zinc-50 px-2 py-1 sm:max-w-none dark:border-zinc-700 dark:bg-zinc-800/50">
         {/* Group 1: File & Theme (Document/App settings) */}
         <DropdownMenu>
           <SimpleTooltip content="File Actions" side="bottom">
@@ -436,24 +450,8 @@ export function Header(): React.ReactElement {
               <FileDown className="mr-2 h-4 w-4" />
               Backup Workspace (ZIP)
             </DropdownMenuItem>
-            <DropdownMenuItem onClick={handleRestoreWorkspace}>
-              <Upload className="mr-2 h-4 w-4" />
-              Restore Workspace (ZIP)
-            </DropdownMenuItem>
             <DropdownMenuItem
-              onClick={() => {
-                const input = document.createElement("input");
-                input.type = "file";
-                input.accept = ".zip";
-                input.onchange = async (e) => {
-                  const file = (e.target as HTMLInputElement).files?.[0];
-                  if (file) {
-                    await importWorkspace(file);
-                    window.location.reload();
-                  }
-                };
-                input.click();
-              }}
+              onClick={handleRestoreWorkspace}
               disabled={isReadOnly}
             >
               <Upload className="mr-2 h-4 w-4" />

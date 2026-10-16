@@ -92,7 +92,7 @@ export default function EditorPage(): React.ReactElement {
   }, [isFocusMode]);
 
   return (
-    <div className="flex h-screen flex-col bg-white dark:bg-zinc-900">
+    <div className="flex h-dvh flex-col bg-white dark:bg-zinc-900">
       {/* Header with hover-to-reveal in focus mode */}
       <div className="relative" onMouseLeave={handleHeaderLeave}>
         {/* Invisible trigger zone at top edge (only in focus mode) */}
@@ -105,6 +105,7 @@ export default function EditorPage(): React.ReactElement {
 
         {/* Header */}
         <div
+          inert={isFocusMode && !isHeaderVisible}
           className={cn(
             "transition-all duration-300 ease-in-out",
             isFocusMode &&

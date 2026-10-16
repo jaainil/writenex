@@ -199,6 +199,7 @@ export function TocPanel(): React.ReactElement | null {
       role="navigation"
       aria-label="Table of contents"
       aria-hidden={!isTocPanelOpen}
+      inert={!isTocPanelOpen}
     >
       <div className="flex h-full w-[200px] flex-col">
         {/* Header */}

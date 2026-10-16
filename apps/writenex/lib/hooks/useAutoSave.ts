@@ -127,10 +127,14 @@ export function useAutoSave(): void {
     try {
       setSaveStatus("saving");
       await updateDocument(docId, { content: currentContent });
-      await clearWorkingDraft(docId);
-      lastSavedContentRef.current = currentContent;
-      setLastSaved(new Date());
-      setSaveStatus("saved");
+      await clearWorkingDraft(docId, currentContent);
+      if (activeDocIdRef.current === docId) {
+        lastSavedContentRef.current = currentContent;
+        if (currentContentRef.current === currentContent) {
+          setLastSaved(new Date());
+          setSaveStatus("saved");
+        }
+      }
       return true;
     } catch (error) {
       console.error("Auto-save failed:", error);
@@ -169,6 +173,7 @@ export function useAutoSave(): void {
 
       try {
         await saveVersion(docId, currentContent, label);
+        if (activeDocIdRef.current !== docId) return true;
         lastSnapshotContentRef.current = currentContent;
         setGlobalLastSnapshotContent(currentContent); // Sync global tracker
         setLastVersionSnapshot(new Date());
@@ -214,6 +219,7 @@ export function useAutoSave(): void {
     const initialize = async () => {
       // Load last version timestamp from DB
       const lastTimestamp = await getLastVersionTimestamp(activeDocumentId);
+      if (lastInitDocIdRef.current !== activeDocumentId) return;
       if (lastTimestamp) {
         setLastVersionSnapshot(lastTimestamp);
       } else {
@@ -221,6 +227,7 @@ export function useAutoSave(): void {
         setLastVersionSnapshot(null);
       }
 
+      if (lastInitDocIdRef.current !== activeDocumentId) return;
       isInitializedRef.current = true;
     };
 
@@ -540,11 +547,11 @@ export function useSaveBeforeSwitch(): () => Promise<void> {
   return useCallback(async () => {
     if (isReadOnly) return;
     if (!activeDocumentId) return;
-    if (!content.trim()) return; // Don't save/snapshot empty content
 
     try {
       // Always save to document table
       await updateDocument(activeDocumentId, { content });
+      await clearWorkingDraft(activeDocumentId, content);
 
       // Create snapshot if content has changed since last snapshot
       // No time gap check for explicit document switch (user action)

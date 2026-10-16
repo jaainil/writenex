@@ -154,8 +154,17 @@ export async function updateDocument(
 }
 
 export async function deleteDocument(id: string): Promise<void> {
-  await db.documents.delete(id);
-  await db.versions.where("documentId").equals(id).delete();
+  await db.transaction(
+    "rw",
+    db.documents,
+    db.versions,
+    db.workingSaves,
+    async () => {
+      await db.documents.delete(id);
+      await db.versions.where("documentId").equals(id).delete();
+      await db.workingSaves.delete(id);
+    }
+  );
 }
 
 export async function getDocumentCount(): Promise<number> {
@@ -274,6 +283,14 @@ export async function getWorkingDraft(
   return db.workingSaves.get(id);
 }
 
-export async function clearWorkingDraft(id: string): Promise<void> {
-  await db.workingSaves.delete(id);
+export async function clearWorkingDraft(
+  id: string,
+  savedContent?: string
+): Promise<void> {
+  await db.transaction("rw", db.workingSaves, async () => {
+    const draft = await db.workingSaves.get(id);
+    if (savedContent === undefined || draft?.content === savedContent) {
+      await db.workingSaves.delete(id);
+    }
+  });
 }

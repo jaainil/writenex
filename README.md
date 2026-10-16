@@ -36,7 +36,8 @@ writenex/
 
 ### Prerequisites
 
-- Node.js 18+
+- Node.js 24.22.0 (pinned in `.node-version`)
+- Vite+ 1.3.0, or use `pnpm exec vp` for the local CLI
 - pnpm 10+
 
 ### Installation
@@ -44,45 +45,57 @@ writenex/
 ```bash
 git clone https://github.com/jaainil/writenex.git
 cd writenex
-pnpm install
+vp install
 ```
 
 ### Development
 
 ```bash
 # Start all apps in development mode
-pnpm dev
+vp run dev
 
 # Build all packages
-pnpm build
+vp run build
 
 # Run linting
-pnpm lint
+vp run lint
 
 # Type check all packages
-pnpm type-check
+vp run type-check
+
+# Run persistence, search, and filesystem regression tests
+vp test run
+
+# Run desktop and mobile browser tests (starts the editor automatically)
+pnpm exec playwright install chromium
+vp run test:e2e
 
 # Format code
-pnpm format
+vp fmt
 
 # Clean all build artifacts
-pnpm clean
+vp run clean
 ```
 
 ### Working with Specific Packages
 
 ```bash
 # Writenex Editor
-pnpm dev:writenex
-pnpm build:writenex
+vp run dev:writenex
+vp run build:writenex
 
 # @imjp/writenex-astro
-pnpm build:astro
+vp -C packages/astro pack
 ```
+
+`vp dev` and `vp build` are built-in Vite commands. This workspace preserves Next.js through `vp run dev` and `vp run build`. Run `vp check` for formatting, lint, and type checks, and `vp run test:consumer` to check the library exports and declarations. Biome remains available through `vp run lint:biome` for the existing project rules.
+
+See [the migration report](docs/viteplus-migration.md) for validation and compatibility decisions.
 
 ## Tech Stack
 
-- **Monorepo**: pnpm workspaces + Turborepo
+- **Toolchain**: Vite+ 1.3.0, Vitest 5, Rolldown/tsdown library builds
+- **Monorepo**: pnpm workspaces + Turborepo (preserved task scheduling)
 - **Framework**: Next.js 16+ (App Router, Turbopack)
 - **React**: 19.x
 - **Language**: TypeScript 5 (Strict mode)

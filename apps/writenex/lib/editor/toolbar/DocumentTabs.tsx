@@ -125,8 +125,39 @@ function DocumentTab({
       tabIndex={isActive ? 0 : -1}
       onClick={onSelect}
       onDoubleClick={handleDoubleClick}
+      onKeyDown={(event) => {
+        if (event.target !== event.currentTarget) return;
+        if (event.key === "Enter" || event.key === " ") {
+          event.preventDefault();
+          onSelect();
+        } else if (event.key === "F2") {
+          event.preventDefault();
+          handleDoubleClick();
+        } else if (
+          ["ArrowLeft", "ArrowRight", "Home", "End"].includes(event.key)
+        ) {
+          event.preventDefault();
+          const tabs = Array.from(
+            event.currentTarget.parentElement?.querySelectorAll<HTMLElement>(
+              '[role="tab"]'
+            ) ?? []
+          );
+          const index = tabs.indexOf(event.currentTarget);
+          const next =
+            event.key === "Home"
+              ? 0
+              : event.key === "End"
+                ? tabs.length - 1
+                : (index +
+                    (event.key === "ArrowRight" ? 1 : -1) +
+                    tabs.length) %
+                  tabs.length;
+          tabs[next]?.focus();
+          tabs[next]?.click();
+        }
+      }}
       className={cn(
-        "group flex cursor-pointer items-center gap-2 rounded-t-lg px-3 py-2 transition-all",
+        "group flex shrink-0 cursor-pointer items-center gap-2 rounded-t-lg px-3 py-2 transition-colors focus-visible:outline-2 focus-visible:outline-blue-500 focus-visible:-outline-offset-2",
         "max-w-60 min-w-[120px]",
         "border border-b-0",
         isActive
@@ -162,8 +193,8 @@ function DocumentTab({
           type="button"
           onClick={handleCloseClick}
           className={cn(
-            "shrink-0 cursor-pointer rounded p-0.5 transition-colors",
-            "text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-300",
+            "flex h-11 w-11 shrink-0 cursor-pointer items-center justify-center rounded transition-colors sm:h-6 sm:w-6",
+            "text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-3000",
             "hover:bg-zinc-300/50 dark:hover:bg-zinc-600/50",
             isActive ? "opacity-100" : "opacity-0 group-hover:opacity-100"
           )}
@@ -236,10 +267,10 @@ export function DocumentTabs(): React.ReactElement {
   }, []);
 
   useEffect(() => {
-    updateScrollVisibility();
+    if (documents.length) updateScrollVisibility();
     window.addEventListener("resize", updateScrollVisibility);
     return () => window.removeEventListener("resize", updateScrollVisibility);
-  }, [updateScrollVisibility]);
+  }, [updateScrollVisibility, documents]);
 
   const handleScroll = useCallback(
     (direction: "left" | "right") => {
@@ -335,7 +366,7 @@ export function DocumentTabs(): React.ReactElement {
         <button
           type="button"
           onClick={() => handleScroll("left")}
-          className="shrink-0 p-2 text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300"
+          className="shrink-0 p-2 text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-3000"
           aria-label="Scroll tabs left"
         >
           <ChevronLeft className="h-4 w-4" />
@@ -348,7 +379,7 @@ export function DocumentTabs(): React.ReactElement {
         role="tablist"
         aria-label="Open documents"
         onScroll={updateScrollVisibility}
-        className="no-scrollbar flex flex-1 items-end gap-1 overflow-x-auto px-2 pt-2"
+        className="no-scrollbar flex min-w-0 flex-1 items-end gap-1 overflow-x-auto px-2 pt-2"
       >
         {documents.map((doc) => (
           <DocumentTab
@@ -367,8 +398,8 @@ export function DocumentTabs(): React.ReactElement {
             type="button"
             onClick={handleNewDocument}
             className={cn(
-              "mb-0.5 flex h-8 w-8 shrink-0 cursor-pointer items-center justify-center rounded-md transition-colors",
-              "text-zinc-400 hover:text-zinc-700 dark:hover:text-zinc-300",
+              "mb-0.5 flex h-11 w-11 shrink-0 sm:h-8 sm:w-8 cursor-pointer items-center justify-center rounded-md transition-colors",
+              "text-zinc-400 hover:text-zinc-700 dark:hover:text-zinc-3000",
               "hover:bg-zinc-200 dark:hover:bg-zinc-700"
             )}
             aria-label="New document (Alt+N)"
@@ -383,7 +414,7 @@ export function DocumentTabs(): React.ReactElement {
         <button
           type="button"
           onClick={() => handleScroll("right")}
-          className="shrink-0 p-2 text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300"
+          className="shrink-0 p-2 text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-3000"
           aria-label="Scroll tabs right"
         >
           <ChevronRight className="h-4 w-4" />

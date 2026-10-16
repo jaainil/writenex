@@ -27,8 +27,9 @@
 
 import type { MDXEditorMethods } from "@mdxeditor/editor";
 import { useCallback, useEffect } from "react";
-import { createDocument, getDocument, updateDocument } from "@/lib/db";
+import { createDocument, getDocument } from "@/lib/db";
 import { useEditorStore } from "@/lib/store";
+import { useSaveBeforeSwitch } from "./useAutoSave";
 
 /**
  * Options for the useKeyboardShortcuts hook.
@@ -69,6 +70,7 @@ export interface UseKeyboardShortcutsOptions {
 export function useKeyboardShortcuts({
   editorRef,
 }: UseKeyboardShortcutsOptions): void {
+  const saveBeforeSwitch = useSaveBeforeSwitch();
   const {
     documents,
     activeDocumentId,
@@ -97,9 +99,7 @@ export function useKeyboardShortcuts({
    */
   const handleNewDocument = useCallback(async () => {
     // Save current document content before switching
-    if (activeDocumentId && content) {
-      await updateDocument(activeDocumentId, { content });
-    }
+    await saveBeforeSwitch();
 
     // Create new document in IndexedDB
     const newDoc = await createDocument("Untitled");
@@ -119,6 +119,7 @@ export function useKeyboardShortcuts({
   }, [
     activeDocumentId,
     content,
+    saveBeforeSwitch,
     addDocument,
     setActiveDocumentId,
     setContent,
@@ -168,9 +169,7 @@ export function useKeyboardShortcuts({
       if (!nextDoc) return;
 
       // Save current document content before switching
-      if (activeDocumentId && content) {
-        await updateDocument(activeDocumentId, { content });
-      }
+      await saveBeforeSwitch();
 
       // Load the next document
       const doc = await getDocument(nextDoc.id);
@@ -184,6 +183,7 @@ export function useKeyboardShortcuts({
     },
     [
       documents,
+      saveBeforeSwitch,
       activeDocumentId,
       content,
       setActiveDocumentId,
@@ -204,9 +204,7 @@ export function useKeyboardShortcuts({
       if (docId === activeDocumentId) return;
 
       // Save current document content before switching
-      if (activeDocumentId && content) {
-        await updateDocument(activeDocumentId, { content });
-      }
+      await saveBeforeSwitch();
 
       // Load the target document
       const doc = await getDocument(docId);
@@ -218,7 +216,14 @@ export function useKeyboardShortcuts({
         }
       }
     },
-    [activeDocumentId, content, setActiveDocumentId, setContent, editorRef]
+    [
+      activeDocumentId,
+      content,
+      saveBeforeSwitch,
+      setActiveDocumentId,
+      setContent,
+      editorRef,
+    ]
   );
 
   /**

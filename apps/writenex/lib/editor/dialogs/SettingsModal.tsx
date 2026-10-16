@@ -61,7 +61,7 @@ export function SettingsModal(): React.ReactElement | null {
           </DialogDescription>
         </DialogHeader>
         <div className="grid gap-6 py-4">
-          <div className="flex items-center justify-between">
+          <div className="flex items-center justify-between gap-4">
             <div className="space-y-0.5">
               <label
                 htmlFor="autoSaveInterval"
@@ -77,7 +77,7 @@ export function SettingsModal(): React.ReactElement | null {
               id="autoSaveInterval"
               value={autoSaveInterval}
               onChange={handleAutoSaveChange}
-              className="flex h-10 w-32 items-center justify-between rounded-md border border-zinc-200 bg-white px-3 py-2 text-sm ring-offset-white placeholder:text-zinc-500 focus:outline-none focus:ring-2 focus:ring-zinc-950 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 dark:border-zinc-800 dark:bg-zinc-950 dark:ring-offset-zinc-950 dark:placeholder:text-zinc-400 dark:focus:ring-zinc-300"
+              className="flex h-11 w-32 shrink-0 items-center justify-between rounded-md border border-zinc-200 bg-white px-3 py-2 text-sm ring-offset-white placeholder:text-zinc-500 focus:outline-none focus:ring-2 focus:ring-zinc-950 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 dark:border-zinc-800 dark:bg-zinc-950 dark:ring-offset-zinc-950 dark:placeholder:text-zinc-400 dark:focus:ring-zinc-300"
             >
               <option value={1000}>1 second</option>
               <option value={3000}>3 seconds</option>
@@ -88,7 +88,7 @@ export function SettingsModal(): React.ReactElement | null {
             </select>
           </div>
 
-          <div className="flex items-center justify-between">
+          <div className="flex items-center justify-between gap-4">
             <div className="space-y-0.5">
               <label
                 htmlFor="showLineNumbers"
@@ -105,11 +105,11 @@ export function SettingsModal(): React.ReactElement | null {
               type="checkbox"
               checked={showLineNumbers}
               onChange={handleShowLineNumbersChange}
-              className="h-4 w-4 rounded border-zinc-300 text-zinc-900 focus:ring-zinc-950 dark:border-zinc-700 dark:bg-zinc-950 dark:ring-offset-zinc-950 dark:focus:ring-zinc-300"
+              className="h-5 w-5 shrink-0 rounded border-zinc-300 text-zinc-900 focus:ring-zinc-950 dark:border-zinc-700 dark:bg-zinc-950 dark:ring-offset-zinc-950 dark:focus:ring-zinc-300"
             />
           </div>
 
-          <div className="flex items-center justify-between">
+          <div className="flex items-center justify-between gap-4">
             <div className="space-y-0.5">
               <label
                 htmlFor="confirmClearEditor"
@@ -126,7 +126,7 @@ export function SettingsModal(): React.ReactElement | null {
               type="checkbox"
               checked={confirmClearEditor}
               onChange={handleConfirmClearChange}
-              className="h-4 w-4 rounded border-zinc-300 text-zinc-900 focus:ring-zinc-950 dark:border-zinc-700 dark:bg-zinc-950 dark:ring-offset-zinc-950 dark:focus:ring-zinc-300"
+              className="h-5 w-5 shrink-0 rounded border-zinc-300 text-zinc-900 focus:ring-zinc-950 dark:border-zinc-700 dark:bg-zinc-950 dark:ring-offset-zinc-950 dark:focus:ring-zinc-300"
             />
           </div>
         </div>

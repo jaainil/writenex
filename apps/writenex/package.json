@@ -5,7 +5,7 @@
   "description": "Modern WYSIWYG Markdown editor - the core Writenex application",
   "scripts": {
     "dev": "next dev --turbopack",
-    "build": "next build",
+    "build": "next build --webpack",
     "start": "next start",
     "lint": "biome lint .",
     "type-check": "tsc --noEmit"

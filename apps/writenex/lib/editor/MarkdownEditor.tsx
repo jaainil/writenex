@@ -38,6 +38,7 @@
 
 "use client";
 
+import { findSearchMatches, type SearchMatch } from "@/lib/utils/search";
 import {
   addComposerChild$,
   BlockTypeSelect,
@@ -298,7 +299,6 @@ export function MarkdownEditor(): React.ReactElement {
     setReadOnly,
     viewMode,
     theme,
-    searchQuery,
     setSearchQuery,
     searchActiveIndex,
     setSearchActiveIndex,
@@ -311,7 +311,7 @@ export function MarkdownEditor(): React.ReactElement {
   } = useEditorStore();
 
   // State for search
-  const [searchMatches, setSearchMatches] = useState<number[]>([]);
+  const [searchMatches, setSearchMatches] = useState<SearchMatch[]>([]);
   // const [currentMatchIndex, setCurrentMatchIndex] = useState(0); // Replaced by searchActiveIndex in store
 
   // State for diff view
@@ -417,26 +417,7 @@ export function MarkdownEditor(): React.ReactElement {
         return 0;
       }
 
-      let pattern: RegExp;
-      try {
-        let regexPattern = options.regex
-          ? query
-          : query.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-        if (options.wholeWord) {
-          regexPattern = `\\b${regexPattern}\\b`;
-        }
-        pattern = new RegExp(regexPattern, options.caseSensitive ? "g" : "gi");
-      } catch {
-        // Invalid regex
-        setSearchMatches([]);
-        return 0;
-      }
-
-      const matches: number[] = [];
-      let match;
-      while ((match = pattern.exec(content)) !== null) {
-        matches.push(match.index);
-      }
+      const matches = findSearchMatches(content, query, options);
 
       setSearchMatches(matches);
       setSearchActiveIndex(matches.length > 0 ? 1 : 0);
@@ -463,13 +444,16 @@ export function MarkdownEditor(): React.ReactElement {
     (replacement: string) => {
       if (isReadOnly || searchMatches.length === 0) return;
 
-      const matchIndex = searchMatches[searchActiveIndex - 1];
-      if (matchIndex === undefined) return;
+      const match = searchMatches[searchActiveIndex - 1];
+      if (!match) return;
+      const matchIndex = match.index;
 
       const beforeMatch = content.substring(0, matchIndex);
-      const afterMatch = content.substring(matchIndex + searchQuery.length);
+      const afterMatch = content.substring(matchIndex + match.length);
       const newContent = beforeMatch + replacement + afterMatch;
 
+      setSearchMatches([]);
+      setSearchActiveIndex(0);
       setContent(newContent);
       if (editorRef.current) {
         editorRef.current.setMarkdown(newContent);
@@ -479,9 +463,9 @@ export function MarkdownEditor(): React.ReactElement {
       isReadOnly,
       searchMatches,
       searchActiveIndex,
-      searchQuery,
       content,
       setContent,
+      setSearchActiveIndex,
     ]
   );
 
@@ -491,31 +475,24 @@ export function MarkdownEditor(): React.ReactElement {
 
       let newContent = content;
       let count = 0;
-      searchMatches.reverse().forEach((index) => {
+      [...searchMatches].reverse().forEach(({ index, length }) => {
         newContent =
           newContent.substring(0, index) +
           replacement +
-          newContent.substring(index + searchQuery.length);
+          newContent.substring(index + length);
         count++;
       });
 
+      setSearchMatches([]);
+      setSearchActiveIndex(0);
       setContent(newContent);
       if (editorRef.current) {
         editorRef.current.setMarkdown(newContent);
       }
 
-      setSearchMatches([]);
-      setSearchActiveIndex(0);
       return count;
     },
-    [
-      isReadOnly,
-      content,
-      searchMatches,
-      searchQuery,
-      setContent,
-      setSearchActiveIndex,
-    ]
+    [isReadOnly, content, searchMatches, setContent, setSearchActiveIndex]
   );
 
   // Image handlers
@@ -717,6 +694,7 @@ export function MarkdownEditor(): React.ReactElement {
 
       {/* Document Tabs - hidden in Focus Mode */}
       <div
+        inert={isFocusMode}
         className={cn(
           "overflow-hidden transition-all duration-300 ease-in-out",
           isFocusMode ? "max-h-0 opacity-0" : "max-h-20 opacity-100"
@@ -812,7 +790,7 @@ export function MarkdownEditor(): React.ReactElement {
                 readOnly={isReadOnly}
                 plugins={plugins}
                 placeholder={
-                  <span className="editor-placeholder text-zinc-400 italic">
+                  <span className="editor-placeholder text-zinc-500 dark:text-zinc-400 italic">
                     {EDITOR_PLACEHOLDER}
                   </span>
                 }
@@ -834,6 +812,7 @@ export function MarkdownEditor(): React.ReactElement {
 
       {/* Status Bar - hidden in Focus Mode */}
       <div
+        inert={isFocusMode}
         className={cn(
           "overflow-hidden transition-all duration-300 ease-in-out",
           isFocusMode ? "max-h-0 opacity-0" : "max-h-12 opacity-100"

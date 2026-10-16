@@ -109,7 +109,8 @@
 |                | `Alt+→`             | Next Document                  |
 |                | `Alt+←`             | Previous Document              |
 |                | `Alt+1-9`           | Switch to Document 1-9         |
-| **Navigation** | `Alt+T`             | Table of Contents              |
+| **Navigation** | `Ctrl+Shift+P`     | Command palette                |
+|                | `Alt+T`             | Table of Contents              |
 |                | `Ctrl+F`            | Search & Replace               |
 |                | `Enter`             | Next Match (in search)         |
 |                | `Shift+Enter`       | Previous Match (in search)     |

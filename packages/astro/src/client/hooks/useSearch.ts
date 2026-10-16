@@ -7,6 +7,7 @@
  */
 
 import { useCallback, useState } from "react";
+import { findSearchMatches, type SearchMatch } from "../utils/search";
 import type { SearchOptions } from "../components/SearchReplace";
 
 /**
@@ -58,7 +59,7 @@ export interface UseSearchResult {
 export function useSearch(getContent: () => string): UseSearchResult {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
-  const [searchMatches, setSearchMatches] = useState<number[]>([]);
+  const [searchMatches, setSearchMatches] = useState<SearchMatch[]>([]);
   const [searchActiveIndex, setSearchActiveIndex] = useState(0);
 
   const openSearch = useCallback(() => setIsSearchOpen(true), []);
@@ -76,30 +77,7 @@ export function useSearch(getContent: () => string): UseSearchResult {
       }
 
       const content = getContent();
-      let pattern: RegExp;
-
-      try {
-        let regexPattern = options.regex
-          ? query
-          : query.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-
-        if (options.wholeWord) {
-          regexPattern = `\\b${regexPattern}\\b`;
-        }
-
-        pattern = new RegExp(regexPattern, options.caseSensitive ? "g" : "gi");
-      } catch {
-        // Invalid regex
-        setSearchMatches([]);
-        setSearchActiveIndex(0);
-        return 0;
-      }
-
-      const matches: number[] = [];
-      let match;
-      while ((match = pattern.exec(content)) !== null) {
-        matches.push(match.index);
-      }
+      const matches = findSearchMatches(content, query, options);
 
       setSearchMatches(matches);
       setSearchActiveIndex(matches.length > 0 ? 1 : 0);
@@ -130,23 +108,24 @@ export function useSearch(getContent: () => string): UseSearchResult {
     ) => {
       if (searchMatches.length === 0) return;
 
-      const matchIndex = searchMatches[searchActiveIndex - 1];
-      if (matchIndex === undefined) return;
+      const match = searchMatches[searchActiveIndex - 1];
+      if (!match) return;
+      const matchIndex = match.index;
 
       const beforeMatch = content.substring(0, matchIndex);
-      const afterMatch = content.substring(matchIndex + searchQuery.length);
+      const afterMatch = content.substring(matchIndex + match.length);
       const newContent = beforeMatch + replacement + afterMatch;
 
       setContent(newContent);
 
       // Re-run search to update matches
       // Matches after the replacement point need to be adjusted
-      const adjustment = replacement.length - searchQuery.length;
+      const adjustment = replacement.length - match.length;
       const newMatches = searchMatches
         .filter((_, i) => i !== searchActiveIndex - 1)
         .map((pos, i) => {
           if (i >= searchActiveIndex - 1) {
-            return pos + adjustment;
+            return { ...pos, index: pos.index + adjustment };
           }
           return pos;
         });
@@ -171,11 +150,11 @@ export function useSearch(getContent: () => string): UseSearchResult {
       let count = 0;
 
       // Replace from end to start to preserve indices
-      [...searchMatches].reverse().forEach((index) => {
+      [...searchMatches].reverse().forEach(({ index, length }) => {
         newContent =
           newContent.substring(0, index) +
           replacement +
-          newContent.substring(index + searchQuery.length);
+          newContent.substring(index + length);
         count++;
       });
 
@@ -194,7 +173,7 @@ export function useSearch(getContent: () => string): UseSearchResult {
     closeSearch,
     toggleSearch,
     searchQuery,
-    searchMatches,
+    searchMatches: searchMatches.map((match) => match.index),
     searchActiveIndex,
     totalMatches: searchMatches.length,
     handleFind,

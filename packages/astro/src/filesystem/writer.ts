@@ -17,7 +17,15 @@
 
 import { existsSync } from "node:fs";
 import { mkdir, readFile, stat, unlink, writeFile } from "node:fs/promises";
-import { basename, dirname, join } from "node:path";
+import {
+  basename,
+  dirname,
+  isAbsolute,
+  join,
+  relative,
+  resolve,
+} from "node:path";
+import matter from "gray-matter";
 import slugify from "slugify";
 import { ContentConflictError } from "@/core/errors";
 import {
@@ -153,66 +161,6 @@ export async function generateUniqueSlug(
  * @param frontmatter - Frontmatter data
  * @returns YAML string
  */
-function frontmatterToYaml(frontmatter: Record<string, unknown>): string {
-  const lines: string[] = [];
-
-  const serializeString = (key: string, value: string, indent = ""): void => {
-    if (value.includes("\n")) {
-      const indented = value
-        .split("\n")
-        .map((line) => `${indent}  ${line}`)
-        .join("\n");
-      lines.push(`${indent}${key}: |`);
-      lines.push(indented);
-      return;
-    }
-
-    // Quote strings that are empty or contain YAML-significant characters.
-    if (/^$|[:#\[\]{},&*?!|>'"%@`]|^[-?]\s|\s$/.test(value)) {
-      const escaped = value.replace(/\\/g, "\\\\").replace(/"/g, '\\"');
-      lines.push(`${indent}${key}: "${escaped}"`);
-      return;
-    }
-
-    lines.push(`${indent}${key}: ${value}`);
-  };
-
-  for (const [key, value] of Object.entries(frontmatter)) {
-    if (value === undefined || value === null) {
-      continue;
-    }
-
-    if (typeof value === "string") {
-      serializeString(key, value);
-    } else if (typeof value === "number" || typeof value === "boolean") {
-      lines.push(`${key}: ${value}`);
-    } else if (value instanceof Date) {
-      lines.push(`${key}: ${value.toISOString().split("T")[0]}`);
-    } else if (Array.isArray(value)) {
-      if (value.length === 0) {
-        lines.push(`${key}: []`);
-      } else {
-        lines.push(`${key}:`);
-        for (const item of value) {
-          lines.push(`  - ${item}`);
-        }
-      }
-    } else if (typeof value === "object") {
-      // Simple object serialization
-      lines.push(`${key}:`);
-      for (const [subKey, subValue] of Object.entries(value)) {
-        if (typeof subValue === "string") {
-          serializeString(subKey, subValue, "  ");
-        } else {
-          lines.push(`  ${subKey}: ${subValue}`);
-        }
-      }
-    }
-  }
-
-  return lines.join("\n");
-}
-
 /**
  * Create a content file with frontmatter and body
  *
@@ -224,8 +172,7 @@ function createFileContent(
   frontmatter: Record<string, unknown>,
   body: string
 ): string {
-  const yaml = frontmatterToYaml(frontmatter);
-  return `---\n${yaml}\n---\n\n${body}`;
+  return matter.stringify(`\n${body}`, frontmatter);
 }
 
 /**
@@ -310,41 +257,45 @@ export async function createContent(
     const title = frontmatter.title as string | undefined;
     const baseSlug = customSlug ?? (title ? generateSlug(title) : "untitled");
 
-    // Ensure unique slug using the file pattern
-    const slug = await generateUniqueSlug(
-      baseSlug,
-      collectionPath,
-      filePattern
-    );
+    // Resolve the complete path for every candidate, including all folder tokens.
+    // Exclusive writes protect existing files even when two creates race.
+    let counter = 1;
+    while (true) {
+      const slug = counter === 1 ? baseSlug : `${baseSlug}-${counter}`;
+      const tokens = resolvePatternTokens(filePattern, {
+        slug,
+        frontmatter,
+        customTokens: { ...customTokens, slug },
+      });
+      const relativePath = generatePathFromPattern(filePattern, tokens);
+      const filePath = resolve(collectionPath, relativePath);
+      const withinCollection = relative(resolve(collectionPath), filePath);
+      if (
+        !withinCollection ||
+        withinCollection === ".." ||
+        withinCollection.startsWith("../") ||
+        withinCollection.startsWith("..\\") ||
+        isAbsolute(withinCollection) ||
+        relativePath.includes("\\")
+      ) {
+        return {
+          success: false,
+          error: "Content path must stay inside the collection",
+        };
+      }
 
-    // Resolve all tokens using the flexible token resolver
-    const tokens = resolvePatternTokens(filePattern, {
-      slug,
-      frontmatter,
-      customTokens,
-    });
-
-    // Generate the relative file path from the pattern
-    const relativePath = generatePathFromPattern(filePattern, tokens);
-    const filePath = join(collectionPath, relativePath);
-
-    // Ensure parent directory exists (important for folder-based patterns)
-    const parentDir = dirname(filePath);
-    if (!existsSync(parentDir)) {
-      await mkdir(parentDir, { recursive: true });
+      await mkdir(dirname(filePath), { recursive: true });
+      try {
+        await writeFile(filePath, createFileContent(frontmatter, body), {
+          encoding: "utf-8",
+          flag: "wx",
+        });
+        return { success: true, id: slug, path: filePath };
+      } catch (error) {
+        if ((error as NodeJS.ErrnoException).code !== "EEXIST") throw error;
+        counter++;
+      }
     }
-
-    // Create file content
-    const content = createFileContent(frontmatter, body);
-
-    // Write file
-    await writeFile(filePath, content, "utf-8");
-
-    return {
-      success: true,
-      id: slug,
-      path: filePath,
-    };
   } catch (error) {
     const message = error instanceof Error ? error.message : String(error);
     return {

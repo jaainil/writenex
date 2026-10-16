@@ -71,9 +71,8 @@ export function ConfigPanel({
   const [configPath, setConfigPath] = useState<string | null>(null);
   const [hasConfigFile, setHasConfigFile] = useState(false);
   const [copied, setCopied] = useState(false);
-  const [selectedEditor, setSelectedEditor] = useState<EditorType>(
-    getPreferredEditor()
-  );
+  const [selectedEditor, setSelectedEditor] =
+    useState<EditorType>(getPreferredEditor());
   const [showEditorDropdown, setShowEditorDropdown] = useState(false);
 
   // Fetch config path when modal opens

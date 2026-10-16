@@ -56,7 +56,7 @@ const withPWA = withPWAInit({
       },
       // Next.js static assets - Cache First (files have hash in name)
       {
-        urlPattern: /^\/_next\/static\/.*/,
+        urlPattern: /^https?:\/\/[^/]+\/_next\/static\//,
         handler: "CacheFirst",
         options: {
           cacheName: "next-static",

@@ -34,6 +34,8 @@ import {
   getSetting,
   getWorkingDraft,
   saveSetting,
+  updateDocument,
+  clearWorkingDraft,
 } from "@/lib/db";
 import { useEditorStore } from "@/lib/store";
 import { DEFAULT_DOCUMENT_CONTENT, DEFAULT_DOCUMENT_TITLE } from "@/lib/utils";
@@ -165,6 +167,10 @@ export function useDocumentInit(
               ? workingDraft.content
               : activeDoc.content;
 
+          if (restoreContent !== activeDoc.content) {
+            await updateDocument(activeDocId, { content: restoreContent });
+            await clearWorkingDraft(activeDocId, restoreContent);
+          }
           setContent(restoreContent);
           onContentLoaded(restoreContent);
 

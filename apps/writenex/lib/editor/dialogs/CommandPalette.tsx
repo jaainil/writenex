@@ -12,10 +12,12 @@ import {
 } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import { exportWorkspace } from "@/lib/backup";
-import { createDocument } from "@/lib/db";
+import { createDocument, getDocument } from "@/lib/db";
 import { useEditorStore } from "@/lib/store";
+import { useSaveBeforeSwitch } from "@/lib/hooks/useAutoSave";
 
 export function CommandPalette(): React.ReactElement {
+  const saveBeforeSwitch = useSaveBeforeSwitch();
   const [open, setOpen] = useState(false);
   const {
     documents,
@@ -33,7 +35,11 @@ export function CommandPalette(): React.ReactElement {
 
   useEffect(() => {
     const down = (e: KeyboardEvent) => {
-      if (e.key === "k" && (e.metaKey || e.ctrlKey)) {
+      if (
+        e.key.toLowerCase() === "p" &&
+        e.shiftKey &&
+        (e.metaKey || e.ctrlKey)
+      ) {
         e.preventDefault();
         setOpen((open) => !open);
       }
@@ -43,6 +49,7 @@ export function CommandPalette(): React.ReactElement {
   }, []);
 
   const handleCreateDocument = async () => {
+    await saveBeforeSwitch();
     const doc = await createDocument("Untitled", "");
     addDocument({ id: doc.id, title: doc.title, updatedAt: doc.updatedAt });
     setActiveDocumentId(doc.id);
@@ -76,11 +83,17 @@ export function CommandPalette(): React.ReactElement {
           {documents.map((doc) => (
             <Command.Item
               key={doc.id}
-              onSelect={() => {
+              value={doc.id}
+              keywords={[doc.title]}
+              onSelect={async () => {
+                await saveBeforeSwitch();
+                const selected = await getDocument(doc.id);
+                if (!selected) return;
+                setContent(selected.content);
                 setActiveDocumentId(doc.id);
                 setOpen(false);
               }}
-              className="relative flex cursor-default select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none aria-selected:bg-zinc-100 aria-selected:text-zinc-900 data-[disabled]:pointer-events-none data-[disabled]:opacity-50 dark:text-zinc-100 dark:aria-selected:bg-zinc-800 dark:aria-selected:text-zinc-50"
+              className="relative flex cursor-default select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none aria-selected:bg-zinc-100 aria-selected:text-zinc-900 data-[disabled=true]:pointer-events-none data-[disabled=true]:opacity-50 dark:text-zinc-100 dark:aria-selected:bg-zinc-800 dark:aria-selected:text-zinc-50"
             >
               <FileText className="mr-2 h-4 w-4" />
               {doc.title}
